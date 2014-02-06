@@ -1,7 +1,7 @@
 <?php
 class GFCommon{
 
-    public static $version = "1.7.13";
+    public static $version = "1.7.2";
     public static $tab_index = 1;
     public static $errors = array();
 
@@ -166,7 +166,7 @@ class GFCommon{
             return $text;
 
         $middle = intval($max_length / 2);
-        return self::safe_substr($text, 0, $middle) . "..." . self::safe_substr($text, strlen($text) - $middle, $middle);
+        return substr($text, 0, $middle) . "..." . substr($text, strlen($text) - $middle, $middle);
     }
 
     public static function is_invalid_or_empty_email($email){
@@ -360,9 +360,7 @@ class GFCommon{
                 <option value='{entry_url}'><?php _e("Entry URL", "gravityforms"); ?></option>
                 <option value='{form_id}'><?php _e("Form Id", "gravityforms"); ?></option>
                 <option value='{form_title}'><?php _e("Form Title", "gravityforms"); ?></option>
-                <option value='{referer}'><?php _e("HTTP Referer URL", "gravityforms"); ?></option>
                 <option value='{user_agent}'><?php _e("HTTP User Agent", "gravityforms"); ?></option>
-
 
                 <?php if(self::has_post_field($fields)){ ?>
                     <option value='{post_id}'><?php _e("Post Id", "gravityforms"); ?></option>
@@ -508,7 +506,6 @@ class GFCommon{
         $other_group[] = array('tag' => '{form_id}', 'label' => __("Form Id", "gravityforms"));
         $other_group[] = array('tag' => '{form_title}', 'label' => __("Form Title", "gravityforms"));
         $other_group[] = array('tag' => '{user_agent}', 'label' => __("HTTP User Agent", "gravityforms"));
-        $other_group[] = array('tag' => '{referer}', 'label' => __("HTTP Referer URL", "gravityforms"));
 
         if(self::has_post_field($fields)) {
             $other_group[] = array('tag' => '{post_id}', 'label' => __("Post Id", "gravityforms"));
@@ -780,7 +777,7 @@ class GFCommon{
     public static function replace_variables($text, $form, $lead, $url_encode = false, $esc_html=true, $nl2br = true, $format="html"){
         $text = $nl2br ? nl2br($text) : $text;
 
-        //Replacing field variables: {FIELD_LABEL:FIELD_ID} {My Field:2}
+        //Replacing field variables
         preg_match_all('/{[^{]*?:(\d+(\.\d+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER);
         if(is_array($matches))
         {
@@ -801,7 +798,6 @@ class GFCommon{
 
                     case "fileupload" :
                         $value = str_replace(" ", "%20", $value);
-
                     break;
 
                     case "post_image" :
@@ -910,9 +906,6 @@ class GFCommon{
                     }
                 }
 
-                //Encoding left curly bracket so that merge tags entered in the front end are displayed as is and not "executed"
-                $value = self::encode_merge_tag($value);
-
                 //filter can change merge code variable
                 $value = apply_filters("gform_merge_tag_filter", $value, $input_id, rgar($match,4), $field, $raw_value);
                 if($value === false)
@@ -935,20 +928,14 @@ class GFCommon{
             $use_admin_label = in_array("admin", $options);
 
             //all submitted fields using text
-            if (strpos($text, $match[0]) !== false){
-                $text = str_replace($match[0], self::get_submitted_fields($form, $lead, $display_empty, !$use_value, $format, $use_admin_label, "all_fields", rgar($match,2)), $text);
-            }
+            $text = str_replace($match[0], self::get_submitted_fields($form, $lead, $display_empty, !$use_value, $format, $use_admin_label, "all_fields", rgar($match,2)), $text);
         }
 
         //all submitted fields including empty fields
-        if (strpos($text, "{all_fields_display_empty}") !== false){
-            $text = str_replace("{all_fields_display_empty}", self::get_submitted_fields($form, $lead, true, true, $format, false, "all_fields_display_empty"), $text);
-        }
+        $text = str_replace("{all_fields_display_empty}", self::get_submitted_fields($form, $lead, true, true, $format, false, "all_fields_display_empty"), $text);
 
         //pricing fields
-        if (strpos($text, "{pricing_fields}") !== false){
-            $text = str_replace("{pricing_fields}", self::get_submitted_pricing_fields($form, $lead, $format), $text);
-        }
+        $text = str_replace("{pricing_fields}", self::get_submitted_pricing_fields($form, $lead, $format), $text);
 
         //form id
         $text = str_replace("{form_id}", $url_encode ? urlencode($form["id"]) : $form["id"], $text);
@@ -975,21 +962,7 @@ class GFCommon{
 
         // hook allows for custom merge tags
         $text = apply_filters('gform_replace_merge_tags', $text, $form, $lead, $url_encode, $esc_html, $nl2br, $format);
-
-        // TODO: Deprecate the 'gform_replace_merge_tags' and replace it with a call to the 'gform_merge_tag_filter'
-        //$text = apply_filters('gform_merge_tag_filter', $text, false, false, false );
-
-        $text = self::decode_merge_tag($text);
-
         return $text;
-    }
-
-    public static function encode_merge_tag($text){
-        return str_replace("{", "&#x7b;", $text);
-    }
-
-    public static function decode_merge_tag($text){
-        return str_replace("&#x7b;", "{", $text);
     }
 
     public static function format_post_category($value, $use_id){
@@ -1032,13 +1005,12 @@ class GFCommon{
         $local_date_mdy = date_i18n("m/d/Y", $local_timestamp, true);
         $text = str_replace("{date_mdy}", $url_encode ? urlencode($local_date_mdy) : $local_date_mdy, $text);
 
-        // date (dd/mm/yyyy)
+        //date (dd/mm/yyyy)
         $local_date_dmy = date_i18n("d/m/Y", $local_timestamp, true);
         $text = str_replace("{date_dmy}", $url_encode ? urlencode($local_date_dmy) : $local_date_dmy, $text);
 
-        // ip
-        $ip = GFFormsModel::get_ip();
-        $text = str_replace( '{ip}', $url_encode ? urlencode( $ip ) : $ip, $text );
+        //ip
+        $text = str_replace("{ip}", $url_encode ? urlencode($_SERVER['REMOTE_ADDR']) : $_SERVER['REMOTE_ADDR'], $text);
 
         global $post;
         $post_array = self::object_to_array($post);
@@ -1422,7 +1394,7 @@ class GFCommon{
         $replyTo = rgempty("replyToField", $form["notification"]) ? rgget("replyTo", $form["notification"]): rgget($form["notification"]["replyToField"], $lead);
 
         if(rgempty("routing", $form["notification"])){
-            $email_to = rgempty("toField", $form["notification"]) ? rgget("to", $form["notification"]) : rgget("toField", $form["notification"]);
+            $email_to = rgget("to", $form["notification"]);
         }
         else{
             $email_to = array();
@@ -1471,13 +1443,13 @@ class GFCommon{
 
         $to_field = "";
         if(rgar($notification, "toType") == "field"){
-        	$to_field = rgar($notification, "toField");
-            if(rgempty("toField", $notification)){
+            if(rgempty("toField", $notification))
                 $to_field = rgar($notification, "to");
-			}
+            else if(rgempty("to", $notification))
+                $to_field = rgar($notification, "toField");
         }
 
-		$email_to = rgar($notification, "to");
+        $email_to = rgar($notification, "to");
         //do routing logic if "to" field doesn't have a value (to support legacy notifications what will run routing prior to this method
         if(empty($email_to) && rgar($notification, "toType") == "routing"){
             $email_to = array();
@@ -1531,10 +1503,6 @@ class GFCommon{
 
         foreach($notification_ids as $notification_id){
             if(!isset($form["notifications"][$notification_id])){
-                continue;
-            }
-
-            if(isset($form["notifications"][$notification_id]["isActive"]) && ! $form["notifications"][$notification_id]["isActive"]){
                 continue;
             }
 
@@ -1643,21 +1611,15 @@ class GFCommon{
         $bcc = str_replace(" ", "", $bcc);
 
         //invalid to email address or no content. can't send email
-        if(!GFCommon::is_valid_email($to) || (empty($subject) && empty($message))){
-         	GFCommon::log_debug("Cannot send email because either the TO address is invalid or there is no SUBJECT or MESSAGE.");
-         	GFCommon::log_debug(print_r(compact("to", "subject", "message"), true));
+        if(!GFCommon::is_valid_email($to) || (empty($subject) && empty($message)))
             return;
-		}
 
         if(!GFCommon::is_valid_email($from))
             $from = get_bloginfo("admin_email");
 
         //invalid from address. can't send email
-        if(!GFCommon::is_valid_email($from)){
-         	GFCommon::log_debug("Cannot send email because the FROM address is invalid.");
-         	GFCommon::log_debug(print_r(compact("to", "from", "subject"), true));
+        if(!GFCommon::is_valid_email($from))
             return;
-		}
 
         $content_type = $message_format == "html" ? "text/html" : "text/plain";
 
@@ -1680,7 +1642,7 @@ class GFCommon{
         $is_success = false;
         if(!$abort_email){
             GFCommon::log_debug("Sending email via wp_mail()");
-            GFCommon::log_debug(print_r(compact("to", "subject", "message", "headers", "attachments", "abort_email"), true));
+            GFCommon::log_debug(compact("to", "subject", "message", "headers", "attachments", "abort_email"));
             $is_success = wp_mail($to, $subject, $message, $headers, $attachments);
             GFCommon::log_debug("Result from wp_mail(): {$is_success}");
         }
@@ -1717,19 +1679,15 @@ class GFCommon{
 
     public static function current_user_can_any($caps){
 
-        if(!is_array($caps)){
-            $has_cap = current_user_can($caps) || current_user_can("gform_full_access");
-            return $has_cap;
-        }
+        if(!is_array($caps))
+            return current_user_can($caps) || current_user_can("gform_full_access");
 
         foreach($caps as $cap){
-            if(current_user_can($cap)){
+            if(current_user_can($cap))
                 return true;
-            }
         }
 
-        $has_full_access = current_user_can("gform_full_access");
-        return $has_full_access;
+        return current_user_can("gform_full_access");
     }
 
     public static function current_user_can_which($caps){
@@ -1968,11 +1926,7 @@ class GFCommon{
     }
 
     public static function selection_display($value, $field, $currency="", $use_text=false){
-        if (is_array($value)){
-			return "";
-        }
-
-       	$ary = explode("|", $value);
+        $ary = explode("|", $value);
         $val = $ary[0];
         $price = count($ary) > 1 ? $ary[1] : "";
 
@@ -2120,7 +2074,7 @@ class GFCommon{
                 $tabindex = self::get_tabindex();
                 $choice_value = $choice["value"];
                 if(rgget("enablePrice", $field))
-                    $choice_value .= "|" . GFCommon::to_number(rgar($choice,"price"));
+                    $choice_value .= "|" . GFCommon::to_number($choice["price"]);
 
                 $choices.= sprintf("<li class='gchoice_$id'><input name='input_%s' type='checkbox' $logic_event value='%s' %s id='choice_%s' $tabindex %s /><label for='choice_%s'>%s</label></li>", $input_id, esc_attr($choice_value), $checked, $id, $disabled_text, $id, $choice["text"]);
 
@@ -2376,7 +2330,7 @@ class GFCommon{
 
     public static function get_countries(){
         return apply_filters("gform_countries", array(
-        __('Afghanistan', 'gravityforms'),__('Albania', 'gravityforms'),__('Algeria', 'gravityforms'), __('American Samoa', 'gravityforms'), __('Andorra', 'gravityforms'),__('Angola', 'gravityforms'),__('Antigua and Barbuda', 'gravityforms'),__('Argentina', 'gravityforms'),__('Armenia', 'gravityforms'),__('Australia', 'gravityforms'),__('Austria', 'gravityforms'),__('Azerbaijan', 'gravityforms'),__('Bahamas', 'gravityforms'),__('Bahrain', 'gravityforms'),__('Bangladesh', 'gravityforms'),__('Barbados', 'gravityforms'),__('Belarus', 'gravityforms'),__('Belgium', 'gravityforms'),__('Belize', 'gravityforms'),__('Benin', 'gravityforms'),__('Bermuda', 'gravityforms'),__('Bhutan', 'gravityforms'),__('Bolivia', 'gravityforms'),__('Bosnia and Herzegovina', 'gravityforms'),__('Botswana', 'gravityforms'),__('Brazil', 'gravityforms'),__('Brunei', 'gravityforms'),__('Bulgaria', 'gravityforms'),__('Burkina Faso', 'gravityforms'),__('Burundi', 'gravityforms'),__('Cambodia', 'gravityforms'),__('Cameroon', 'gravityforms'),__('Canada', 'gravityforms'),__('Cape Verde', 'gravityforms'),__('Cayman Islands', 'gravityforms'),__('Central African Republic', 'gravityforms'),__('Chad', 'gravityforms'),__('Chile', 'gravityforms'),__('China', 'gravityforms'),__('Colombia', 'gravityforms'),__('Comoros', 'gravityforms'),__('Congo, Democratic Republic of the', 'gravityforms'),__('Congo, Republic of the', 'gravityforms'),__('Costa Rica', 'gravityforms'),__('C&ocirc;te d\'Ivoire', 'gravityforms'),__('Croatia', 'gravityforms'),__('Cuba', 'gravityforms'),__('Cyprus', 'gravityforms'),__('Czech Republic', 'gravityforms'),__('Denmark', 'gravityforms'),__('Djibouti', 'gravityforms'),__('Dominica', 'gravityforms'),__('Dominican Republic', 'gravityforms'),__('East Timor', 'gravityforms'),__('Ecuador', 'gravityforms'),__('Egypt', 'gravityforms'),__('El Salvador', 'gravityforms'),__('Equatorial Guinea', 'gravityforms'),__('Eritrea', 'gravityforms'),__('Estonia', 'gravityforms'),__('Ethiopia', 'gravityforms'),__('Fiji', 'gravityforms'),__('Finland', 'gravityforms'),__('France', 'gravityforms'),__('Gabon', 'gravityforms'),
+        __('Afghanistan', 'gravityforms'),__('Albania', 'gravityforms'),__('Algeria', 'gravityforms'), __('American Samoa', 'gravityforms'), __('Andorra', 'gravityforms'),__('Angola', 'gravityforms'),__('Antigua and Barbuda', 'gravityforms'),__('Argentina', 'gravityforms'),__('Armenia', 'gravityforms'),__('Australia', 'gravityforms'),__('Austria', 'gravityforms'),__('Azerbaijan', 'gravityforms'),__('Bahamas', 'gravityforms'),__('Bahrain', 'gravityforms'),__('Bangladesh', 'gravityforms'),__('Barbados', 'gravityforms'),__('Belarus', 'gravityforms'),__('Belgium', 'gravityforms'),__('Belize', 'gravityforms'),__('Benin', 'gravityforms'),__('Bermuda', 'gravityforms'),__('Bhutan', 'gravityforms'),__('Bolivia', 'gravityforms'),__('Bosnia and Herzegovina', 'gravityforms'),__('Botswana', 'gravityforms'),__('Brazil', 'gravityforms'),__('Brunei', 'gravityforms'),__('Bulgaria', 'gravityforms'),__('Burkina Faso', 'gravityforms'),__('Burundi', 'gravityforms'),__('Cambodia', 'gravityforms'),__('Cameroon', 'gravityforms'),__('Canada', 'gravityforms'),__('Cape Verde', 'gravityforms'),__('Central African Republic', 'gravityforms'),__('Chad', 'gravityforms'),__('Chile', 'gravityforms'),__('China', 'gravityforms'),__('Colombia', 'gravityforms'),__('Comoros', 'gravityforms'),__('Congo, Democratic Republic of the', 'gravityforms'),__('Congo, Republic of the', 'gravityforms'),__('Costa Rica', 'gravityforms'),__('C&ocirc;te d\'Ivoire', 'gravityforms'),__('Croatia', 'gravityforms'),__('Cuba', 'gravityforms'),__('Cyprus', 'gravityforms'),__('Czech Republic', 'gravityforms'),__('Denmark', 'gravityforms'),__('Djibouti', 'gravityforms'),__('Dominica', 'gravityforms'),__('Dominican Republic', 'gravityforms'),__('East Timor', 'gravityforms'),__('Ecuador', 'gravityforms'),__('Egypt', 'gravityforms'),__('El Salvador', 'gravityforms'),__('Equatorial Guinea', 'gravityforms'),__('Eritrea', 'gravityforms'),__('Estonia', 'gravityforms'),__('Ethiopia', 'gravityforms'),__('Fiji', 'gravityforms'),__('Finland', 'gravityforms'),__('France', 'gravityforms'),__('Gabon', 'gravityforms'),
         __('Gambia', 'gravityforms'),__('Georgia', 'gravityforms'),__('Germany', 'gravityforms'),__('Ghana', 'gravityforms'),__('Greece', 'gravityforms'),__('Greenland', 'gravityforms'),__('Grenada', 'gravityforms'),__('Guam', 'gravityforms'),__('Guatemala', 'gravityforms'),__('Guinea', 'gravityforms'),__('Guinea-Bissau', 'gravityforms'),__('Guyana', 'gravityforms'),__('Haiti', 'gravityforms'),__('Honduras', 'gravityforms'),__('Hong Kong', 'gravityforms'),__('Hungary', 'gravityforms'),__('Iceland', 'gravityforms'),__('India', 'gravityforms'),__('Indonesia', 'gravityforms'),__('Iran', 'gravityforms'),__('Iraq', 'gravityforms'),__('Ireland', 'gravityforms'),__('Israel', 'gravityforms'),__('Italy', 'gravityforms'),__('Jamaica', 'gravityforms'),__('Japan', 'gravityforms'),__('Jordan', 'gravityforms'),__('Kazakhstan', 'gravityforms'),__('Kenya', 'gravityforms'),__('Kiribati', 'gravityforms'),__('North Korea', 'gravityforms'),__('South Korea', 'gravityforms'),__('Kuwait', 'gravityforms'),__('Kyrgyzstan', 'gravityforms'),__('Laos', 'gravityforms'),__('Latvia', 'gravityforms'),__('Lebanon', 'gravityforms'),__('Lesotho', 'gravityforms'),__('Liberia', 'gravityforms'),__('Libya', 'gravityforms'),__('Liechtenstein', 'gravityforms'),__('Lithuania', 'gravityforms'),__('Luxembourg', 'gravityforms'),__('Macedonia', 'gravityforms'),__('Madagascar', 'gravityforms'),__('Malawi', 'gravityforms'),__('Malaysia', 'gravityforms'),__('Maldives', 'gravityforms'),__('Mali', 'gravityforms'),__('Malta', 'gravityforms'),__('Marshall Islands', 'gravityforms'),__('Mauritania', 'gravityforms'),__('Mauritius', 'gravityforms'),__('Mexico', 'gravityforms'),__('Micronesia', 'gravityforms'),__('Moldova', 'gravityforms'),__('Monaco', 'gravityforms'),__('Mongolia', 'gravityforms'),__('Montenegro', 'gravityforms'),__('Morocco', 'gravityforms'),__('Mozambique', 'gravityforms'),__('Myanmar', 'gravityforms'),__('Namibia', 'gravityforms'),__('Nauru', 'gravityforms'),__('Nepal', 'gravityforms'),__('Netherlands', 'gravityforms'),__('New Zealand', 'gravityforms'),
         __('Nicaragua', 'gravityforms'),__('Niger', 'gravityforms'),__('Nigeria', 'gravityforms'),__('Norway', 'gravityforms'), __('Northern Mariana Islands', 'gravityforms'), __('Oman', 'gravityforms'),__('Pakistan', 'gravityforms'),__('Palau', 'gravityforms'),__('Palestine', 'gravityforms'),__('Panama', 'gravityforms'),__('Papua New Guinea', 'gravityforms'),__('Paraguay', 'gravityforms'),__('Peru', 'gravityforms'),__('Philippines', 'gravityforms'),__('Poland', 'gravityforms'),__('Portugal', 'gravityforms'),__('Puerto Rico', 'gravityforms'),__('Qatar', 'gravityforms'),__('Romania', 'gravityforms'),__('Russia', 'gravityforms'),__('Rwanda', 'gravityforms'),__('Saint Kitts and Nevis', 'gravityforms'),__('Saint Lucia', 'gravityforms'),__('Saint Vincent and the Grenadines', 'gravityforms'),__('Samoa', 'gravityforms'),__('San Marino', 'gravityforms'),__('Sao Tome and Principe', 'gravityforms'),__('Saudi Arabia', 'gravityforms'),__('Senegal', 'gravityforms'),__('Serbia and Montenegro', 'gravityforms'),__('Seychelles', 'gravityforms'),__('Sierra Leone', 'gravityforms'),__('Singapore', 'gravityforms'),__('Slovakia', 'gravityforms'),__('Slovenia', 'gravityforms'),__('Solomon Islands', 'gravityforms'),__('Somalia', 'gravityforms'),__('South Africa', 'gravityforms'),__('Spain', 'gravityforms'),__('Sri Lanka', 'gravityforms'),__('Sudan', 'gravityforms'),__('Sudan, South', 'gravityforms'),__('Suriname', 'gravityforms'),__('Swaziland', 'gravityforms'),__('Sweden', 'gravityforms'),__('Switzerland', 'gravityforms'),__('Syria', 'gravityforms'),__('Taiwan', 'gravityforms'),__('Tajikistan', 'gravityforms'),__('Tanzania', 'gravityforms'),__('Thailand', 'gravityforms'),__('Togo', 'gravityforms'),__('Tonga', 'gravityforms'),__('Trinidad and Tobago', 'gravityforms'),__('Tunisia', 'gravityforms'),__('Turkey', 'gravityforms'),__('Turkmenistan', 'gravityforms'),__('Tuvalu', 'gravityforms'),__('Uganda', 'gravityforms'),__('Ukraine', 'gravityforms'),__('United Arab Emirates', 'gravityforms'),__('United Kingdom', 'gravityforms'),
         __('United States', 'gravityforms'),__('Uruguay', 'gravityforms'),__('Uzbekistan', 'gravityforms'),__('Vanuatu', 'gravityforms'),__('Vatican City', 'gravityforms'),__('Venezuela', 'gravityforms'),__('Vietnam', 'gravityforms'), __('Virgin Islands, British', 'gravityforms'), __('Virgin Islands, U.S.', 'gravityforms'),__('Yemen', 'gravityforms'),__('Zambia', 'gravityforms'),__('Zimbabwe', 'gravityforms')));
@@ -2420,7 +2374,6 @@ class GFCommon{
             __('CAMEROON', 'gravityforms') => "CM" ,
             __('CANADA', 'gravityforms') => "CA" ,
             __('CAPE VERDE', 'gravityforms') => "CV" ,
-            __('CAYMAN ISLANDS', 'gravityforms') => "KY" ,
             __('CENTRAL AFRICAN REPUBLIC', 'gravityforms') => "CF" ,
             __('CHAD', 'gravityforms') => "TD" ,
             __('CHILE', 'gravityforms') => "CL" ,
@@ -3569,9 +3522,6 @@ class GFCommon{
                         else{
                             $language = empty($field["captchaLanguage"]) ? "en" : esc_attr($field["captchaLanguage"]);
 
-                            if(empty(self::$tab_index))
-                                self::$tab_index = 1;
-
                             $options = "<script type='text/javascript'>" . apply_filters("gform_cdata_open", "") . " var RecaptchaOptions = {theme : '$theme'}; if(parseInt('" . self::$tab_index . "') > 0) {RecaptchaOptions.tabindex = " . self::$tab_index++ . ";}" .
                             apply_filters("gform_recaptcha_init_script", "", $form_id, $field) . apply_filters("gform_cdata_close", "") . "</script>";
 
@@ -3644,7 +3594,7 @@ class GFCommon{
                 }
                 $checked = rgpost("gform_payment_method") == "creditcard" || rgempty("gform_payment_method") ? "checked='checked'" : "";
                 $card_radio_button = empty($payment_options) ? "" : "<input type='radio' name='gform_payment_method' id='gform_payment_method_creditcard' value='creditcard' onclick='gformToggleCreditCard();'   {$checked}/>";
-                $card_icons = "{$payment_options}<div class='gform_card_icon_container gform_card_icon_{$card_style}'>{$card_radio_button}{$card_icons}</div>";
+                $card_icons = "{$payment_options}<div class='gform_card_icon_container gform_card_icon_{$card_style}'>{$card_radio_button}{$card_icons}</div><div class='gform_card_fields_container'>";
 
 
 
@@ -3683,7 +3633,7 @@ class GFCommon{
                 $tabindex = self::get_tabindex();
                 $card_name_field = sprintf("<span class='ginput_full{$class_suffix}' id='{$field_id}_5_container'><input type='text' name='input_%d.5' id='%s_5' value='%s' {$tabindex} %s /><label for='%s_5' id='{$field_id}_5_label'>" . apply_filters("gform_card_name_{$form_id}", apply_filters("gform_card_name",__("Cardholder Name", "gravityforms"), $form_id), $form_id) . "</label></span>", $id, $field_id, $card_name, $disabled_text, $field_id);
 
-                return "<div class='ginput_complex{$class_suffix} ginput_container' id='{$field_id}'>" . $card_field . $expiration_field . $security_field . $card_name_field . " </div>";
+                return "<div class='ginput_complex{$class_suffix} ginput_container' id='{$field_id}'>" . $card_field . $expiration_field . $security_field . $card_name_field . " </div></div>";
 
             break;
 
@@ -4770,25 +4720,19 @@ class GFCommon{
 
     public static function evaluate_conditional_logic($logic, $form, $lead) {
 
-        if(!$logic || !is_array(rgar($logic,"rules")))
+        if(!$logic)
             return true;
-        $entry_meta_keys = array_keys(GFFormsModel::get_entry_meta($form["id"]));
+
         $match_count = 0;
-        if(is_array($logic["rules"])){
-            foreach($logic["rules"] as $rule) {
+        foreach($logic["rules"] as $rule) {
 
-                if (in_array($rule["fieldId"], $entry_meta_keys)){
-                        $is_value_match = GFFormsModel::is_value_match(rgar($lead,$rule["fieldId"]), $rule["value"], $rule["operator"]);;
-                } else {
-                    $source_field = GFFormsModel::get_field($form, $rule["fieldId"]);
-                    $field_value = empty($lead) ? GFFormsModel::get_field_value($source_field, array()) : GFFormsModel::get_lead_field_value($lead, $source_field);
-                    $is_value_match = GFFormsModel::is_value_match($field_value, $rule["value"], $rule["operator"], $source_field);
-                }
+            $source_field = GFFormsModel::get_field($form, $rule["fieldId"]);
+            $field_value = empty($lead) ? GFFormsModel::get_field_value($source_field, array()) : GFFormsModel::get_lead_field_value($lead, $source_field);
+            $is_value_match = GFFormsModel::is_value_match($field_value, $rule["value"], $rule["operator"], $source_field);
 
-                if($is_value_match)
-                    $match_count++;
+            if($is_value_match)
+                $match_count++;
 
-            }
         }
 
         $do_action = ($logic["logicType"] == "all" && $match_count == sizeof($logic["rules"]) ) || ($logic["logicType"] == "any"  && $match_count > 0);
@@ -5075,6 +5019,8 @@ class GFCommon{
              'value' => ''
           ), $attributes));
 
+        $result = RGFormsModel::matches_operation($merge_tag, $value, $condition);
+
         return RGFormsModel::matches_operation($merge_tag, $value, $condition) ? do_shortcode($content) : '';
 
     }
@@ -5124,7 +5070,6 @@ class GFCommon{
         $gf_global = array();
         $gf_global["gf_currency_config"] = RGCurrency::get_currency(GFCommon::get_currency());
         $gf_global["base_url"] = GFCommon::get_base_url();
-        $gf_global["number_formats"] = array();
 
         $gf_global_json = 'var gf_global = ' . json_encode($gf_global) . ';';
 
@@ -5135,8 +5080,6 @@ class GFCommon{
     }
 
     public static function gf_vars($echo = true) {
-        if(!class_exists("RGCurrency"))
-            require_once("currency.php");
 
         $gf_vars = array();
         $gf_vars["active"] = __("Active", "gravityforms");
@@ -5190,7 +5133,6 @@ class GFCommon{
         $gf_vars["mergeTagsTooltip"] = __('<h6>Merge Tags</h6>Merge tags allow you to dynamically populate submitted field values in your form content wherever this merge tag icon is present.', 'gravityforms');
 
         $gf_vars["baseUrl"] = GFCommon::get_base_url();
-        $gf_vars["gf_currency_config"] = RGCurrency::get_currency(GFCommon::get_currency());
         $gf_vars["otherChoiceValue"] = GFCommon::get_other_choice_value();
         $gf_vars["isFormDelete"] = false;
 
@@ -5261,37 +5203,6 @@ class GFCommon{
 
     }
 
-    private static function requires_gf_vars() {
-        $dependent_scripts = array( 'gform_form_admin', 'gform_gravityforms', 'gform_form_editor' );
-        foreach( $dependent_scripts as $script ) {
-            if( wp_script_is( $script ) )
-                return true;
-        }
-        return false;
-    }
-
-    public static function maybe_output_gf_vars() {
-        if( self::requires_gf_vars() ){
-            echo '<script type="text/javascript">' . self::gf_vars(false) . '</script>';
-        }
-    }
-
-    public static function safe_strlen($string){
-
-        if(function_exists("mb_strlen"))
-            return mb_strlen($string);
-        else
-            return strlen($string);
-
-    }
-
-    public static function safe_substr($string, $start, $length = null){
-        if(function_exists("mb_substr"))
-            return mb_substr($string, $start, $length);
-        else
-            return substr($string, $start, $length);
-    }
-
 }
 
 class GFCategoryWalker extends Walker {
@@ -5319,10 +5230,10 @@ class GFCategoryWalker extends Walker {
      * @param int $depth Depth of category. Used for padding.
      * @param array $args Uses 'selected' and 'show_count' keys, if they exist.
      */
-    function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0) {
+    function start_el( &$output, $term, $depth) {
         $pad = str_repeat('&nbsp;', $depth * 3);
-        $object->name = "{$pad}{$object->name}";
-        $output[] = $object;
+        $term->name = "{$pad}{$term->name}";
+        $output[] = $term;
     }
 }
 
@@ -5404,13 +5315,8 @@ class GFCache {
         return $success;
     }
 
-    public static function flush($flush_persistent = false) {
+    public static function flush() {
         global $wpdb;
-
-        self::$_cache = array();
-
-        if(false === $flush_persistent)
-            return true;
 
         if (is_multisite()) {
             $sql = "
@@ -5429,6 +5335,8 @@ class GFCache {
         $rows_deleted = $wpdb->query($sql);
 
         $success = $rows_deleted !== false ? true : false;
+
+        self::$_cache = array();
 
         return $success;
     }
@@ -5464,3 +5372,6 @@ class GFCache {
     }
 
 }
+
+
+?>

@@ -497,8 +497,6 @@ function LoadFieldSettings(){
 
     ShowSettings("field_settings");
 
-    gform.doAction('gform_post_load_field_settings', [field, form]);
-
     SetProductField(field);
 }
 
@@ -1264,6 +1262,22 @@ function EndDuplicateField(field, fieldString, sourceFieldId) {
 
     InitializeFields();
 
+}
+
+function Copy(variable){
+
+    if(!variable)
+        return variable;
+    else if(typeof variable != 'object')
+        return variable;
+
+    variable = jQuery.isArray(variable) ? variable.slice() : jQuery.extend({}, variable);
+
+    for(i in variable) {
+        variable[i] = Copy(variable[i]);
+    }
+
+    return variable;
 }
 
 function GetFieldsByType(types){
@@ -2304,6 +2318,16 @@ function IndexOf(ary, item){
 
     return -1;
 }
+
+function DefaultValueCallback(){
+    SetFieldDefaultValue(jQuery('#field_default_value').val())
+}
+
+function HtmlContentCallback(){
+    SetFieldProperty('content', jQuery('#field_content').val())
+}
+
+
 
 function ToggleCalculationOptions(isEnabled, field) {
 

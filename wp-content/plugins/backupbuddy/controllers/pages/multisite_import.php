@@ -1,8 +1,8 @@
 <?php
 
-pb_backupbuddy::$ui->title( 'Multisite Import Site (EXPERIMENTAL)' . ' ' . pb_backupbuddy::video( '4RmC5nLmabE', __('Multisite import', 'it-l10n-backupbuddy' ), false ) );
+pb_backupbuddy::$ui->title( 'Multisite Import Site (BETA)' . ' ' . pb_backupbuddy::video( '4RmC5nLmabE', __('Multisite import', 'it-l10n-backupbuddy' ), false ) );
 
-backupbuddy_core::versions_confirm();
+pb_backupbuddy::$classes['core']->versions_confirm();
 
 pb_backupbuddy::set_status_serial( 'ms_import' );
 
@@ -144,8 +144,9 @@ class pluginbuddy_ms_import {
 	function get_ms_option( $blogID, $option_name ) {
 		global $wpdb;
 		
-		$sql = "SELECT option_value FROM `" . DB_NAME . "`.`" . $wpdb->get_blog_prefix( $blogID ) . "options` WHERE `option_name` = %s";
-		$query = $wpdb->prepare( $sql, $option_name );
+		$sql = "SELECT option_value FROM `" . DB_NAME . "`.`" . $wpdb->get_blog_prefix( $blogID ) . "options` WHERE `option_name` = '" . $option_name . "'";
+		//echo $sql;
+		$query = $wpdb->prepare( $sql );
 		$option_value = $wpdb->get_var( $query );
 		return $option_value;
 	}
@@ -200,9 +201,27 @@ class pluginbuddy_ms_import {
 				$status_line[1] .= 'sec';
 				$status_line[2] .= 'MB';
 				echo '<script type="text/javascript">jQuery( "#importbuddy_status" ).append( "\n' . implode( "\t", $status_line ) . '");	textareaelem = document.getElementById( "importbuddy_status" );	textareaelem.scrollTop = textareaelem.scrollHeight;	</script>';
-				pb_backupbuddy::flush();
+				flush();
 			}
 		}
+		
+		
+		
+		/*
+		$message = htmlentities( addslashes( $message ) );
+		$status = date( $this->_parent->_parent->_timestamp, time() ) . ': ' . $message;
+		
+		echo '<script type="text/javascript">jQuery( "#importbuddy_status" ).append( "\n' . $status . '");	textareaelem = document.getElementById( "importbuddy_status" );	textareaelem.scrollTop = textareaelem.scrollHeight;	</script>';
+		flush();
+		
+		if ( $type == 'error' ) {
+			$this->log( $message, 'error' );
+		} elseif ( $type == 'warning' ) {
+			$this->log( $message, 'warning' );
+		} else {
+			$this->log( '[' . $type . ']' . $message, 'all' );
+		}
+		*/
 	}
 	
 	

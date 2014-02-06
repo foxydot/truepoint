@@ -57,15 +57,10 @@ class pb_backupbuddy_format {
 	 *	Formats a timestamp into a nice human date format.
 	 *	
 	 *	@param		int		$timestamp		Timestamp to make pretty.
-	 *	@param		string	$customFormat	Custom timestamp format. Else uses $this->_timestamp defined at top of this file.
 	 *	@return		string					Pretty human timestamp.
 	 */
-	function date( $timestamp, $customFormat = '' ) {
-		if ( '' == $customFormat ) {
-			return date( $this->_timestamp, $timestamp );
-		} else {
-			return date( $customFormat, $timestamp );
-		}
+	function date( $timestamp ) {
+		return date( $this->_timestamp, $timestamp );
 	} // End date().
 	
 	
@@ -180,29 +175,6 @@ class pb_backupbuddy_format {
 		}
 		
 	} // End prettify();
-	
-	
-	
-	/* multi_implode()
-	 *
-	 * Deep recursive implosion.
-	 *
-	 */
-	public function multi_implode($array, $glue) {
-	    $ret = '';
-
-	    foreach ($array as $item) {
-	        if (is_array($item)) {
-	            $ret .= $this->multi_implode($item, $glue) . $glue;
-	        } else {
-	            $ret .= $item . $glue;
-	        }
-	    }
-
-	    $ret = substr($ret, 0, 0-strlen($glue));
-
-	    return $ret;
-	} // End multi_implode().
 	
 	
 	

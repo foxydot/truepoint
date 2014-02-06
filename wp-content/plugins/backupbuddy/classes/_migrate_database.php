@@ -33,8 +33,6 @@
 // NOTE: dbreplace class intelligently ignores replacing values with identical values for performance.
 
 
-global $wp_version; // Used for detecting WordPress version as some things are now version specific.
-global $wpdb;
 
 if ( isset( $destination_type ) && ( $destination_type == 'multisite_import' ) ) {
 } else { // Normal importbuddy.
@@ -128,16 +126,8 @@ pb_backupbuddy::status( 'details', 'Destination site table prefix: ' . $destinat
 	}
 	$new_url = $destination_siteurl;
 	pb_backupbuddy::status( 'details', 'Calculated site URL update. Previous URL: `' . $old_url . '`, New URL: `' . $new_url . '`.' );
-	$old_fullreplace = array( $old_url, $old_url_alt );
-	if ( '/' != $old_abspath ) { // Only do replace on abspath if it was not previously at the root as this easily breaks things.
-		$old_fullreplace[] = $old_abspath; 
-	} else {
-		pb_backupbuddy::status( 'warning', 'WARNING: Skipping ABSPATH database migrations as the previous ABSPATH was in the root directory. Cannot safely update paths at this location do it only being a single slash.' );
-	}
-	$new_fullreplace = array( $new_url, $new_url );
-	if ( '/' != $old_abspath ) { // Only do replace on abspath if it was not previously at the root as this easily breaks things.
-		$new_fullreplace[] = $new_abspath;
-	}
+	$old_fullreplace = array( $old_url, $old_url_alt, $old_abspath );
+	$new_fullreplace = array( $new_url, $new_url, $new_abspath );
 	
 	// HOMEURL.
 	if ( $destination_home != $destination_siteurl ) {
@@ -206,12 +196,11 @@ if ( ( $source_type == 'multisite_network' ) && ( $destination_type == 'multisit
 		mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET path=concat( '" . mysql_real_escape_string( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
 		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in blogs table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was root).' );
 	}
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	// Update blog domain for all matching sites.
 	mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET domain='" . mysql_real_escape_string( $destination_domain ) . "' WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in blogs table to `' . mysql_real_escape_string( $destination_domain ) . '`.' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
+	
 	
 	// SITE TABLE-----
 	
@@ -223,12 +212,11 @@ if ( ( $source_type == 'multisite_network' ) && ( $destination_type == 'multisit
 		mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET path=concat( '" . mysql_real_escape_string( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
 		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in site table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was root).' );
 	}
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	// Update blog domain for all matching sites.
 	mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET domain='" . mysql_real_escape_string( $destination_domain ) . "' WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in site table to `' . mysql_real_escape_string( $destination_domain ) . '`.' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
+	
 	
 	pb_backupbuddy::status( 'details', 'Finished migration steps for `Network -> Network` sites.' );
 	
@@ -257,26 +245,18 @@ if ( ( $source_type == 'standalone' ) && ( $destination_type == 'multisite_impor
 	array_unshift( $new_fullreplace, $wp_upload_url );
 	
 	// Update upload_path in options table.
-	if ( version_compare( $wp_version, '3.5', '>=') ) { // As of WP v3.5 substies should have upload_path option removed.
-		mysql_query( "DELETE FROM `" . $destination_db_prefix . "options` WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
-		pb_backupbuddy::status( 'details', 'Deleted ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) as upload_path is no longer needed by Multisite.' );
-	} else {
-		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating uploads URL in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
-	}
-	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating uploads URL in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
 	
 	// Update user roles option_name row.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_name='" . $destination_db_prefix . "user_roles' WHERE option_name LIKE '%\_user\_roles' LIMIT 1", $wpdb->dbh );
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating user roles option_name to `' . $destination_db_prefix . 'user_roles`.' );
-	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_name='" . $destination_db_prefix . "user_roles' WHERE option_name LIKE '%\_user\_roles' LIMIT 1" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating user roles option_name to `' . $destination_db_prefix . 'user_roles`.' );
 	
 	// Update fileupload_url in options table.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
-	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
-	
-	
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
+
+
 	// Update user level meta_key in user_meta table.
 	// TODO: moved to bottom of this file.
 	//mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_name='" . $destination_db_prefix . "user_roles' WHERE option_name LIKE '%_user_roles' LIMIT 1" );
@@ -317,21 +297,13 @@ if ( ( $source_type == 'multisite_export' ) && ( $destination_type == 'multisite
 	array_unshift( $new_fullreplace, $wp_upload_url_real );
 	
 	// Update upload_path in options table.
-	// Update upload_path in options table.
-	if ( version_compare( $wp_version, '3.5', '>=') ) { // As of WP v3.5 substies should have upload_path option removed.
-		mysql_query( "DELETE FROM `" . $destination_db_prefix . "options` WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
-		pb_backupbuddy::status( 'details', 'Deleted ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) as upload_path is no longer needed by Multisite.' );
-		if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
-	} else {
-		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating upload_path in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
-		if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
-	}
-	
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating upload_path in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
+
 	// Update fileupload_url in options table.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
-	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
+
 	
 	// Update user roles option_name row.
 	// TODO: moved to bottom of this file.
@@ -379,7 +351,6 @@ if ( ( $source_type == 'multisite_export' ) && ( $destination_type == 'standalon
 	// Update upload_path in options table to be default blank value.
 	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='' WHERE option_name='upload_path' LIMIT 1" );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating uploads path in options table. New value: `` (blank default).' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	pb_backupbuddy::status( 'details', 'Finished migration steps for `Multisite Export -> Standalone` sites.' );
 	
@@ -397,12 +368,13 @@ if ( ( $source_type == 'multisite_export' ) && ( $destination_type == 'standalon
 // Loop through the tables matching this prefix. Does NOT change data in other tables.
 // This changes actual data on a column by column basis for very row in every table.
 $tables = array();
-$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '" . str_replace( '_', '\_', $destination_db_prefix ) . "%' AND table_schema = DATABASE()", ARRAY_A );
-foreach( $rows as $row ) {
-	$tables[] = $row['table_name'];
+$result = mysql_query( "SHOW TABLES LIKE '" . str_replace( '_', '\_', $destination_db_prefix ) . "%'" );
+while ( $table = mysql_fetch_row( $result ) ) {
+	$tables[] = $table[0];
 }
-pb_backupbuddy::status( 'message', 'Found ' . count( $rows ) . ' WordPress tables. ' );
-unset( $rows );
+unset( $table );
+pb_backupbuddy::status( 'message', 'Found ' . mysql_num_rows( $result ) . ' WordPress tables. ' );
+unset( $result );
 
 
 $bruteforce_tables = pb_backupbuddy::array_remove( $tables, $bruteforce_excluded_tables ); // Removes all tables listed in $excluded_tables from $tables.
@@ -496,12 +468,8 @@ $dbreplace->serialized( $destination_db_prefix . 'postmeta', $old_fullreplace, $
 $dbreplace->serialized( $destination_db_prefix . 'commentmeta', $old_fullreplace, $new_fullreplace, array( 'meta_value' ) );
 pb_backupbuddy::status( 'message', 'WordPress core database serialized data replaced.' );
 
-if ( isset( pb_backupbuddy::$options['skip_database_bruteforce'] ) && ( true === pb_backupbuddy::$options['skip_database_bruteforce'] ) ) { // skip bruteforce.
-	pb_backupbuddy::status( 'details', 'Brute force database migration skipped based on advanced settings' );
-} else { // dont skip bruteforce.
-	foreach ( $bruteforce_tables as $bruteforce_table ) {
-		$dbreplace->bruteforce_table( $bruteforce_table, $old_fullreplace, $new_fullreplace );
-	}
+foreach ( $bruteforce_tables as $bruteforce_table ) {
+	$dbreplace->bruteforce_table( $bruteforce_table, $old_fullreplace, $new_fullreplace );
 }
 
 
@@ -512,13 +480,9 @@ $new_prefix = mysql_real_escape_string( $destination_db_prefix );
 pb_backupbuddy::status( 'details', 'Old DB prefix: `' . $old_prefix . '`; New DB prefix: `' . $new_prefix . '`. Network prefix: `' . $multisite_network_db_prefix . '`' );
 if ($old_prefix != $new_prefix ) {
 	mysql_query("UPDATE `".$new_prefix."usermeta` SET meta_key = REPLACE(meta_key, '".$old_prefix."', '".$new_prefix."' );"); // usermeta table temporarily is in the new subsite's prefix until next step.
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating meta_key\'s for DB prefix in subsite\'s [temporary if multisite] usermeta table from `' . mysql_real_escape_string( $old_prefix ) . '` to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
-	
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating meta_key\'s for DB prefix in subsite\'s temporary usermeta table from `' . mysql_real_escape_string( $old_prefix ) . '` to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
 	mysql_query("UPDATE `".$new_prefix."options` SET option_name = '".$new_prefix."user_roles' WHERE option_name ='".$old_prefix."user_roles' LIMIT 1");
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating option_name user_roles DB prefix in [subsite if multisite] options table to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
-	
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating option_name user_roles DB prefix in subsite\'s options table to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
 	pb_backupbuddy::status( 'message', 'Updated prefix META data.' );
 }
 
@@ -536,13 +500,11 @@ if ($old_prefix != $new_prefix ) {
 // Update SITEURL in options table. Usually mass replacement will cover this but set these here just in case.
 mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $destination_siteurl ) . "' WHERE option_name='siteurl' LIMIT 1" );
 pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating Site URL in options table `' . $destination_db_prefix . 'options` to `' . $destination_siteurl . '`.' );
-if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 
 // Update HOME URL in options table. Usually mass replacement will cover this but set these here just in case.
 if ( $destination_home != '' ) {
 	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $destination_home ) . "' WHERE option_name='home' LIMIT 1" );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating Home URL in options table to `' . $destination_home . '`.' );
-	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 }
 
 

@@ -1,10 +1,4 @@
 <?php
-if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
-	die( '<html></html>' );
-}
-
-Auth::require_authentication(); // Die if not logged in.
-
 $data = array(
 	'step'		=>		'2',
 );
@@ -31,76 +25,30 @@ parse_options();
  *	@return		null
  */
 function parse_options() {
-	
 	// Set advanced debug options if user set any.
-	if ( ( isset( $_POST['skip_files'] ) ) && ( $_POST['skip_files'] == 'on' ) ) {
-		pb_backupbuddy::$options['skip_files'] = true;
+	if ( ( isset( $_POST['skip_files'] ) ) && ( $_POST['skip_files'] == 'on' ) ) { pb_backupbuddy::$options['skip_files'] = true; }
+	if ( ( isset( $_POST['skip_database_import'] ) ) && ( $_POST['skip_database_import'] == 'on' ) ) { pb_backupbuddy::$options['skip_database_import'] = true; }
+	if ( ( isset( $_POST['skip_database_migration'] ) ) && ( $_POST['skip_database_migration'] == 'on' ) ) { pb_backupbuddy::$options['skip_database_migration'] = true; }
+	if ( ( isset( $_POST['mysqlbuddy_compatibility'] ) ) && ( $_POST['mysqlbuddy_compatibility'] == 'on' ) ) { pb_backupbuddy::$options['mysqlbuddy_compatibility'] = true; }
+	if ( ( isset( $_POST['wipe_database'] ) ) && ( $_POST['wipe_database'] == 'on' ) ) { pb_backupbuddy::$options['wipe_database'] = true; }
+	if ( ( isset( $_POST['wipe_database_all'] ) ) && ( $_POST['wipe_database_all'] == 'on' ) ) { pb_backupbuddy::$options['wipe_database_all'] = true; }
+	if ( ( isset( $_POST['skip_htaccess'] ) ) && ( $_POST['skip_htaccess'] == 'on' ) ) { pb_backupbuddy::$options['skip_htaccess'] = true; }
+	if ( ( isset( $_POST['ignore_sql_errors'] ) ) && ( $_POST['ignore_sql_errors'] == 'on' ) ) { pb_backupbuddy::$options['ignore_sql_errors'] = true; }
+	if ( ( isset( $_POST['force_compatibility_medium'] ) ) && ( $_POST['force_compatibility_medium'] == 'on' ) ) { pb_backupbuddy::$options['force_compatibility_medium'] = true; }
+	if ( ( isset( $_POST['force_compatibility_slow'] ) ) && ( $_POST['force_compatibility_slow'] == 'on' ) ) { pb_backupbuddy::$options['force_compatibility_slow'] = true; }
+	if ( ( isset( $_POST['force_high_security'] ) ) && ( $_POST['force_high_security'] == 'on' ) ) { pb_backupbuddy::$options['force_high_security'] = true; }
+	if ( ( isset( $_POST['show_php_warnings'] ) ) && ( $_POST['show_php_warnings'] == 'on' ) ) { pb_backupbuddy::$options['show_php_warnings'] = true; }
+	if ( ( isset( $_POST['file'] ) ) && ( $_POST['file'] != '' ) ) { pb_backupbuddy::$options['file'] = $_POST['file']; }
+	if ( ( isset( $_POST['max_execution_time'] ) ) && ( is_numeric( $_POST['max_execution_time'] ) ) ) {
+		pb_backupbuddy::$options['max_execution_time'] = $_POST['max_execution_time'];
 	} else {
-		pb_backupbuddy::$options['skip_files'] = false;
+		pb_backupbuddy::$options['max_execution_time'] = 30;
 	}
-	if ( ( isset( $_POST['skip_htaccess'] ) ) && ( $_POST['skip_htaccess'] == 'on' ) ) {
-		pb_backupbuddy::$options['skip_htaccess'] = true;
-	} else {
-		pb_backupbuddy::$options['skip_htaccess'] = false;
-	}
-	if ( ( isset( $_POST['force_compatibility_medium'] ) ) && ( $_POST['force_compatibility_medium'] == 'on' ) ) {
-		pb_backupbuddy::$options['force_compatibility_medium'] = true;
-	} else {
-		pb_backupbuddy::$options['force_compatibility_medium'] = false;
-	}
-	if ( ( isset( $_POST['force_compatibility_slow'] ) ) && ( $_POST['force_compatibility_slow'] == 'on' ) ) {
-		pb_backupbuddy::$options['force_compatibility_slow'] = true;
-	} else {
-		pb_backupbuddy::$options['force_compatibility_slow'] = false;
-	}
-	if ( ( isset( $_POST['force_high_security'] ) ) && ( $_POST['force_high_security'] == 'on' ) ) {
-		pb_backupbuddy::$options['force_high_security'] = true;
-	} else {
-		pb_backupbuddy::$options['force_high_security'] = false;
-	}
-	if ( ( isset( $_POST['show_php_warnings'] ) ) && ( $_POST['show_php_warnings'] == 'on' ) ) {
-		pb_backupbuddy::$options['show_php_warnings'] = true;
-	} else {
-		pb_backupbuddy::$options['show_php_warnings'] = false;
-	}
-	if ( ( isset( $_POST['file'] ) ) && ( $_POST['file'] != '' ) ) {
-		pb_backupbuddy::$options['file'] = $_POST['file'];
-	} else {
-		pb_backupbuddy::$options['file'] = '';
-	}
-	if ( ( isset( $_POST['log_level'] ) ) && ( $_POST['log_level'] != '' ) ) {
-		pb_backupbuddy::$options['log_level'] = $_POST['log_level'];
-	} else {
-		pb_backupbuddy::$options['log_level'] = '';
-	}
+	if ( ( isset( $_POST['log_level'] ) ) && ( $_POST['log_level'] != '' ) ) { pb_backupbuddy::$options['log_level'] = $_POST['log_level']; }
 	
 	// Set ZIP id (aka serial).
-	if ( ! isset( pb_backupbuddy::$options['file'] ) ) {
-		die( 'No backup zip file specified to process. Go back and make sure you selected a ZIP file to extract and restore on Step 1.' );
-	}
-	pb_backupbuddy::$options['zip_id'] = backupbuddy_core::get_serial_from_file( pb_backupbuddy::$options['file'] );
+	pb_backupbuddy::$options['zip_id'] = pb_backupbuddy::$classes['core']->get_serial_from_file( pb_backupbuddy::$options['file'] );
 }
-
-
-
-/* generate_maintenance_files()
- *
- * Generated a .maintenance file to inform WordPress not to allow access to the site.
- * This file is removed on Step 5.
- *
- */
-function generate_maintenance_file() {
-	if ( ! file_exists( ABSPATH . '.maintenance' ) ) {
-		$maintenance_result = @file_put_contents( ABSPATH . '.maintenance', "<?php die( 'Site undergoing maintenance.' ); ?>" );
-		if ( false === $maintenance_result ) {
-			pb_backupbuddy::status( 'warning', '.maintenance file unable to be generated to prevent viewing partially migrated site. This is not a fatal error.' );
-		} else {
-			pb_backupbuddy::status( 'details', '.maintenance file generated to prevent viewing partially migrated site.' );
-		}
-	} else {
-		pb_backupbuddy::status( 'details', '.maintenance file already exists. Skipping creation.' );
-	}
-} // end generate_maintenance_file().
 
 
 /**
@@ -111,21 +59,15 @@ function generate_maintenance_file() {
  *	@return		array		True if the extraction was a success OR skipping of extraction is set.
  */
 function extract_files() {
-	
-	// Zip & Unzip library setup.
-	require_once( ABSPATH . 'importbuddy/lib/zipbuddy/zipbuddy.php' );
-	pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( ABSPATH, array(), 'unzip' );
-	$backup_archive = ABSPATH . pb_backupbuddy::$options['file'];
-	
 	if ( true === pb_backupbuddy::$options['skip_files'] ) { // Option to skip all file updating / extracting.
-		
 		pb_backupbuddy::status( 'message', 'Skipped extracting files based on debugging options.' );
-		
+		return true;
 	} else {
-		
 		pb_backupbuddy::set_greedy_script_limits();
+		
 		pb_backupbuddy::status( 'message', 'Unzipping into `' . ABSPATH . '`' );
 		
+		$backup_archive = ABSPATH . pb_backupbuddy::$options['file'];
 		$destination_directory = ABSPATH;
 		
 		// Set compatibility mode if defined in advanced options.
@@ -136,78 +78,64 @@ function extract_files() {
 			$compatibility_mode = 'pclzip';
 		}
 		
+		// Zip & Unzip library setup.
+		require_once( ABSPATH . 'importbuddy/lib/zipbuddy/zipbuddy.php' );
+		$_zipbuddy = new pluginbuddy_zipbuddy( ABSPATH, array(), 'unzip' );
+		
 		// Extract zip file & verify it worked.
-		if ( true !== ( $result = pb_backupbuddy::$classes['zipbuddy']->unzip( $backup_archive, $destination_directory, $compatibility_mode ) ) ) {
+		if ( true !== ( $result = $_zipbuddy->unzip( $backup_archive, $destination_directory, $compatibility_mode ) ) ) {
 			pb_backupbuddy::status( 'error', 'Failed unzipping archive.' );
 			pb_backupbuddy::alert( 'Failed unzipping archive.', true );
 			return false;
-		}
-		
-		pb_backupbuddy::status( 'details', 'Success extracting Zip File "' . ABSPATH . pb_backupbuddy::$options['file'] . '" into "' . ABSPATH . '".' );
-		
-	} // End extraction not skipped.
-	
-	
-	// Made it here so zip returned true OR skipped unzip step.
-	
-	
-	// Handle meta data in comment.
-	pb_backupbuddy::status( 'details', 'Retrieving meta data from ZIP file (if any).' );
-	$comment = pb_backupbuddy::$classes['zipbuddy']->get_comment( $backup_archive );
-	$comment = backupbuddy_core::normalize_comment_data( $comment );
-	$comment_text = print_r( $comment, true );
-	$comment_text = str_replace( array( "\n", "\r" ), '; ', $comment_text );
-	pb_backupbuddy::status( 'details', 'Backup meta data: `' . $comment_text . '`.' );
-	
-	// Use meta to find DAT file (if possible). BB v3.3+.
-	$dat_file = '';
-	if ( '' != $comment['dat_path'] ) { // Specific DAT location is known.
-		pb_backupbuddy::status( 'details', 'Checking for DAT file as reported by meta data as file `' . ABSPATH . $comment['dat_path'] .'`.' );
-		if ( file_exists( ABSPATH . $comment['dat_path'] ) ) {
-			$dat_file = ABSPATH . $comment['dat_path'];
-			pb_backupbuddy::status( 'details', 'DAT file found based on meta path.' );
-		} else {
-			pb_backupbuddy::status( 'warning', 'DAT file was not found as reported by meta data. This is unusual but may not be fatal. Commencing search for file...' );
-		}
-	}
-	
-	// Deduce DAT file location based on backup filename. BB < v3.3.
-	if ( '' == $dat_file ) {
-		pb_backupbuddy::status( 'details', 'Scanning for DAT file based on backup file name.' );
-		
-		$dat_file_locations = array(
-			ABSPATH . 'wp-content/uploads/temp_' . pb_backupbuddy::$options['zip_id'] . '/backupbuddy_dat.php',					// OLD 1.x FORMAT. Full backup dat file location.
-			ABSPATH . 'wp-content/uploads/backupbuddy_temp/' . pb_backupbuddy::$options['zip_id'] . '/backupbuddy_dat.php',		// Full backup dat file location
-			ABSPATH . 'backupbuddy_dat.php',																					// DB only dat file location
-		);
-		
-		$dat_file = '';
-		foreach( $dat_file_locations as $dat_file_location ) {
-			if ( file_exists( $dat_file_location ) ) {
-				$dat_file = $dat_file_location;
-				break;
+		} else { // Reported success; verify extraction.
+			$_backupdata_file = ABSPATH . 'wp-content/uploads/temp_' . pb_backupbuddy::$options['zip_id'] . '/backupbuddy_dat.php'; // OLD 1.x FORMAT. Full backup dat file location.
+			$_backupdata_file_dbonly = ABSPATH . 'backupbuddy_dat.php'; // DB only dat file location
+			$_backupdata_file_new = ABSPATH . 'wp-content/uploads/backupbuddy_temp/' . pb_backupbuddy::$options['zip_id'] . '/backupbuddy_dat.php'; // Full backup dat file location
+			if ( !file_exists( $_backupdata_file ) && !file_exists( $_backupdata_file_dbonly ) && !file_exists( $_backupdata_file_new ) ) {
+				$error_message = 'Error #9004: Key files missing. The unzip process reported success but the backup data file, backupbuddy_dat.php was not found in the extracted files. The unzip process either failed to fully complete, you renamed the backup ZIP file (rename it back to correct this), or the zip file is not a proper BackupBuddy backup.';
+				pb_backupbuddy::status( 'error', $error_message );
+				pb_backupbuddy::alert( $error_message, true, '9004' );
+				return false;
 			}
+			pb_backupbuddy::status( 'details', 'Success extracting Zip File "' . ABSPATH . pb_backupbuddy::$options['file'] . '" into "' . ABSPATH . '".' );
+			return true;
 		}
-		
-		if ( '' == $dat_file ) { // DAT not found.
-			$error_message = 'Error #9004: Key files missing. Backup data file, backupbuddy_dat.php was not found in the extracted files in any expected location. The unzip process either failed to fully complete, you renamed the backup ZIP file (rename it back to correct this), or the zip file is not a proper BackupBuddy backup.';
-			pb_backupbuddy::status( 'error', $error_message );
-			pb_backupbuddy::alert( $error_message, true, '9004' );
-			return false;
-		}
-		
-		pb_backupbuddy::status( 'details', 'Successfully found DAT file based on backup file name: `' . $dat_file . '`.' );
-		
+	}
+}
+
+
+
+/**
+ *	load_backup_dat()
+ *
+ *	Gets the serialized data from the backupbuddy_dat.php file inside of the backup ZIP.
+ *	This happens post-file-extraction.
+ *
+ *	Saves data to $this->_backupdata.
+ *
+ *	@return			null
+ *
+ */	
+function get_dat_from_backup() {
+	$maybe_backupdata_file = ABSPATH . 'wp-content/uploads/temp_'. pb_backupbuddy::$options['zip_id'] .'/backupbuddy_dat.php'; // Full backup dat file location
+	$maybe_backupdata_file_new = ABSPATH . 'wp-content/uploads/backupbuddy_temp/'. pb_backupbuddy::$options['zip_id'] .'/backupbuddy_dat.php'; // Full backup dat file location
+	
+	if ( file_exists( $maybe_backupdata_file ) ) { // Full backup location.
+		$dat_file = $maybe_backupdata_file;
+	} elseif ( file_exists( $maybe_backupdata_file_new ) ) { // Full backup location.
+		$dat_file = $maybe_backupdata_file_new;
+	} elseif ( file_exists( ABSPATH . 'backupbuddy_dat.php' ) ) { // DB only location.
+		$dat_file = ABSPATH . 'backupbuddy_dat.php';
+	} else {
+		$dat_file = '';
+		echo 'Error: Unable to find DAT file. Verify you did not rename the backup archive ZIP filename.';
 	}
 	
-	// Get DAT file contents & save into options..
-	pb_backupbuddy::$options['dat_file'] = pb_backupbuddy::$classes['import']->get_dat_file_array( $dat_file );
-	pb_backupbuddy::$options['temp_serial_directory'] = basename( $dat_file );
+	if ( $dat_file != '' ) {
+		pb_backupbuddy::$options['dat_file'] = pb_backupbuddy::$classes['import']->get_dat_file_array( $dat_file );
+	}
 	pb_backupbuddy::save();
-	
-	return true;
-	
-} // End extract_files().
+}
 
 
 
@@ -238,5 +166,10 @@ function rename_htaccess_temp() {
 
 
 
-pb_backupbuddy::load_view( 'html_2', $data );
+if ( $mode == 'html' ) {
+	pb_backupbuddy::load_view( 'html_2', $data );
+} else { // API mode.
+	extract();
+	get_dat_from_backup();
+}
 ?>

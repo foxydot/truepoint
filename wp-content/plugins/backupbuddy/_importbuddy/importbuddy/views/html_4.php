@@ -1,21 +1,15 @@
 <?php
-if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
-	die( '<html></html>' );
-}
-
-$page_title = 'Step <span class="step_number">' . $step . '</span> of 6: Database Import';
+$page_title = 'Database Import';
 require_once( '_header.php' );
 echo '<div class="wrap">';
 
 
-$failed = false;
 
+$failed = false;
 
 echo pb_backupbuddy::$classes['import']->status_box( 'Importing database content with ImportBuddy v' . pb_backupbuddy::$options['bb_version'] . '... Powered by BackupBuddy.' );
 echo '<div id="pb_importbuddy_working"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading_large.gif" title="Working... Please wait as this may take a moment..."></div>';
-
-pb_backupbuddy::flush();
-
+flush();
 
 $import_result = import_database();
 
@@ -27,7 +21,6 @@ if ( $import_result[0] == true ) {
 		echo '<br>';
 		echo 'Please keep continuing until your database has fully imported. This may take a few steps.';
 		echo '<form action="?step=4" method=post>';
-		echo '<input type="hidden" name="pass_hash" id="pass_hash" value="' . htmlspecialchars( pb_backupbuddy::_POST( 'pass_hash' ) ) . '">';
 		echo '<input type="hidden" name="db_continue" value="' . $import_result[1] . '">';
 		echo '<input type="hidden" name="options" value="' . htmlspecialchars( serialize( pb_backupbuddy::$options ) ) . '" />';
 		echo '</div><!-- /wrap -->';
@@ -37,7 +30,6 @@ if ( $import_result[0] == true ) {
 		echo '<p style="text-align: center;">Initial database import complete!</p><br>';
 		echo 'Next the data in the database will be migrated to account for any file path or URL changes.';
 		echo '<form action="?step=5" method=post>';
-		echo '<input type="hidden" name="pass_hash" id="pass_hash" value="' . htmlspecialchars( pb_backupbuddy::_POST( 'pass_hash' ) ) . '">';
 		echo '<input type="hidden" name="options" value="' . htmlspecialchars( serialize( pb_backupbuddy::$options ) ) . '" />';
 		echo '</div><!-- /wrap -->';
 		echo '<div class="main_box_foot"><input type="submit" name="submit" class="button" value="Next Step &rarr;" /></div>';

@@ -1,7 +1,5 @@
 // jQuery File Tree Plugin
 //
-// Abandoned; new maintainer?: See https://github.com/daverogers/jQueryFileTree
-//
 // Version 1.01
 //
 // Cory S.N. LaViska

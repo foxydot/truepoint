@@ -95,6 +95,7 @@ Class GFNotification {
         <link rel="stylesheet" href="<?php echo GFCommon::get_base_url()?>/css/admin.css?ver=<?php echo GFCommon::$version ?>" />
 
         <script type="text/javascript">
+        <?php GFCommon::gf_vars(); ?>
 
         var gform_has_unsaved_changes = false;
         jQuery(document).ready(function(){
@@ -127,14 +128,10 @@ Class GFNotification {
         if(empty($form["notifications"]))
             $form["notifications"] = array();
 
-        $entry_meta = GFFormsModel::get_entry_meta($form_id);
-        $entry_meta = apply_filters("gform_entry_meta_conditional_logic_notifications", $entry_meta, $form, $notification_id);
-
         ?>
 
         var form = <?php echo GFCommon::json_encode($form) ?>;
         var current_notification = <?php echo GFCommon::json_encode($notification) ?>;
-        var entry_meta = <?php echo GFCommon::json_encode($entry_meta) ?>;
 
         function SetRoutingValueDropDown(element){
             //parsing ID to get routing Index
@@ -405,9 +402,6 @@ Class GFNotification {
         </form>
 
         <?php
-
-        GFFormSettings::page_footer();
-
     }
 
     public static function notification_list_page($form_id) {
@@ -469,7 +463,7 @@ Class GFNotification {
     }
 
     private static function get_notification_ui_settings($notification) {
-
+        
         /**
         * These variables are used to convenient "wrap" child form settings in the appropriate HTML.
         */
@@ -483,7 +477,7 @@ Class GFNotification {
                     </table>
                 </div>
             </td>';
-
+        
         $ui_settings = array();
         $form_id = rgget('id');
         $form = RGFormsModel::get_form_meta($form_id);
@@ -802,7 +796,7 @@ Class GFNotification {
                 </label>
             </th>
             <td>
-                <input type="checkbox" id="notification_conditional_logic" onclick="SetConditionalLogic(this.checked); ToggleConditionalLogic(false, 'notification');" <?php checked(is_array(rgar($notification,"conditionalLogic")), true) ?> />
+                <input type="checkbox" id="notification_conditional_logic" onclick="SetConditionalLogic(this.checked); ToggleConditionalLogic(false, 'notification');" <?php checked(!empty($notification["conditionalLogic"]), true) ?> />
                 <label for="notification_conditional_logic" class="inline"><?php _e("Enable conditional logic", "gravityforms") ?><?php gform_tooltip("notification_conditional_logic") ?></label>
                 <br/>
             </td>
@@ -814,7 +808,7 @@ Class GFNotification {
                 </div>
             </td>
         </tr>
-
+        
         <?php $ui_settings['notification_conditional_logic'] = ob_get_contents(); ob_clean(); ?>
 
         <?php
@@ -1048,8 +1042,7 @@ class GFNotificationTable extends WP_List_Table {
 
             <?php
             if(is_array($actions) && !empty($actions)) {
-                $keys = array_keys($actions);
-                $last_key = array_pop($keys);
+                $last_key = array_pop(array_keys($actions));
                 foreach($actions as $key => $html) {
                     $divider = $key == $last_key ? '' : " | ";
                     ?>
@@ -1067,6 +1060,7 @@ class GFNotificationTable extends WP_List_Table {
     }
 
     function no_items(){
+
         printf(__("This form doesn't have any notifications. Let's go %screate one%s.", "gravityforms"), "<a href='" . add_query_arg(array("nid" => 0)) . "'>", "</a>");
     }
 }

@@ -22,10 +22,7 @@ if ( pb_backupbuddy::_POST( 'bulk_action' ) == 'delete_cron' ) {
 			if ( isset( $cron[ $timestamp ][ $cron_hook ][ $cron_key ] ) ) { // Run cron.
 				
 				$cron_array = $cron[ $timestamp ][ $cron_hook ][ $cron_key ]; // Get cron array based on passed values.
-				$result = backupbuddy_core::unschedule_event( $timestamp, $cron_hook, $cron_array['args'] ); // Delete the scheduled cron.
-				if ( $result === FALSE ) {
-					pb_backupbuddy::alert( 'Error #5657667675. Unable to delete CRON job. Please see your BackupBuddy error log for details.' );
-				}
+				wp_unschedule_event( $timestamp, $cron_hook, $cron_array['args'] ); // Delete the scheduled cron.
 				$deleted_crons[] = $cron_hook . ' / ' . $cron_key; // Add deleted cron to list of deletions for display.
 				
 			} else { // Cron not found, error.
@@ -72,7 +69,21 @@ if ( !empty( $_GET['run_cron'] ) ) {
 }
 
 
+function multi_implode($array, $glue) {
+    $ret = '';
 
+    foreach ($array as $item) {
+        if (is_array($item)) {
+            $ret .= multi_implode($item, $glue) . $glue;
+        } else {
+            $ret .= $item . $glue;
+        }
+    }
+
+    $ret = substr($ret, 0, 0-strlen($glue));
+
+    return $ret;
+}
 
 
 // Loop through each cron time to create $crons array for displaying later.
@@ -102,14 +113,11 @@ foreach ( (array) $cron as $time => $cron_item ) {
 					//$arguments = implode( ',', $item['args'] );
 					$arguments = '';
 					foreach( $item['args'] as $arg ) {
-						$arguments .= '<textarea wrap="off">' . print_r( $arg, true ) . '</textarea>';
-						/*
 						if ( is_array( $arg ) ) {
-							$arguments .=  '[' . print_r( $arg, true ) . ']';//pb_backupbuddy::$format->multi_implode( $arg , '; ' )
+							$arguments .=  '[' . multi_implode( $arg , '; ' ) . ']';
 						} else {
 							$arguments .= $arg;
 						}
-						*/
 					}
 				} else {
 					$arguments = __('none', 'it-l10n-backupbuddy' );
@@ -118,7 +126,7 @@ foreach ( (array) $cron as $time => $cron_item ) {
 				// Populate crons array for displaying later.
 				$crons[ $time . '|' . $hook_name . '|' . $item_name] = array(
 					'<span title=\'Key: ' . $item_name . '\'>' . $hook_name . '</span>',
-					pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $time ) ) . '<br><span class="description">Timestamp: ' . $time . '</span>',
+					'<span title="Timestamp: ' . $time . '">' . pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $time ) ) . '</span>',
 					$period,
 					$interval,
 					$arguments,
@@ -141,7 +149,7 @@ unset( $time );
 pb_backupbuddy::$ui->list_table(
 	$crons, // Array of cron items set in code section above.
 	array(
-		'action'					=>	pb_backupbuddy::page_url() . '#pb_backupbuddy_getting_started_tab_tools',
+		'action'					=>	pb_backupbuddy::page_url(),
 		'columns'					=>	array(
 											__( 'Event', 'it-l10n-backupbuddy' ),
 											__( 'Run Time', 'it-l10n-backupbuddy' ),
@@ -166,9 +174,9 @@ pb_backupbuddy::$ui->list_table(
 if ( empty( $_GET['show_cron_array'] ) ) {
 	echo '<br>';
 	echo '<center>';
-	echo __('Current Time', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->date( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) . ' (' . time() . '). ';
-	echo 'Additional cron control is available via the free plugin <a target="_new" href="http://wordpress.org/extend/plugins/wp-cron-control/">WP-Cron Control</a> by Automaticc. ';
-	echo '<a href="' . pb_backupbuddy::page_url() . '&tab=3&show_cron_array=true#pb_backupbuddy_getting_started_tab_tools" style="text-decoration: none;">' . __('Display CRON Debugging Array', 'it-l10n-backupbuddy' ) . '</a>';
+	echo '<a href="' . pb_backupbuddy::page_url() . '&show_cron_array=true" style="text-decoration: none;">' . __('Display CRON Debugging Array', 'it-l10n-backupbuddy' ) . '</a> &middot; ' . __('Current Time', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->date( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) . ' (' . time() . ')';
+	echo '<br>';
+	echo 'Additional cron control is available via the free plugin <a target="_new" href="http://wordpress.org/extend/plugins/wp-cron-control/">WP-Cron Control</a> by Automaticc.';
 	echo '</center>';
 } else {
 	echo __('Current Time', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->date( time() + ( get_option( 'gmt_offset' ) * 3600 ) ) . ' (' . time() . ')';

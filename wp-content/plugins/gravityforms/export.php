@@ -20,10 +20,7 @@ class GFExport{
             header('Content-Description: File Transfer');
             header("Content-Disposition: attachment; filename=$filename");
             header('Content-Type: text/plain; charset=' . $charset, true);
-            $buffer_length = ob_get_length(); //length or false if no buffer
-            if ($buffer_length > 1){
-            	ob_clean();
-			}
+            ob_clean();
             GFExport::start_export($form);
 
             die();
@@ -608,7 +605,7 @@ class GFExport{
                         case "date_created" :
                             $lead_gmt_time = mysql2date("G", $lead["date_created"]);
                             $lead_local_time = GFCommon::get_local_timestamp($lead_gmt_time);
-                            $value = date_i18n("Y-m-d H:i:s", $lead_local_time, true);
+                            $value = date_i18n("Y-m-d H:i:s", $lead_local_time);
                         break;
                         default :
                             $long_text = "";
@@ -678,7 +675,7 @@ class GFExport{
         return $form;
     }
 
-    private static function cleanup(&$forms){
+    private function cleanup(&$forms){
         unset($forms["version"]);
 
         //adding checkboxes "inputs" property based on "choices". (they were removed from the export
@@ -696,24 +693,13 @@ class GFExport{
                     if($input_type == "checkbox" && !isset($field["inputs"]))
                         $field["inputs"] = array();
 
-                    $adjust_by = 0;
                     for($i=1, $count = sizeof($field["choices"]); $i<=$count; $i++){
-
                         if(!RGForms::get("enableChoiceValue", $field))
                             $field["choices"][$i-1]["value"] = $field["choices"][$i-1]["text"];
 
-                        if($input_type == "checkbox"){
-                            if( ( ($i + $adjust_by) % 10) == 0)
-                                $adjust_by++;
-
-                            $id = $i + $adjust_by;
-
-                            $field["inputs"][] = array("id" => $field["id"] . "." . $id, "label" => $field["choices"][$i-1]["text"]);
-
-                        }
+                        if($input_type == "checkbox")
+                            $field["inputs"][] = array("id" => $field["id"] . "." . $i, "label" => $field["choices"][$i-1]["text"]);
                     }
-
-
 
                 }
             }

@@ -1,12 +1,9 @@
 <?php
-if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
-	die( '<html></html>' );
-}
+pb_backupbuddy::set_greedy_script_limits( true );
 
-// On initial login to Step 1 (checks for password field from auth form) reset any dangling defaults from a partial restore.
-if ( ( true === Auth::is_authenticated() ) && ( pb_backupbuddy::_POST( 'password' ) != '' ) ) {
-	pb_backupbuddy::reset_defaults();
-}
+
+
+
 
 
 /**
@@ -17,29 +14,29 @@ if ( ( true === Auth::is_authenticated() ) && ( pb_backupbuddy::_POST( 'password
  *	@return		array		True on upload success; false otherwise.
  */
 function upload() {
-	
-	Auth::require_authentication();
-	
 	if ( isset( $_POST['upload'] ) && ( $_POST['upload'] == 'local' ) ) {
-		$path_parts = pathinfo( $_FILES['file']['name'] );
-		if ( ( strtolower( substr( $_FILES['file']['name'], 0, 6 ) ) == 'backup' ) && ( strtolower( $path_parts['extension'] ) == 'zip' ) ) {
-			if ( move_uploaded_file( $_FILES['file']['tmp_name'], basename( $_FILES['file']['name'] ) ) ) {
-				pb_backupbuddy::alert( 'File Uploaded. Your backup was successfully uploaded.' );
-				return true;
+		if ( pb_backupbuddy::$options['password'] != '#PASSWORD#' ) {
+			$path_parts = pathinfo( $_FILES['file']['name'] );
+			if ( ( strtolower( substr( $_FILES['file']['name'], 0, 6 ) ) == 'backup' ) && ( strtolower( $path_parts['extension'] ) == 'zip' ) ) {
+				if ( move_uploaded_file( $_FILES['file']['tmp_name'], basename( $_FILES['file']['name'] ) ) ) {
+					pb_backupbuddy::alert( 'File Uploaded. Your backup was successfully uploaded.' );
+					return true;
+				} else {
+					pb_backupbuddy::alert( 'Sorry, there was a problem uploading your file.', true );
+					return false;
+				}
 			} else {
-				pb_backupbuddy::alert( 'Sorry, there was a problem uploading your file.', true );
+				pb_backupbuddy::alert( 'Only properly named BackupBuddy zip archives with a zip extension may be uploaded.', true );
 				return false;
 			}
 		} else {
-			pb_backupbuddy::alert( 'Only properly named BackupBuddy zip archives with a zip extension may be uploaded.', true );
+			pb_backupbuddy::alert( 'Upload Access Denied. To prevent unauthorized file uploads an importbuddy password must be configured and properly entered to use this feature.' );
 			return false;
 		}
 	}
 	
 	// DOWNLOAD FILE FROM STASH TO LOCAL.
 	if ( pb_backupbuddy::_POST( 'upload' ) == 'stash' ) {
-		
-		pb_backupbuddy::set_greedy_script_limits( true );
 		
 		/*
 		echo '<pre>';
@@ -60,7 +57,7 @@ function upload() {
 		$request->set_write_file( $destination_file );
 		
 		echo '<div id="pb_importbuddy_working" style="padding: 20px;">Downloading backup from Stash to `' . $destination_file . '`...<br><br><img src="' . pb_backupbuddy::plugin_url() . '/images/loading_large.gif" title="Working... Please wait as this may take a moment..."><br><br></div>';
-		pb_backupbuddy::flush();
+		flush();
 		
 		$response = $request->send_request( false );
 		if ( $response !== true ) {
@@ -85,9 +82,6 @@ function upload() {
  *	@return		array		Array of .zip filenames; path NOT included.
  */
 function get_archives_list() {
-	
-	Auth::require_authentication();
-	
 	if ( !isset( pb_backupbuddy::$classes['zipbuddy'] ) ) {
 		require_once( pb_backupbuddy::plugin_path() . '/lib/zipbuddy/zipbuddy.php' );
 		pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( ABSPATH );
@@ -101,7 +95,9 @@ function get_archives_list() {
 	}
 	foreach( $backup_archives_glob as $backup_archive ) {
 		$comment = pb_backupbuddy::$classes['zipbuddy']->get_comment( $backup_archive );
-		$comment = backupbuddy_core::normalize_comment_data( $comment );
+		if ( $comment === false ) {
+			$comment = '';
+		}
 		
 		$this_archive = array(
 			'file'		=>		basename( $backup_archive ),
@@ -152,9 +148,16 @@ function index_exists() {
 }
 
 
-pb_backupbuddy::load_view( 'html_1' );
 
-// LOG IMPORTBUDDY VERSION INFORMATION.
-pb_backupbuddy::status( 'details', 'Running ImportBuddy v' . pb_backupbuddy::$options['bb_version'] . '.' );
 
+if ( $mode == 'html' ) {
+	pb_backupbuddy::load_view( 'html_1' );
+} else { // API mode.
+	if ( wordpress_exists() === true ) {
+	}
+	if ( phpini_exists() === true ) {
+	}
+	if ( htaccess_exists() === true ) {
+	}
+}
 ?>

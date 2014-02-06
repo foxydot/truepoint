@@ -6,7 +6,6 @@ if ( $mode == 'migration' ) {
 } else {
 	$picker_url = pb_backupbuddy::ajax_url( 'destination_picker' );
 }
-//$picker_url .= '&sending=' . pb_backupbuddy::_GET( 'sending' );
 
 if ( pb_backupbuddy::_GET( 'action_verb' ) != '' ) {
 	$action_verb = ' ' . htmlentities( pb_backupbuddy::_GET( 'action_verb' ) );
@@ -32,14 +31,19 @@ $pb_hide_test = false;
 
 // Load destinations class.
 require_once( pb_backupbuddy::plugin_path() . '/destinations/bootstrap.php' );
-
-pb_backupbuddy::load_script( 'filetree.js' );
-pb_backupbuddy::load_style( 'filetree.css' );
 ?>
 
 
 <script>
 	jQuery(document).ready(function() {
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// Open settings for destination.
 		jQuery( '.dest_select_open' ).click( function() {
@@ -66,29 +70,24 @@ pb_backupbuddy::load_style( 'filetree.css' );
 			}
 			?>
 			
-			dest_id = jQuery(this).parent('.bb-dest-option').attr( 'rel' );
-			<?php
-			if ( pb_backupbuddy::_GET( 'quickstart' ) != '' ) {
-				?>
-				var win = window.dialogArguments || opener || parent || top;
-				win.pb_backupbuddy_quickstart_destinationselected( dest_id );
-				win.tb_remove();
-				return false;
-				<?php
-			}
-			?>
-			
-			if ( jQuery( '#pb_backupbuddy_remote_delete' ).is( ':checked' ) ) {
-				delete_after = true;
-			} else {
-				delete_after = false;
-			}
-			
 			var win = window.dialogArguments || opener || parent || top;
-			win.pb_backupbuddy_selectdestination( dest_id, jQuery(this).children('.bb-dest-name').html(), '<?php if ( !empty( $_GET['callback_data'] ) ) { echo $_GET['callback_data']; } ?>', delete_after );
+			win.pb_backupbuddy_selectdestination( jQuery(this).parent('.bb-dest-option').attr( 'rel' ), jQuery(this).children('.bb-dest-name').html(), '<?php if ( !empty( $_GET['callback_data'] ) ) { echo $_GET['callback_data']; } ?>' );
 			win.tb_remove();
 			return false;
 		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		// Existing destination accordion.
@@ -106,6 +105,20 @@ pb_backupbuddy::load_style( 'filetree.css' );
 			jQuery( '#pb_backupbuddy_destpicker_slidecreatebox' ).slideToggle();
 			return false;
 		} );
+		
+		
+		// Darken gear when hovering over that section in the table for that row.
+		/*
+		jQuery( '.pb_backupbuddy_destpicker_config' ).hover(
+			function() {
+				jQuery(this).children( 'img' ).css( 'opacity', '1' );
+			}
+			,
+			function() {
+				jQuery(this).children( 'img' ).css( 'opacity', '.5' );
+			}
+		);
+		*/
 		
 		
 		// Test a remote destination.
@@ -133,24 +146,13 @@ pb_backupbuddy::load_style( 'filetree.css' );
 			jQuery(this).next( '.pb_backupbuddy_destpicker_saveload' ).show();
 			jQuery.post( '<?php echo pb_backupbuddy::ajax_url( 'remote_save' ); ?>&pb_backupbuddy_destinationid=' + pb_remote_id, jQuery(this).parent( 'form' ).serialize(), 
 				function(data) {
+					jQuery( '.pb_backupbuddy_destpicker_saveload' ).hide();
 					data = jQuery.trim( data );
 					
 					if ( data == 'Destination Added.' ) {
-						<?php
-						if ( pb_backupbuddy::_GET( 'quickstart' ) != '' ) {
-						?>
-						var win = window.dialogArguments || opener || parent || top;
-						win.pb_backupbuddy_quickstart_destinationselected();
-						win.tb_remove();
-						return false;
-						<?php
-						}
-						?>
-						//alert( data + "\n\nNow returning to destination list..." );
-						window.location.href = '<?php echo $picker_url . '&callback_data=' . pb_backupbuddy::_GET( 'callback_data' ); ?>&sending=<?php echo pb_backupbuddy::_GET( 'sending' ); ?>&alert_notice=' + encodeURIComponent( 'New destination titled "' + jQuery( '#pb_backupbuddy_title' ).val() + '" successfully added.' );
+						alert( data + "\n\nNow returning to destination list..." );
+						window.location = '<?php echo $picker_url . '&callback_data=' . pb_backupbuddy::_GET( 'callback_data' ); ?>';
 					} else if ( data == 'Settings saved.' ) {
-						jQuery( '.pb_backupbuddy_destpicker_saveload' ).hide();
-						
 						jQuery( '#pb_backupbuddy_destpicker_title_' + pb_remote_id ).html( '<img src="<?php echo pb_backupbuddy::plugin_url(); ?>/images/updated.png" title="Settings recently updated."> ' + new_title );
 						//alert( data );
 						
@@ -158,7 +160,6 @@ pb_backupbuddy::load_style( 'filetree.css' );
 						//jQuery( '#pb_backupbuddy_destpicker' ).accordion( 'activate', parseInt( pb_accordion_id ) );
 						jQuery( '.settings' ).slideUp(200);
 					} else {
-						jQuery( '.pb_backupbuddy_destpicker_saveload' ).hide();
 						alert( "Error: \n\n" + data );
 					}
 					
@@ -175,7 +176,7 @@ pb_backupbuddy::load_style( 'filetree.css' );
 			if ( !confirm( 'Are you sure you want to delete this destination?' ) ) {
 				return false;
 			}
-			
+  
 			//var pb_remote_id = jQuery(this).parents( '.pb_backupbuddy_destpicker_id' ).attr( 'rel' );
 			var pb_remote_id = jQuery(this).parents( '.bb-dest-option' ).attr( 'rel' );
 			//alert( 'id: ' + pb_remote_id );
@@ -222,17 +223,7 @@ pb_backupbuddy::load_style( 'filetree.css' );
 			win.tb_remove();
 			return false;
 		});
-		
-		
-		jQuery( '.dest_select_select' ).hover(
-			function(){
-				jQuery(this).find( '.bb-dest-view-files' ).show();
-			},
-			function(){
-				jQuery(this).find( '.bb-dest-view-files' ).hide();
-			}
-		);
-		
+
 	});
 </script>
 
@@ -299,6 +290,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', end
 		text-align: right;
 	}
 	.pb_backupbuddy_destpicker_test {
+		width: 90px;
 		text-align: center;
 		display: inline-block;
 		margin-right: 15px;
@@ -347,14 +339,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', end
 	.button-primary:hover {
 		color: #FFFFFF;
 	}
-	
-	.bb-dest-view-files {
-		display: none;
-		float: right;
-		margin-right: 10px;
-		margin-top: 5px;
-		font-style: italic;
-	}
 </style>
 
 
@@ -363,14 +347,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', end
 if ( $mode == 'migration' ) {
 	pb_backupbuddy::alert( '
 		<b>' . __( 'Tip', 'it-l10n-backupbuddy' ) . ':</b>
-		' . __( 'If you encounter difficulty try the ImportBuddy tool. Verify the destination URL by entering the "Migration URL", and clicking "Test Settings" before proceeding.', 'it-l10n-backupbuddy' ) .
+		' . __( 'Verify the destination URL by entering the "Migration URL", and clicking "Test Settings" before proceeding.', 'it-l10n-backupbuddy' ) .
 		' ' . __( 'Only Local & FTP destinations may be used for automated migrations.', 'it-l10n-backupbuddy' ) . '
 	' );
 	echo '<br>';
 }
 
 
-global $pb_hide_save;
 if ( pb_backupbuddy::_GET( 'add' ) != '' ) {
 	
 	$destination_type = pb_backupbuddy::_GET( 'add' );
@@ -381,10 +364,10 @@ if ( pb_backupbuddy::_GET( 'add' ) != '' ) {
 	$settings = pb_backupbuddy_destinations::configure( array( 'type' => $destination_type ), 'add' );
 	
 	if ( $settings === false ) {
-		echo 'Error #556656a. Unable to display configuration.';
+		echo 'Error #556656. Unable to display configuration.';
 	} else {
 		if ( $pb_hide_test !== true ) {
-			$test_button = '<a href="#" class="button secondary-button pb_backupbuddy_destpicker_test" href="#" title="Test destination settings." style="margin-top: 3px;">Test Settings<img class="pb_backupbuddy_destpicker_testload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Testing... This may take several seconds..."></a>&nbsp;&nbsp;';
+			$test_button = '<a href="#" class="button secondary-button pb_backupbuddy_destpicker_test" href="#" title="Test destination settings." style="margin-top: 3px;">Test Settings<img class="pb_backupbuddy_destpicker_testload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Testing... This may take several seconds..."></a>';
 		} else {
 			$test_button = '';
 		}
@@ -395,7 +378,7 @@ if ( pb_backupbuddy::_GET( 'add' ) != '' ) {
 		
 	}
 	echo '</div>';
-	echo '<br><br><br><a class="button secondary-button" href="' . $picker_url . '&callback_data=' . pb_backupbuddy::_GET( 'callback_data' ) . '&quickstart=' . pb_backupbuddy::_GET( 'quickstart' ) . '&filter=' . pb_backupbuddy::_GET( 'filter' ) . '">&larr; back to destinations</a>';
+	echo '<br><br><br><a class="button secondary-button" href="' . $picker_url . '&callback_data=' . pb_backupbuddy::_GET( 'callback_data' ) . '">&larr; back to destinations</a>';
 	
 	return;
 }
@@ -426,11 +409,6 @@ if ( $mode == 'migration' ) {
 
 $i = 0;
 if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_count > 0 ) ) {
-	
-	if ( pb_backupbuddy::_GET( 'alert_notice' ) != '' ) {
-		pb_backupbuddy::alert( htmlentities( stripslashes( pb_backupbuddy::_GET( 'alert_notice' ) ) ) );
-	}
-	
 	?>
 	<div class="destination">
 		<h3 class="pb_backupbuddy_selectexistingtext">Select existing destination<?php echo $action_verb; ?>:</h3>
@@ -438,24 +416,11 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 	
 	
 		<?php
-		
-		// Offer post-send delete for manual sends.
-		if ( ( pb_backupbuddy::_GET( 'sending' ) == '1' ) && ( count( pb_backupbuddy::$options['remote_destinations'] ) > 0 ) ) {
-			echo '<div style="margin-bottom: 9px;"><label><input type="checkbox" name="delete_after" id="pb_backupbuddy_remote_delete" value="1"> <b>Delete local backup</b> after successful send?</label></div>';
-		}
-		
 		foreach( pb_backupbuddy::$options['remote_destinations'] as $destination_id => $destination ) {
 			
 			if ( $mode == 'migration' ) {
 				if ( ( $destination['type'] != 'local' ) && ( $destination['type'] != 'ftp' ) ) { // if not local or ftp when in migration mode then skip.
 					continue;
-				}
-			}
-			
-			// Filter only showing certain destination type.
-			if ( '' != pb_backupbuddy::_GET( 'filter' ) ) {
-				if ( $destination['type'] != pb_backupbuddy::_GET( 'filter' ) ) {
-					continue; // Move along to next destination.
 				}
 			}
 			
@@ -471,15 +436,6 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 					<span class="icon <?php echo $destination['type']; ?>" style="background: transparent url('<?php echo pb_backupbuddy::plugin_url(); ?>/destinations/<?php echo $destination['type']; ?>/icon.png') top left no-repeat;"></span>
 					<span class="type"><?php echo $destination_info['name']; ?></span>
 					<span class="bb-dest-name" id="pb_backupbuddy_destpicker_title_<?php echo $destination_id; ?>"><?php echo $destination['title']; ?></span>
-					<?php if ( 'email' != $destination['type'] ) {
-						if ( pb_backupbuddy::_GET( 'sending' ) == '1' ) {
-							echo '<span class="bb-dest-view-files">Send to this destination</span>';
-						} elseif ( $mode == 'migration' ) {
-							echo '<span class="bb-dest-view-files">Migrate to this destination</span>';
-						} else {
-							echo '<span class="bb-dest-view-files">View remote files</span>';
-						}
-					} ?>
 				</a>
 				<a href="#settings" class="optionicon open dest_select_open" style="background-image: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_gear.png');" title="Click here to configure this destination's settings."></a>
 				<div class="settings">
@@ -488,19 +444,17 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 						<?php // DESTINATION CONFIG FORM
 						$settings = pb_backupbuddy_destinations::configure( $destination, 'edit' );
 						if ( $settings === false ) {
-							echo 'Error #556656b. Unable to display configuration. This destination\'s settings may be corrupt. Removing this destination. Please refresh the page.';
-							unset( pb_backupbuddy::$options['remote_destinations'][ $destination_id ] );
-							pb_backupbuddy::save();
+							echo 'Error #556656. Unable to display configuration.';
 						} else {
 							if ( $pb_hide_test !== true ) {
-								$test_button = '<a href="#" class="button secondary-button pb_backupbuddy_destpicker_test" href="#" title="Test destination settings." style="margin-top: 3px;">Test Settings<img class="pb_backupbuddy_destpicker_testload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Testing... This may take several seconds..."></a>&nbsp;&nbsp;';
+								$test_button = '<a href="#" class="button secondary-button pb_backupbuddy_destpicker_test" href="#" title="Test destination settings." style="margin-top: 3px;">Test Settings<img class="pb_backupbuddy_destpicker_testload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Testing... This may take several seconds..."></a>';
 							} else {
 								$test_button = '';
 							}
 							if ( $pb_hide_save !== true ) {
 								$save_and_delete_button = '<img class="pb_backupbuddy_destpicker_saveload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Saving... This may take a few seconds...">';
 							} else {
-								$save_and_delete_button = '';
+								$save_and_delete_button = 'x';
 							}
 							$save_and_delete_button .= '<a style="float: right;" href="#" class="button secondary-button pb_backupbuddy_destpicker_delete" href="#" title="Delete this Destination" style="margin-top: 3px;">Delete Destination<img class="pb_backupbuddy_destpicker_deleteload" src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" title="Deleting... This may take a few seconds..."></a>';
 							echo $settings->display_settings( 'Save Settings', $test_button, $save_and_delete_button, 'pb_backupbuddy_destpicker_save' ); // title, before, after, class
@@ -519,9 +473,7 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 	
 		</div>
 		
-		<?php
-		if ( 'true' != pb_backupbuddy::_GET( 'quickstart' ) ) {
-		?>
+		
 		<h3>Or add new destination:</h3>
 		<div class="bb-dest clearfix">
 			<div class="bb-dest-option">
@@ -531,11 +483,11 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 						} else {
 							echo pb_backupbuddy::ajax_url( 'destination_picker' );
 						}
-					?>&show_add=true&sending=<?php echo pb_backupbuddy::_GET( 'sending' ); ?>" class="info add-new open">
+					?>&show_add=true" class="info add-new open">
 					<span class="icon plus" style="background-image: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_plus.png');"></span>
 					<span class="type">Add new</span>
 					<span class="bb-dest-name">FTP, Stash, S3, etc.</span>
-					<span class="button button-primary" style="float: right; margin-top: 5px;">+ Add New</span>
+					<span class="button-primary" style="float: right; margin-top: 5px;">+ Add New</span>
 				</a>
 				<div class="settings add-new">
 					<div class="settings-inside">
@@ -544,7 +496,7 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 				</div>
 			</div>
 		</div>
-		<?php } ?>
+	
 	
 	</div>
 	
@@ -568,24 +520,12 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 			}
 			
 			?>
-			<div class="pb_backupbuddy_destpicker_newdest" style="background: #FFFFFF; border-bottom: 2px dotted #DFDFDF; padding-bottom: 25px;">
+			<div class="pb_backupbuddy_destpicker_newdest">
 				<div class="pb_backupbuddy_destpicker_newdest_select">
-					<a href="<?php echo $picker_url; ?>&add=<?php echo $destination_name; ?>&callback_data=<?php echo pb_backupbuddy::_GET( 'callback_data' ); ?>&sending=<?php echo pb_backupbuddy::_GET( 'sending' ); ?>" class="button button-primary" id="pb_backupbuddy_addnewdest_launch">+ Add New</a>
+					<a href="<?php echo $picker_url; ?>&add=<?php echo $destination_name; ?>&callback_data=<?php echo pb_backupbuddy::_GET( 'callback_data' ); ?>" class="button button-primary" id="pb_backupbuddy_addnewdest_launch">+ Add New</a>
 				</div>
-				<h1><?php
-				
-				if ( $destination_name == 'stash' ) {
-					echo '<span class="backupbuddy-icon-drive" style="font-size: 1.2em; vertical-align: -4px;"> Stash';
-				} else {
-					echo $destination['name'];
-				}
-				?></h1>
-				<?php
-					echo $destination['description'];
-					if ( $destination_name == 'stash' ) {
-						echo '<br><br><div style="text-align: center;"><span class="pb_label pb_label-info" style="font-size: 12px; margin-left: 10px; position: relative; top: -3px;"><i>1 GB free for active BackupBuddy customers!</i></span></div>';
-					}
-				?>
+				<h2><?php echo $destination['name']; ?></h2>
+				<?php echo $destination['description']; ?>
 			</div>
 			<?php
 			
@@ -598,78 +538,10 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 	
 	if ( ( $mode != 'migration' ) && ( $destination_list_count > 0 ) ) { // Only show if the add page is available (non-migration and there are already-added destinations).
 		echo'<br><br>
-		<a href="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&show_add=false&quickstart=' . pb_backupbuddy::_GET( 'quickstart' ) . '&filter=' . pb_backupbuddy::_GET( 'filter' ) . '" class="button button-secondary">
+		<a href="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&show_add=false" class="button button-secondary">
 			&larr; back to destinations
 		</a>';
 	}
 	echo '<br><br>';
 	
 }
-?>
-
-<style type="text/css">
-	/* Core Styles - USED BY DIRECTORY EXCLUDER */
-	.jqueryFileTree LI.directory { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/directory.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.expanded { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/folder_open.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.file { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/file.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.wait { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/spinner.gif') 6px 6px no-repeat; }
-	/* File Extensions*/
-	.jqueryFileTree LI.ext_3gp { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_afp { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_afpa { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_asp { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_aspx { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_avi { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_bat { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/application.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_bmp { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_c { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_cfm { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_cgi { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_com { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/application.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_cpp { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_css { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/css.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_doc { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/doc.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_exe { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/application.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_gif { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_fla { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/flash.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_h { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_htm { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/html.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_html { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/html.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_jar { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/java.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_jpg { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_jpeg { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_js { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/script.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_lasso { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_log { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/txt.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_m4p { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/music.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_mov { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_mp3 { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/music.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_mp4 { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_mpg { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_mpeg { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_ogg { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/music.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_pcx { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_pdf { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/pdf.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_php { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/php.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_png { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_ppt { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/ppt.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_psd { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/psd.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_pl { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/script.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_py { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/script.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_rb { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/ruby.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_rbx { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/ruby.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_rhtml { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/ruby.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_rpm { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/linux.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_ruby { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/ruby.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_sql { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/db.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_swf { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/flash.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_tif { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_tiff { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/picture.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_txt { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/txt.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_vb { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_wav { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/music.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_wmv { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/film.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_xls { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/xls.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_xml { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/code.png') 6px 6px no-repeat; }
-	.jqueryFileTree LI.ext_zip { background: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/filetree/zip.png') 6px 6px no-repeat; }
-</style>

@@ -18,7 +18,7 @@ function gf_apply_rules(formId, fields, isInit){
 function gf_check_field_rule(formId, fieldId, isInit, callback){
 
     //if conditional logic is not specified for that field, it is supposed to be displayed
-    if(!window["gf_form_conditional_logic"] || !window["gf_form_conditional_logic"][formId] || !window["gf_form_conditional_logic"][formId]["logic"][fieldId])
+    if(!window["gf_form_conditional_logic"][formId] || !window["gf_form_conditional_logic"][formId]["logic"][fieldId])
         return "show";
 
     var conditionalLogic = window["gf_form_conditional_logic"][formId]["logic"][fieldId];
@@ -67,8 +67,7 @@ function gf_get_field_action(formId, conditionalLogic){
 }
 
 function gf_is_match(formId, rule){
-    
-    var isMatch = false;
+
     var inputs = jQuery("#input_" + formId + "_" + rule["fieldId"] + " input");
 
     if(inputs.length > 0){
@@ -85,8 +84,9 @@ function gf_is_match(formId, rule){
             if(!jQuery(inputs[i]).is(":checked"))
                 fieldValue = "";
 
-            if(gf_matches_operation(fieldValue, rule["value"], rule["operator"]))
-                isMatch = true;
+            if(gf_matches_operation(fieldValue, rule["value"], rule["operator"])){
+                return true;
+            }
         }
     }
     else{
@@ -104,10 +104,9 @@ function gf_is_match(formId, rule){
             }
         }
         //If operator is Is Not, none of the value can match
-        isMatch = rule["operator"] == "isnot" ? matchCount == values.length : matchCount > 0;
+        return rule["operator"] == "isnot" ? matchCount == values.length : matchCount > 0;
     }
-    
-    return gform.applyFilters( 'gform_is_value_match', isMatch, formId, rule );
+    return false;
 }
 
 function gf_try_convert_float(text){
@@ -236,29 +235,6 @@ function gf_do_action(action, targetId, useAnimation, defaultValues, isInit, cal
 }
 
 function gf_reset_to_default(targetId, defaultValue){
-
-    var dateFields = jQuery(targetId).find('.gfield_date_month input[type="text"], .gfield_date_day input[type="text"], .gfield_date_year input[type="text"], .gfield_date_dropdown_month select, .gfield_date_dropdown_day select, .gfield_date_dropdown_year select');
-    var dateIndex = 0;
-    if(dateFields.length > 0){
-        dateFields.each(function(){
-            if(defaultValue){
-                val = defaultValue.split(/[\.\/-]+/)[dateIndex];
-                dateIndex++;
-            }
-            else{
-                val = "";
-            }
-
-            if(jQuery(this).prop("tagName") == "SELECT")
-                val = parseInt(val);
-
-            jQuery(this).val(val).trigger("change");
-
-        });
-
-        return;
-    }
-
     //cascading down conditional logic to children to suppport nested conditions
     //text fields and drop downs
     var target = jQuery(targetId).find('select, input[type="text"], input[type="number"], textarea');

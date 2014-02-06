@@ -1,4 +1,4 @@
- * Website: http://ithemes.com
+ * Website: http://pluginbuddy.com
  *
  * Installation:
  * 

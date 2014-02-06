@@ -1,7 +1,7 @@
 <?php
 echo $this->status_box( 'Cleaning up . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 $this->load_backup_dat(); // Set up backup data from the backupbuddy_dat.php.
 
@@ -10,7 +10,7 @@ if ( is_subdomain_install() ) {
 	$url = 'http://' . $_POST[ 'blog_path' ];
 } else {
 	global $current_site;
-	$url = 'http://' . rtrim( $current_site->domain, '\\/' ) . '/' . ltrim( $_POST[ 'blog_path' ], '\\/' );
+	$url = 'http://' . $current_site->domain . $_POST[ 'blog_path' ];
 }
 
 
@@ -31,7 +31,7 @@ if ( isset( $_POST['delete_temp'] ) && ( $_POST['delete_temp'] == '1' ) ) {
 
 $this->status( 'message', 'Cleanup complete.' );
 echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-pb_backupbuddy::flush();
+flush();
 ?>
 
 <h3>Site Import Complete</h3>

@@ -1,0 +1,2 @@
+[18-Dec-2013 06:59:19 America/Chicago] PHP Fatal error:  Call to undefined function add_action() in /home/truepoin/public_html/wp-content/plugins/akismet/legacy.php on line 356
+[18-Dec-2013 06:59:23 America/Chicago] PHP Fatal error:  Call to undefined function add_action() in /home/truepoin/public_html/wp-content/plugins/akismet/legacy.php on line 356

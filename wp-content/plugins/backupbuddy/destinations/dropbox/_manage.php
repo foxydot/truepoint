@@ -16,8 +16,6 @@ if ( !isset( $destination['title'] ) ) {
 	$destination['title'] = '';
 }
 
-$destination['directory'] = '/' . ltrim( $destination['directory'], '/\\' );
-
 $meta_data = $dropbuddy->get_meta_data( $destination['directory'] );
 
 
@@ -45,25 +43,11 @@ if ( !empty( $_POST['delete_file'] ) ) {
 	}
 }
 
-
-// Convert time string to timestamp.
-if ( is_array( $meta_data['contents'] ) ) {
-	foreach( $meta_data['contents'] as &$backup ) {
-		$backup['modified'] = strtotime( $backup['modified'] );
-	}
-	// Custom sort function for multidimension array usage.
-	function backupbuddy_number_sort( $a,$b ) {
-		return $a['modified']<$b['modified'];
-	}
-	// Sort by modified using custom sort function above.
-	usort( $meta_data['contents'], 'backupbuddy_number_sort' );
-}
-
 // Copy dropbox backups to the local backup files
 if ( !empty( $_GET['copy_file'] ) ) {
 	pb_backupbuddy::alert( sprintf( _x('The remote file is now being copied to your %1$slocal backups%2$s', '%1$s and %2$s are open and close <a> tags', 'it-l10n-backupbuddy' ), '<a href="' . pb_backupbuddy::page_url() . '">', '</a>. If the backup gets marked as bad during copying, please wait a bit then click the `Refresh` icon to rescan after the transfer is complete.' ) );
 	pb_backupbuddy::status( 'details',  'Scheduling Cron for creating Dropbox copy.' );
-	backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_dropbox_copy' ), array( $_GET['destination_id'], $_GET['copy_file'] ) );
+	wp_schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_dropbox_copy' ), array( $_GET['destination_id'], $_GET['copy_file'] ) );
 	spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 	update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 }
@@ -83,8 +67,8 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ),' `' . $destination['title'] 
 			<tr class="thead">
 				<th scope="col" class="check-column"><input type="checkbox" class="check-all-entries" /></th>
 				<?php 
-					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '</th>',
-						 '<th>', __('Last Modified', 'it-l10n-backupbuddy' ), ' <img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by modified', 'it-l10n-backupbuddy' ), '" /></th>',
+					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), ' <img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by filename', 'it-l10n-backupbuddy' ), '" /></th>',
+						 '<th>', __('Last Modified', 'it-l10n-backupbuddy' ), '</th>',
 						 '<th>', __('File Size', 'it-l10n-backupbuddy' ), '</th>',
 						 '<th>', __('Actions', 'it-l10n-backupbuddy' ), '</th>';
 				?>
@@ -94,8 +78,8 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ),' `' . $destination['title'] 
 			<tr class="thead">
 				<th scope="col" class="check-column"><input type="checkbox" class="check-all-entries" /></th>
 				<?php
-					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '</th>',
-						 '<th>', __('Last Modified', 'it-l10n-backupbuddy' ),'<img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by modified', 'it-l10n-backupbuddy' ), '" /> </th>',
+					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), ' <img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by filename', 'it-l10n-backupbuddy' ), '" /></th>',
+						 '<th>', __('Last Modified', 'it-l10n-backupbuddy' ),'</th>',
 						 '<th>', __('File Size', 'it-l10n-backupbuddy' ), '</th>',
 						 '<th>', __('Actions', 'it-l10n-backupbuddy' ), '</th>';
 				?>
@@ -122,7 +106,7 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ),' `' . $destination['title'] 
 							</td>
 							<td style="white-space: nowrap;">
 								<?php
-									$modified = $file['modified'];
+									$modified = strtotime( $file['modified'] );
 									echo pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $modified ) );
 									echo '<br /><span class="description">(' . pb_backupbuddy::$format->time_ago( $modified ) . ' ', __('ago', 'it-l10n-backupbuddy' ), ')</span>';
 								?>

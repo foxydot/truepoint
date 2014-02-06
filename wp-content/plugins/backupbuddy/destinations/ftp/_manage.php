@@ -8,7 +8,6 @@ $ftp_server = $destination['address'];
 $ftp_username = $destination['username'];
 $ftp_password = $destination['password'];
 $ftp_directory = $destination['path'];
-$ftps = $destination['ftps'];
 if ( !empty( $ftp_directory ) ) {
 	$ftp_directory = $ftp_directory . '/';
 }
@@ -21,6 +20,7 @@ if ( isset( $destination['active_mode'] ) && ( $destination['active_mode'] == '0
 $port = '21';
 if ( strstr( $ftp_server, ':' ) ) {
 	$server_params = explode( ':', $ftp_server );
+	
 	$ftp_server = $server_params[0];
 	$port = $server_params[1];
 }
@@ -32,38 +32,8 @@ if ( !empty( $_POST['delete_file'] ) ) {
 	
 	$delete_count = 0;
 	if ( !empty( $_POST['files'] ) && is_array( $_POST['files'] ) ) {
-		
-		
-		// Connect to server.
-		if ( $ftps == '1' ) { // Connect with FTPs.
-			if ( function_exists( 'ftp_ssl_connect' ) ) {
-				$conn_id = ftp_ssl_connect( $ftp_server, $port );
-				if ( $conn_id === false ) {
-					pb_backupbuddy::status( 'details',  'Unable to connect to FTPS  (check address/FTPS support).', 'error' );
-					return false;
-				} else {
-					pb_backupbuddy::status( 'details',  'Connected to FTPs.' );
-				}
-			} else {
-				pb_backupbuddy::status( 'details',  'Your web server doesnt support FTPS in PHP.', 'error' );
-				return false;
-			}
-		} else { // Connect with FTP (normal).
-			if ( function_exists( 'ftp_connect' ) ) {
-				$conn_id = ftp_connect( $ftp_server, $port );
-				if ( $conn_id === false ) {
-					pb_backupbuddy::status( 'details',  'ERROR: Unable to connect to FTP (check address).', 'error' );
-					return false;
-				} else {
-					pb_backupbuddy::status( 'details',  'Connected to FTP.' );
-				}
-			} else {
-				pb_backupbuddy::status( 'details',  'Your web server doesnt support FTP in PHP.', 'error' );
-				return false;
-			}
-		}
-		
-		
+		// connect to server
+		$conn_id = ftp_connect( $ftp_server, $port ) or die( __('Could not connect to', 'it-l10n-backupbuddy' ) . ' ' . $ftp_server );
 		// login with username and password
 		$login_result = ftp_login( $conn_id, $ftp_username, $ftp_password );
 		
@@ -102,41 +72,14 @@ if ( !empty( $_POST['delete_file'] ) ) {
 if ( !empty( $_GET['copy_file'] ) ) {
 	pb_backupbuddy::alert( sprintf( _x('The remote file is now being copied to your %1$slocal backups%2$s', '%1$s and %2$s are open and close <a> tags', 'it-l10n-backupbuddy' ), '<a href="' . pb_backupbuddy::page_url() . '">', '</a>.' ) );
 	pb_backupbuddy::status( 'details',  'Scheduling Cron for creating ftp copy.' );
-	backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_ftp_copy' ), array( $_GET['copy_file'], $ftp_server, $ftp_username, $ftp_password, $ftp_directory, $port, $ftps ) );
+	wp_schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_ftp_copy' ), array( $_GET['copy_file'], $ftp_server, $ftp_username, $ftp_password, $ftp_directory) );
 	spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 	update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 }
 
-
+// Retrieve listing of backups
 // Connect to server
-if ( $ftps == '1' ) { // Connect with FTPs.
-	if ( function_exists( 'ftp_ssl_connect' ) ) {
-		$conn_id = ftp_ssl_connect( $ftp_server, $port );
-		if ( $conn_id === false ) {
-			pb_backupbuddy::status( 'details',  'Unable to connect to FTPS  `' . $ftp_server . '` on port `' . $port . '` (check address/FTPS support and that server can connect to this address via this port).', 'error' );
-			return false;
-		} else {
-			pb_backupbuddy::status( 'details',  'Connected to FTPs.' );
-		}
-	} else {
-		pb_backupbuddy::status( 'details',  'Your web server doesnt support FTPS in PHP.', 'error' );
-		return false;
-	}
-} else { // Connect with FTP (normal).
-	if ( function_exists( 'ftp_connect' ) ) {
-		$conn_id = ftp_connect( $ftp_server, $port );
-		if ( $conn_id === false ) {
-			pb_backupbuddy::status( 'details',  'ERROR: Unable to connect to FTP server `' . $ftp_server . '` on port `' . $port . '` (check address and that server can connect to this address via this port).', 'error' );
-			return false;
-		} else {
-			pb_backupbuddy::status( 'details',  'Connected to FTP.' );
-		}
-	} else {
-		pb_backupbuddy::status( 'details',  'Your web server doesnt support FTP in PHP.', 'error' );
-		return false;
-	}
-}
-
+$conn_id = ftp_connect( $ftp_server, $port ) or die( __('Could not connect to', 'it-l10n-backupbuddy' ). ' ' . $ftp_server );
 
 // Login with username and password
 $login_result = ftp_login( $conn_id, $ftp_username, $ftp_password );
@@ -155,41 +98,20 @@ if ( $active === true ) {
 
 
 // Get contents of the current directory
-ftp_chdir( $conn_id, $ftp_directory );
-$contents = ftp_nlist( $conn_id, '' );
+$contents = ftp_nlist( $conn_id, $ftp_directory );
 
 // Create array of backups and sizes
 $backups = array();
-$got_modified = false;
 foreach ( $contents as $backup ) {
 	// check if file is backup
 	$pos = strpos( $backup, 'backup-' );
 	if ( $pos !== FALSE ) {
-		$mod_time = ftp_mdtm( $conn_id, $ftp_directory . $backup );
-		if ( $mod_time > -1 ) {
-			$got_modified = true;
-		}
-		$backups[] = array(
-			'file' => $backup,
-			'size' => ftp_size( $conn_id, $ftp_directory . $backup ),
-			'modified' => $mod_time,
-		);
-		
+		$backups[$backup] = ftp_size( $conn_id, $ftp_directory . $backup );
 	}
 }
 	
 // close this connection
 ftp_close( $conn_id );
-
-
-if ( $got_modified === true ) { // FTP server supports sorting by modified date.
-	// Custom sort function for multidimension array usage.
-	function backupbuddy_number_sort( $a,$b ) {
-		return $a['modified']<$b['modified'];
-	}
-	// Sort by modified using custom sort function above.
-	usort( $backups, 'backupbuddy_number_sort' );
-}
 
 
 echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ), ' `' . $destination['title'] . '` (' . $destination['type'] . ')</h3>';
@@ -206,13 +128,8 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ), ' `' . $destination['title']
 			<tr class="thead">
 				<th scope="col" class="check-column"><input type="checkbox" class="check-all-entries" /></th>
 				<?php
-					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '</th>',
+					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '<img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by filename', 'it-l10n-backupbuddy' ), '" /></th>',
 						 '<th>', __('File Size',   'it-l10n-backupbuddy' ), '</th>',
-						'<th>', __('Modified',   'it-l10n-backupbuddy' );
-						if ( $got_modified === true ) {
-							echo ' <img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by modified', 'it-l10n-backupbuddy' ), '" />';
-						}
-						echo '</th>',
 						 '<th>', __('Actions',     'it-l10n-backupbuddy' ), '</th>';
 				?>
 			</tr>
@@ -221,13 +138,9 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ), ' `' . $destination['title']
 			<tr class="thead">
 				<th scope="col" class="check-column"><input type="checkbox" class="check-all-entries" /></th>
 				<?php
-					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '</th>',
+					echo '<th>', __('Backup File', 'it-l10n-backupbuddy' ), '<img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by filename', 'it-l10n-backupbuddy' ), '" /></th>',
 						 '<th>', __('File Size',   'it-l10n-backupbuddy' ), '</th>',
-						'<th>', __('Modified',   'it-l10n-backupbuddy' );
-						if ( $got_modified === true ) {
-							echo ' <img src="', pb_backupbuddy::plugin_url(), '/images/sort_down.png" style="vertical-align: 0px;" title="', __('Sorted by modified', 'it-l10n-backupbuddy' ), '" />';
-						}
-						echo '</th><th>', __('Actions',     'it-l10n-backupbuddy' ), '</th>';
+						 '<th>', __('Actions',     'it-l10n-backupbuddy' ), '</th>';
 				?>
 			</tr>
 		</tfoot>
@@ -238,32 +151,21 @@ echo '<h3>', __('Viewing', 'it-l10n-backupbuddy' ), ' `' . $destination['title']
 				echo '<tr><td colspan="5" style="text-align: center;"><i>', __('This directory does not have any backups.', 'it-l10n-backupbuddy' ), '</i></td></tr>';
 			} else {
 				$file_count = 0;
-				foreach ( (array)$backups as $backup ) {
+				foreach ( (array)$backups as $backup => $size ) {
 					$file_count++;
 					?>
 					<tr class="entry-row alternate">
-						<th scope="row" class="check-column"><input type="checkbox" name="files[]" class="entries" value="<?php echo $backup['file']; ?>" /></th>
+						<th scope="row" class="check-column"><input type="checkbox" name="files[]" class="entries" value="<?php echo $backup; ?>" /></th>
 						<td>
 							<?php
-								echo $backup['file'];
+								echo $backup;
 							?>
 						</td>
 						<td style="white-space: nowrap;">
-							<?php
-							if ( $backup['modified'] > -1 ) {
-								echo pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $backup['modified'] ) );
-								echo '<br /><span class="description">(' . pb_backupbuddy::$format->time_ago( $backup['modified'] ) . ' ', __('ago', 'it-l10n-backupbuddy' ), ')</span>';
-							} else {
-								echo '<span class="description">Unknown</span>';
-							}
-							?>
-							
-						</td>
-						<td style="white-space: nowrap;">
-							<?php echo pb_backupbuddy::$format->file_size( $backup['size'] ); ?>
+							<?php echo pb_backupbuddy::$format->file_size( $size ); ?>
 						</td>
 						<td>
-							<?php echo '<a href="' . pb_backupbuddy::page_url() . '&custom=' . $_GET['custom'] . '&destination_id=' . $_GET['destination_id'] . '&#38;copy_file=' . $backup['file'] . '">Copy to local</a>'; ?>
+							<?php echo '<a href="' . pb_backupbuddy::page_url() . '&custom=' . $_GET['custom'] . '&destination_id=' . $_GET['destination_id'] . '&#38;copy_file=' . $backup . '">Copy to local</a>'; ?>
 						</td>
 					</tr>
 					<?php

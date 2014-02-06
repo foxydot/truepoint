@@ -1,119 +1,31 @@
 <?php
-if ( !is_admin() ) { die( 'Access Denied.' ); }
-
-// Display additional information for users on Windows systems.
-if ( stristr( PHP_OS, 'WIN' ) && !stristr( PHP_OS, 'DARWIN' ) ) { // Show in WINdows but not darWIN.
-	pb_backupbuddy::disalert( 'windows_boost', __('Windows servers may be able to significantly boost performance, if the server allows executing .exe files (or can be configured to allow this file as an exception), by adding native Zip compatibility executable files <a href="http://ithemes.com/backupbuddy_files/backupbuddy_windows_unzip.zip">available for download here</a>. Instructions are provided within the readme.txt in the package.  This package prevents Windows from falling back to Zip compatiblity mode and works for both BackupBuddy and importbuddy.php. This is particularly useful for <a href="http://ithemes.com/codex/page/BackupBuddy:_Local_Development">local development on a Windows machine using a system like XAMPP</a>.', 'it-l10n-backupbuddy' ) );
-}
-?>
+pb_backupbuddy::$ui->start_metabox( 'BackupBuddy Settings', true, 'width: 100%; max-width: 1200px;' );
+$settings_form->display_settings( 'Save Settings' );
+echo '<br><br>';
+pb_backupbuddy::$ui->end_metabox();
 
 
 
-<style type="text/css">
-	.pb_backupbuddy_customize_email_error_row, .pb_backupbuddy_customize_email_scheduled_start_row, .pb_backupbuddy_customize_email_scheduled_complete_row {
-		display: none;
-	}
-	
-	.form-table th {
-		white-space: nowrap;
-	}
-	.form-table td {
-		word-break: break-all;
-	}
-</style>
-<script type="text/javascript">
-	var pb_settings_changed = false;
-	
-	jQuery(document).ready(function() {
-		
-		
-		jQuery( 'a' ) .click( function(e) {
-			if ( jQuery(this).attr( 'class' ) == 'ui-tabs-anchor' ) {
-				if ( true == pb_settings_changed ) {
-					
-					if ( confirm( 'You have made changes that you have not saved by selecting the "Save Settings" button at the bottom of the page. Abandon changes without saving?' ) ) {
-						// Abandon!
-						pb_settings_changed = false;
-						return true;
-					} else {
-						e.stopPropagation();
-						e.stopImmediatePropagation();
-						return false;
-					}
-				}
-			}
-		});
-		jQuery( '.pb_form' ).change( function() {
-			pb_settings_changed = true;
-		});
-		
-		
-		
-		
-	});
-	
-	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
-		window.location.href = '<?php echo pb_backupbuddy::page_url(); ?>&custom=remoteclient&destination_id=' + destination_id;
-	}
-</script>
+
+/*
+
+REMOVED v3.1.
+
+pb_backupbuddy::$ui->start_metabox( __('Remote Offsite Storage / Destinations', 'it-l10n-backupbuddy' ) . ' ' . pb_backupbuddy::video( 'PmXLw_tS42Q#177', __( 'Remote Offsite Management / Remote Clients Tutorial', 'it-l10n-backupbuddy' ), false ), true, 'width: 100%; max-width: 1200px;' );
+//echo '<h3>' . __('Remote Offsite Storage / Destinations', 'it-l10n-backupbuddy' ) . ' ' . pb_backupbuddy::video( 'PmXLw_tS42Q#177', __( 'Remote Offsite Management / Remote Clients Tutorial', 'it-l10n-backupbuddy' ), false ) . '</h3>';
+//echo '<br>';
+echo '<a href="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&action_verb=to%20manage%20files&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" style="margin-top: 3px;" title="' . __( 'Manage Destinations & Archives', 'it-l10n-backupbuddy' ) . '">' . __('Manage Destinations & Archives', 'it-l10n-backupbuddy' ) . '</a>';
+echo '&nbsp;&nbsp;&nbsp;';
+_e( 'Add & configure destinations or select a destination to browse & manage its files.', 'it-l10n-backupbuddy' );
+echo '<br><br>';
+pb_backupbuddy::$ui->end_metabox();
+*/
 
 
 
-<?php
-if ( is_numeric( pb_backupbuddy::_GET( 'tab' ) ) ) {
-	$active_tab = pb_backupbuddy::_GET( 'tab' );
-} else {
-	$active_tab = 0;
-}
-pb_backupbuddy::$ui->start_tabs(
-	'settings',
-	array(
-		array(
-			'title'		=>		__( 'General Settings', 'it-l10n-backupbuddy' ),
-			'slug'		=>		'general',
-			'css'		=>		'margin-top: -11px;',
-		),
-		array(
-			'title'		=>		__( 'Advanced Settings / Troubleshooting', 'it-l10n-backupbuddy' ),
-			'slug'		=>		'advanced',
-			'css'		=>		'margin-top: -11px;',
-		),
-		array(
-			'title'		=>		__( 'Logs & Other', 'it-l10n-backupbuddy' ),
-			'slug'		=>		'other',
-			'css'		=>		'margin-top: -11px;',
-		),
-	),
-	'width: 100%;',
-	true,
-	$active_tab
-);
-
-
-
-pb_backupbuddy::$ui->start_tab( 'general' );
-require_once( 'settings/_general.php' );
-pb_backupbuddy::$ui->end_tab();
-
-
-pb_backupbuddy::$ui->start_tab( 'advanced' );
-require_once( 'settings/_advanced.php' );
-pb_backupbuddy::$ui->end_tab();
-
-pb_backupbuddy::$ui->start_tab( 'other' );
-require_once( 'settings/_other.php' );
-pb_backupbuddy::$ui->end_tab();
 
 ?>
-
-
-
-
-
 <script type="text/javascript">
-	
-	
-	
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
 		window.location.href = '<?php
 			if ( is_network_admin() ) {
@@ -133,14 +45,3 @@ if ( !wp_script_is( 'media-upload' ) ) {
 	wp_print_scripts( 'media-upload' );
 }
 ?>
-
-
-
-
-
-
-
-</div>
-
-
-

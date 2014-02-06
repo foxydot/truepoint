@@ -28,10 +28,11 @@ define( 'PB_IMPORTBUDDY', true );
 
 $pluginbuddy_settings = array(
 				'slug'				=>		'backupbuddy',
-				'php_minimum'		=>		'5.2',
 				'series'			=>		'',
 				'default_options'	=>		array(
 												'bb_version'				=>	PB_BB_VERSION,	// BB version to be filled in on download.
+												'password'					=>	PB_PASSWORD,	// Hash to be filled in on download.
+												'password_verify'			=>	'',				// Password entered on step 1 to be verified against hash.
 												
 												'display_mode'				=>	'normal', // normal, embed, or api
 												
@@ -45,7 +46,6 @@ $pluginbuddy_settings = array(
 												'skip_database_import'		=>	false,
 												'mysqlbuddy_compatibility'	=>	false,
 												'skip_database_migration'	=>	false,
-												'skip_database_bruteforce'	=>	false,
 												'skip_htaccess'				=>	false,
 												'force_compatibility_medium'=>	false,
 												'force_compatibility_slow'	=>	false,

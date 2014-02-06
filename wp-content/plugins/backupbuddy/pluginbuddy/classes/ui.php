@@ -76,7 +76,7 @@ class pb_backupbuddy_ui {
 	 *	@return		null/string				Returns null if $echo is true; else returns string with HTML.
 	 */
 	public function title( $title, $echo = true ) {
-		$return = '<h2><span class="backupbuddy-icon-drive" style="font-size: 1.2em; vertical-align: -4px;"></span> ' . $title . '</h2><br />';
+		$return = '<h2><img src="' . pb_backupbuddy::plugin_url() . '/images/icon_32x32.png" style="vertical-align: -7px;"> ' . $title . '</h2><br />';
 		if ( $echo === true ) {
 			echo $return;
 		} else {
@@ -300,7 +300,6 @@ class pb_backupbuddy_ui {
 			
 			// LOOP THROUGH COLUMNS FOR THIS ROW.
 			for ( $i = 1; $i < $count; $i++ ) {
-				if ( ! isset( $item[$i] ) ) { continue; } // This row does not have a corresponding index-based item.  It is probably a named key not for use in table?
 				echo '<td';
 				if ( $settings['reorder'] != '' ) {
 					if ( $i == $settings['reorder'] ) {
@@ -352,46 +351,38 @@ class pb_backupbuddy_ui {
 	public function get_feed( $feed, $limit, $append = '', $replace = '' ) {
 		$return = '';
 		
-		$feed_html = get_transient( md5( $feed ) );
-		
-		if ( false === $feed_html ) {
-			$feed_html = '';
-			require_once(ABSPATH.WPINC.'/feed.php');  
-			$rss = fetch_feed( $feed );
-			if ( is_wp_error( $rss ) ) {
-				$return .= '{Temporarily unable to load feed.}';
-				return $return;
-			}
+		require_once(ABSPATH.WPINC.'/feed.php');  
+		$rss = fetch_feed( $feed );
+		if (!is_wp_error( $rss ) ) {
 			$maxitems = $rss->get_item_quantity( $limit ); // Limit 
 			$rss_items = $rss->get_items(0, $maxitems); 
-		}
-		
-		$return .= '<ul class="pluginbuddy-nodecor" style="margin-left: 10px;">';
+			
+			$return .= '<ul class="pluginbuddy-nodecor" style="margin-left: 10px;">';
 
-		
-		if ( $feed_html == '' ) {
-			foreach ( (array) $rss_items as $item ) {
-				$feed_html .= '<li style="list-style-type: none;"><a href="' . $item->get_permalink() . '" target="_new">';
-				$title =  $item->get_title(); //, ENT_NOQUOTES, 'UTF-8');
-				if ( $replace != '' ) {
-					$title = str_replace( $replace, '', $title );
+			$feed_html = get_transient( md5( $feed ) );
+			if ( $feed_html == '' ) {
+				foreach ( (array) $rss_items as $item ) {
+					$feed_html .= '<li type="disc"><a href="' . $item->get_permalink() . '">';
+					$title =  $item->get_title(); //, ENT_NOQUOTES, 'UTF-8');
+					if ( $replace != '' ) {
+						$title = str_replace( $replace, '', $title );
+					}
+					if ( strlen( $title ) < 30 ) {
+						$feed_html .= $title;
+					} else {
+						$feed_html .= substr( $title, 0, 32 ) . ' ...';
+					}
+					$feed_html .= '</a></li>';
 				}
-				if ( strlen( $title ) < 30 ) {
-					$feed_html .= $title;
-				} else {
-					$feed_html .= substr( $title, 0, 32 ) . ' ...';
-				}
-				$feed_html .= '</a></li>';
+				set_transient( md5( $feed ), $feed_html, 300 ); // expires in 300secs aka 5min
 			}
-			set_transient( md5( $feed ), $feed_html, 300 ); // expires in 300secs aka 5min
+			$return .= $feed_html;
+			
+			$return .= $append;
+			$return .= '</ul>';
 		} else {
-			//echo 'CACHED';
+			$return .= '{Temporarily unable to load feed.}';
 		}
-		$return .= $feed_html;
-		
-		$return .= $append;
-		$return .= '</ul>';
-	
 		
 		return $return;
 	} // End get_feed().
@@ -441,7 +432,7 @@ class pb_backupbuddy_ui {
 			$log_error = true;
 		}
 		if ( $error_code != '' ) {
-			$message .= ' <a href="http://ithemes.com/codex/page/' . pb_backupbuddy::settings( 'name' ) . ':_Error_Codes#' . $error_code . '" target="_new"><i>' . pb_backupbuddy::settings( 'name' ) . ' Error Code ' . $error_code . ' - Click for more details.</i></a>';
+			$message .= '<a href="http://ithemes.com/codex/page/' . pb_backupbuddy::settings( 'name' ) . ':_Error_Codes#' . $error_code . '" target="_new"><i>' . pb_backupbuddy::settings( 'name' ) . ' Error Code ' . $error_code . ' - Click for more details.</i></a>';
 			$log_error = true;
 		}
 		if ( $log_error === true ) {
@@ -465,7 +456,7 @@ class pb_backupbuddy_ui {
 	public function disalert( $unique_id, $message, $error = false ) {
 		
 		if ( ! isset( pb_backupbuddy::$options['disalerts'][$unique_id] ) ) {
-			$message = '<a style="float: right;" class="pb_backupbuddy_disalert" href="#" title="' . __( 'Dismiss this alert. Unhide dismissed alerts on the Settings page.', 'it-l10n-backupbuddy' ) . '" alt="' . pb_backupbuddy::ajax_url( 'disalert' ) . '"><b>' . __( 'Dismiss', 'it-l10n-backupbuddy' ) . '</b></a><div style="margin-right: 60px;">' . $message . '</div>';
+			$message = '<a style="float: right;" class="pb_backupbuddy_disalert" href="#" title="' . __( 'Dismiss this alert. Unhide dismissed alerts on the Getting Started page.', 'it-l10n-backupbuddy' ) . '" alt="' . pb_backupbuddy::ajax_url( 'disalert' ) . '">' . __( 'Dismiss', 'it-l10n-backupbuddy' ) . '</a><div style="margin-right: 60px;">' . $message . '</div>';
 			$this->alert( $message, $error, '', $unique_id );
 		} else {
 			echo '<!-- Previously Dismissed Alert: `' . htmlentities( $message ) . '` -->';
@@ -537,68 +528,36 @@ class pb_backupbuddy_ui {
 	 *	@param		array		$tabs				Array containing an array of settings for this tabbed interface. Ex:  array( array( 'title'> 'my title', 'slug' => 'mytabs' ) );
 	 *												Optional setting with key `ajax_url` may define a URL for AJAX loading.
 	 *	@param		string		$css				Additional CSS to apply to main outer div. (optional)
-	 *	@param		boolean		$echo				Echo output instead of returning. (optional)
-	 *	@param		int			$active_tab_index	Tab to start as active/selected.
+	 *	@parsm		boolean		$echo				Echo output instead of returning. (optional)
 	 *	@return		null/string						null if $echo = false, all data otherwise.
 	 */
-	public function start_tabs( $interface_tag, $tabs, $css = '', $echo = true, $active_tab_index = 0 ) {
+	public function start_tabs( $interface_tag, $tabs, $css = '', $echo = true ) {
 		$this->_tab_interface_tag = $interface_tag;
 		
-		pb_backupbuddy::load_script( 'pb_tabs.js', true );
+		pb_backupbuddy::load_script( 'jquery-ui-tabs' );
 		
 		$prefix = 'pb_' . pb_backupbuddy::settings( 'slug' ) . '_'; // pb_PLUGINSLUG_
 		$return = '';
 		
-		/*
 		$return .= '<script type="text/javascript">';
 		$return .= '	jQuery(document).ready(function() {';
-		$return .= '		jQuery("#' . $prefix . $this->_tab_interface_tag . '_tabs").tabs({ active: ' . $active_tab_index . ' });';
+		$return .= '		jQuery("#' . $prefix . $this->_tab_interface_tag . '_tabs").tabs();';
 		$return .= '	});';
 		$return .= '</script>';
-		*/
-		
-		$return .= '<div class="backupbuddy-tabs-wrap">';
 		
 		
-		$return .= '<h2 class="nav-tab-wrapper">';
-		$i = 0;
-		foreach( $tabs as $tab ) {
-			if ( ! isset( $tab['css'] ) ) {
-				$tab['css'] = '';
-			}
-			$active_tab_class = '';
-			if ( $active_tab_index == $i ) {
-				$active_tab_class = 'nav-tab-active';
-			}
-			if ( isset( $tab['ajax'] ) && ( $tab['ajax_url'] != '' ) ) { // AJAX tab.
-				$return .= '<a class="nav-tab nav-tab-' . $i . ' ' . $active_tab_class . '" style="' . $tab['css'] . '" href="' . $tab['ajax_url'] . '">' . $tab['title'] . '</a>';
-			} else { // Standard; NO AJAX.
-				$return .= '<a class="nav-tab nav-tab-' . $i . ' ' . $active_tab_class . '" style="' . $tab['css'] . '" href="#' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab['slug'] . '">' . $tab['title'] . '</a>';
-			}
-			$i++;
-		}
-		$return .= '</h2>';
-		
-		
-		/*
-		$return .= '<div id="' . $prefix . $this->_tab_interface_tag . '_tabs" style="' . $css . '">';
+		$return .= '<div id="' . $prefix . $this->_tab_interface_tag . '_tabs" style="width: 80%; min-width: 750px; ' . $css . '">';
 		$return .= '<ul>';
 		foreach( $tabs as $tab ) {
-			if ( ! isset( $tab['css'] ) ) {
-				$tab['css'] = '';
-			}
 			if ( isset( $tab['ajax'] ) && ( $tab['ajax_url'] != '' ) ) { // AJAX tab.
 				$return .= '<li><a href="' . $tab['ajax_url'] . '"><span>' . $tab['title'] . '</span></a></li>';
 			} else { // Standard; NO AJAX.
-				$return .= '<li style="' . $tab['css'] . '"><a href="#' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab['slug'] . '"><span>' . $tab['title'] . '</span></a></li>';
+				$return .= '<li><a href="#' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab['slug'] . '"><span>' . $tab['title'] . '</span></a></li>';
 			}
 		}
 		$return .= '</ul>';
 		$return .= '<br>';
 		$return .= '<div class="tabs-borderwrap">';
-		*/
-		
-		$return .= '<div class="backupbuddy-tab-blocks">';
 		
 		if ( $echo === true ) {
 			echo $return;
@@ -620,12 +579,10 @@ class pb_backupbuddy_ui {
 	 */
 	public function end_tabs( $echo = true ) {
 		
-		/*
 		$return = '';
 		$return .= '	</div>';
 		$return .= '</div>';
-		*/
-		$return = '</div></div>';
+		
 		
 		$this->_tab_interface_tag = '';
 		
@@ -639,7 +596,7 @@ class pb_backupbuddy_ui {
 	
 	
 	
-	/*	start_tab()
+	/*	start_tabs()
 	 *	
 	 *	Opens the start of an individual page to be loaded by a tab.
 	 *	@see end_tab().
@@ -653,7 +610,7 @@ class pb_backupbuddy_ui {
 		$prefix = 'pb_' . pb_backupbuddy::settings( 'slug' ) . '_'; // pb_PLUGINSLUG_
 		$return = '';
 		
-		$return .= '<div class="backupbuddy-tab" id="' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab_tag . '">';
+		$return .= '<div id="' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab_tag . '">';
 		
 		
 		if ( $echo === true ) {
@@ -694,56 +651,34 @@ class pb_backupbuddy_ui {
 	 *	
 	 *	Output HTML headers when using AJAX.
 	 *	
-	 *	@param		boolean		$js			Whether or not to load javascript. Default false.
-	 *	@param		bool		$padding	Whether or not to padd wrapper div. Default has padding.
+	 *	@param		boolean		$js		Whether or not to load javascript. Default false.
 	 *	@return		
 	 */
-	function ajax_header( $js = true, $padding = true ) {
+	function ajax_header( $js = true ) {
 		echo '<head>';
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
 		echo '<title>PluginBuddy</title>';
 		
+		wp_print_styles( 'global' );
 		wp_print_styles( 'wp-admin' );
-		wp_print_styles( 'dashicons' );
-		wp_print_styles( 'buttons' );
-		wp_print_styles( 'colors' );
+		wp_print_styles( 'colors-fresh' );
+		wp_print_styles( 'colors-fresh' );
 		
 		if ( $js === true ) {
 			wp_enqueue_script( 'jquery' );
 			wp_print_scripts( 'jquery' );
 		}
 		
-		pb_backupbuddy::load_style( 'wp-admin.css' );
-		
-		echo '<style>
-			.form-table input[type=radio],.form-table input[type=checkbox] {
-				width: 16px;
-				height: 16px;
-			}
-			.form-table input[type=checkbox]:checked:before {
-				margin: -7px;
-			}
-			.form-table input[type=radio]:checked:before {
-				margin: 3px;
-			}
-			</style>';
-		
 		//echo '<link rel="stylesheet" href="' . pb_backupbuddy::plugin_url(); . '/css/admin.css" type="text/css" media="all" />';
 		pb_backupbuddy::load_script( 'admin.js', true );
 		pb_backupbuddy::load_style( 'admin.css', true );
 		pb_backupbuddy::load_script( 'tooltip.js', true );
 		
-		echo '<body class="wp-core-ui">';
-		if ( $padding === true ) {
-			echo '<div style="padding: 8px; padding-left: 12px; padding-right: 12px;">';
-		} else {
-			echo '<div>';
-		}
+		echo '<div style="padding: 8px; padding-left: 12px; padding-right: 12px;">';
 	} // End ajax_header().
 	
 	
 	function ajax_footer() {
-		echo '</body>';
 		echo '</div>';
 		echo '</head>';
 		echo '</html>';

@@ -1,6 +1,5 @@
 <?php
 // @author Dustin Bolton 2012.
-// Incoming variables: $destination
 
 $stash_allfiles_access_timelimit = 60*60*1; // Time, in seconds, to store transient allowing user access to all files in Stash once they have logged in.
 ?>
@@ -33,13 +32,13 @@ $stash_allfiles_access_timelimit = 60*60*1; // Time, in seconds, to store transi
 
 <?php
 
-pb_backupbuddy::disalert( 'stash_offsite_welcome_link', 'Did you know you can download all of your BackupBuddy Stash backups offsite? <a href="http://ithemes.com/member/panel/stash.php" target="_new">Go check it out!</a>' );
+pb_backupbuddy::disalert( 'stash_offsite_welcome_link', 'Did you know you can download all of your BackupBuddy Stash backups offsite? <a href="http://ithemes.com/member/stash.php" target="_new"pluginb>Go check it out!</a>' );
 
 
 // Load required files.
 require_once( pb_backupbuddy::plugin_path() . '/destinations/stash/init.php' );
 require_once( dirname( __FILE__ ) . '/lib/class.itx_helper.php' );
-require_once( dirname( dirname( __FILE__ ) ) . '/_s3lib/aws-sdk/sdk.class.php' );
+require_once( dirname( __FILE__ ) . '/lib/aws-sdk/sdk.class.php' );
 
 
 // Settings.
@@ -81,7 +80,6 @@ function pb_backupbuddy_stash_pass_form() {
 	echo '<br><br><br><br>';
 }
 
-$stash_hash = '';
 if ( pb_backupbuddy::_GET( 'stashhash' ) != '' ) {
 	$stash_hash = pb_backupbuddy::_GET( 'stashhash' );
 }
@@ -90,7 +88,6 @@ if ( ( $remote_path == '/' ) && ( $settings['manage_all_files'] == '1' ) ) {
 	$stash_password = get_transient( 'pb_backupbuddy_stashallfiles_' . $current_user->user_login );
 	echo 'pass: ' . $stash_password;
 	*/
-	$stash_password = '';
 	if ( pb_backupbuddy::_POST( 'stash_password' ) != '' ) {
 		$stash_password = pb_backupbuddy::_POST( 'stash_password' );
 	}
@@ -131,11 +128,6 @@ $manage_data = pb_backupbuddy_destination_stash::get_manage_data( $settings );
 
 
 // Connect to S3.
-if ( ! is_array( $manage_data['credentials'] ) ) {
-	die( 'Error #8484383: Your authentication credentials for Stash failed. Verify your login and password to Stash. You may need to update the Stash destination settings. Perhaps you recently changed your password?' );
-}
-
-
 $s3 = new AmazonS3( $manage_data['credentials'] );    // the key, secret, token
 if ( $settings['ssl'] == '0' ) {
 	@$s3->disable_ssl(true);
@@ -169,7 +161,7 @@ if ( pb_backupbuddy::_POST( 'bulk_action' ) == 'delete_backup' ) {
 if ( pb_backupbuddy::_GET( 'copy_file' ) != '' ) {
 	pb_backupbuddy::alert( sprintf( _x('The remote file is now being copied to your %1$slocal backups%2$s', '%1$s and %2$s are open and close <a> tags', 'it-l10n-backupbuddy' ), '<a href="' . pb_backupbuddy::page_url() . '">', '</a>.<br>If the backup gets marked as bad during copying, please wait a bit then click the `Refresh` icon to rescan after the transfer is complete.' ) );
 	pb_backupbuddy::status( 'details',  'Scheduling Cron for creating Stash copy.' );
-	backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_remote_copy' ), array( 'stash', pb_backupbuddy::_GET( 'copy_file' ), $settings ) );
+	wp_schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_remote_copy' ), array( 'stash', pb_backupbuddy::_GET( 'copy_file' ), $settings ) );
 	spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 	update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 }
@@ -206,15 +198,8 @@ echo '</pre>';
 echo pb_backupbuddy_destination_stash::get_quota_bar( $account_info );
 
 echo '<div style="text-align: center;">';
-echo '
-<b>Upgrade to get more Stash space:</b> &nbsp;
-<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 300;">+ 5GB</a>, &nbsp;
-<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 600; font-size: 1.1em;">+ 10GB</a>, &nbsp;
-<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 800; font-size: 1.2em;">+ 25GB</a>
-&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-<a href="http://ithemes.com/member/panel/stash.php" target="_new" style="text-decoration: none;"><b>Manage Files & Account</b></a>
-';
-echo '<br><br></div>';
+echo '<a href="http://ithemes.com/member/stash.php" target="_new">Manage Offsite</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="http://ithemes.com/member/stash.php" target="_new">Upgrade</a><br><br>';
+echo '</div>';
 
 
 // Get file listing.
@@ -279,7 +264,7 @@ unset( $backup_list_temp );
 // Render table listing files.
 if ( count( $backup_list ) == 0 ) {
 	echo '<b>';
-	_e( 'You have not completed sending any backups to BackupBuddy Stash for this site yet.', 'it-l10n-backupbuddy' );
+	_e( 'You have not sent any backups to Stash for this site yet (or it is still transferring).', 'it-l10n-backupbuddy' );
 	echo '</b>';
 } else {
 	pb_backupbuddy::$ui->list_table(

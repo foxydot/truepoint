@@ -32,7 +32,7 @@ class pb_backupbuddy_actionscore {
 
 /*	class pb_backupbuddy_ajaxcore
  *	
- *	Handles ajax. Currently just reports if ajax was registered and called but the callback was missing.
+ *	Handles ajac. Currently just reports if ajax was registered and called but the callback was missing.
  *	
  *	@return		null
  */
@@ -58,11 +58,11 @@ class pb_backupbuddy_ajaxcore {
 		$media_library->ajax( pb_backupbuddy::_GET( 'actionb' ) );
 	}
 	
-	/*
+	
 	public function pbframework_troubleshooting() {
 		pb_backupbuddy::verify_nonce();
+		echo 'test';
 	} // End ststst
-	*/
 	
 } // End class pb_backupbuddy_ajax.
 
@@ -128,7 +128,7 @@ class pb_backupbuddy_dashboardcore {
 		foreach ( pb_backupbuddy::$_dashboard_widgets as $widget ) {
 			
 			if ( $widget['capability'] == 'godmode' ) { // godmode capabiltiy.
-				if ( is_multisite() && backupbuddy_core::is_network_activated() ) { // In a network installation.
+				if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() ) { // In a network installation.
 					if ( !current_user_can( 'manage_network' ) ) {
 						continue; // Skip this widget. Access denied to it.
 					}

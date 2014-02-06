@@ -9,7 +9,7 @@ $new_db_prefix = $wpdb->get_blog_prefix( $blog_id );
 
 echo $this->status_box( 'Importing database content & data . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 
 // ********** BEGIN DROP TABLES **********
@@ -78,14 +78,14 @@ if ( isset( $this->advanced_options['skip_database_import'] ) && ( $this->advanc
 	
 	pb_backupbuddy::$options['max_execution_time'] = $options['max_execution_time']; // Used by mysqlbuddy.
 	
-	pb_backupbuddy::flush();
+	flush();
 	
 	global $wpdb;
 	require_once( pb_backupbuddy::plugin_path() . '/lib/mysqlbuddy/mysqlbuddy.php' );
 	pb_backupbuddy::$classes['mysqlbuddy'] = new pb_backupbuddy_mysqlbuddy( DB_HOST, DB_NAME, DB_USER, DB_PASSWORD, $options['db_prefix'] );
-	pb_backupbuddy::flush();
+	flush();
 	$import_result = pb_backupbuddy::$classes['mysqlbuddy']->import( $options['database_directory'] . 'db_1.sql', $options['old_prefix'], $db_continue, true );
-	pb_backupbuddy::flush();
+	flush();
 	
 	$this->status( 'details', 'Actual import done.' );
 }
@@ -104,7 +104,7 @@ if ( $import_result === true ) { // Finished import.
 
 
 echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-pb_backupbuddy::flush();
+flush();
 
 
 if ( $import_result === false ) {

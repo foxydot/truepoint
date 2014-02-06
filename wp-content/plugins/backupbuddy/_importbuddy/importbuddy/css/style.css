@@ -5,7 +5,6 @@ body {
 	font-size: 1em;
 	color: #464646;
 	font-weight: 200;
-	margin: 0;
 }
 
 .main_box {
@@ -61,10 +60,7 @@ body {
 	max-width: 740px;
 	height: 200px;
 }
-div.error {
-	background-color: #ffebe8;
-	border-color: #c00;
-}
+
 
 
 
@@ -77,11 +73,10 @@ div.error {
 	font-weight: bold;
 }
 .backup_select_text {
-	margin-bottom: 12px;
+	margin-bottom: 10px;
 }
 .footer_text {
-	font-size: 0.7em;
-	color: #777;
+	font-size: 0.8em;
 }
 .footer {
 	clear: both;
@@ -173,9 +168,6 @@ h3 {
 img {
 	vertical-align: -2px;
 }
-th {
-	font-weight: normal;
-}
 .menu {
 	padding: 8px;
 	text-align: center;
@@ -235,6 +227,14 @@ textarea {
 	color: #FFFFFF;
 	text-decoration: none;
 }
+.button-tertiary {
+	color: #111111;
+	background: #EFEFEF;
+	border: 1px solid #d6d6d6;
+}
+.button-tertiary:hover {
+	color: #000000;
+}
 .button_disabled {
 	color: #AAAAAA;
 }
@@ -262,15 +262,6 @@ textarea {
 .button-secondary:hover {
 	border-color: #13455B;
 }
-.button-tertiary {
-	color: #111111;
-	background: #EFEFEF;
-	border: 1px solid #d6d6d6;
-	text-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-.button-tertiary:hover {
-	color: #000000;
-}
 label {
 	float: left;
 	width: 200px;
@@ -291,7 +282,7 @@ label {
 
 #tooltip {
 	position: absolute;
-	z-index: 999999;
+	z-index: 12000;
 	border: 1px solid #111;
 	background-color: #eee;
 	padding: 5px;
@@ -380,7 +371,7 @@ hr {
 
 
 .modal {
-	width: 700px;
+	width: 540px;
 	background: #FFFFFF;
 	border-radius: 5px;
 	border: 1px solid #D6D6D6;
@@ -388,13 +379,10 @@ hr {
 	-webkit-border-radius: 5px;
 	overflow: hidden;
 	padding: 0px;
-	height: 100%;
-	overflow: scroll;
 }
 .modal_header {
 	background: whiteSmoke;
 	padding: 20px;
-	//padding-bottom: 15px;
 	border-bottom: 1px solid #D6D6D6;
 }
 .modal_header h2 {
@@ -406,13 +394,12 @@ hr {
 }
 .modal_close {
 	float: right;
-	color: #8f8f8f;
-	font-size: 18px;
+	color: #000000;
 	cursor: pointer;
 	
 	position: absolute;
-	right: 15px;
-	top: 15px;
+	right: 10px;
+	top: 10px;
 }
 .modal_content {
 	padding: 20px;
@@ -433,96 +420,4 @@ hr {
 #pb_createdb_modal {
 	height: 85%;
 	overflow: auto;
-}
-
-
-
-.pb_label {
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-.pb_label {
-	display: inline-block;
-	padding: 2px 4px;
-	font-size: 11.844px;
-	font-weight: bold;
-	line-height: 14px;
-	color: white;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	white-space: nowrap;
-	vertical-align: baseline;
-	background-color: #999;
-}
-.pb_label-success {
-	background-color: #468847;
-}
-.pb_label-warning {
-	background-color: #F89406;
-}
-.pb_label-important {
-	background-color: #dd4542; //#B94A48;
-}
-.pb_label-info {
-	background-color: #3A87AD;
-}
-.pb_label-inverse {
-	background-color: #333;
-}
-
-.expander:hover {
-	text-decoration: none;
-}
-.expander-box {
-	padding-bottom: 6px;
-}
-.expander-box .content {
-	padding: 10px;
-	margin-left: 4px;
-}
-.expander.collapsed {
-	padding-left: 13px;
-	background-position: left center;
-	background-repeat: no-repeat;
-	background-image: url(../images/collapsed.gif);
-}
-.expander.expanded {
-	padding-left: 13px;
-	background-position: left center;
-	background-repeat: no-repeat;
-	background-image: url(../images/expanded.gif);
-}
-
-
-.pb_backupbuddy_begintour {
-	float: right;
-	margin-top: 6px !important;
-	font-size: 14px !important;
-}
-
-.topNav {
-	background: #464646;
-	color: #CCC;
-	margin-bottom: 50px;
-	font-size: 0.9em;
-	
-	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#373737),color-stop(18%,#464646));
-	background-image: -webkit-linear-gradient(bottom,#373737 0,#464646 5px);
-	background-image: -moz-linear-gradient(bottom,#373737 0,#464646 5px);
-	background-image: -o-linear-gradient(bottom,#373737 0,#464646 5px);
-	background-image: linear-gradient(to top,#373737 0,#464646 5px);
-}
-.topNav a {
-	display: inline-block;
-	border-left: 1px solid #555555;
-	border-right: 1px solid #333333;
-	padding: 6px;
-	padding-left: 12px;
-	padding-right: 12px;
-	color: #CCC;
-	cursor: pointer;
-}
-.topNav a:hover,.topNav .activePage {
-	background: #252525;
-	text-decoration: none;
 }

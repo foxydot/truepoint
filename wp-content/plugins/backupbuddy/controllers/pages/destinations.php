@@ -1,55 +1,3 @@
-<?php
-wp_enqueue_script( 'thickbox' );
-wp_print_scripts( 'thickbox' );
-wp_print_styles( 'thickbox' );
-?>
-
-
-<style type="text/css">
-#backupbuddy-meta-link-wrap a.show-settings {
-	float: right;
-	margin: 0 0 0 6px;
-}
-#screen-meta-links #backupbuddy-meta-link-wrap a {
-	background: none;
-}
-#screen-meta-links #backupbuddy-meta-link-wrap a:after {
-	content: '';
-	margin-right: 5px;
-}
-</style>
-<script type="text/javascript">
-jQuery(document).ready( function() {
-	jQuery('#screen-meta-links').append(
-		'<div id="backupbuddy-meta-link-wrap" class="hide-if-no-js screen-meta-toggle">' +
-			'<a href="" class="show-settings pb_backupbuddy_begintour"><?php _e( "Tour Page", "it-l10n-backupbuddy" ); ?></a>' +
-		'</div>'
-	);
-});
-</script>
-<?php
-// Tutorial
-pb_backupbuddy::load_script( 'jquery.joyride-2.0.3.js' );
-pb_backupbuddy::load_script( 'modernizr.mq.js' );
-pb_backupbuddy::load_style( 'joyride.css' );
-?>
-<ol id="pb_backupbuddy_tour" style="display: none;">
-	<li data-class="nav-tab-0">Remote destinations allow you to send your backups offsite to another location for safe-keeping.</li>
-	<li data-class="nav-tab-1" data-button="Finish">View a list of backups recently sent to a remote destination.</li>
-</ol>
-<script>
-jQuery(window).load(function() {
-	jQuery(document).on( 'click', '.pb_backupbuddy_begintour', function(e) {
-		jQuery("#pb_backupbuddy_tour").joyride({
-			tipLocation: 'top',
-		});
-		return false;
-	});
-});
-</script>
-
-
-
 <script type="text/javascript">
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
 		if ( callback_data != '' ) {
@@ -87,10 +35,10 @@ jQuery(window).load(function() {
 <?php
 pb_backupbuddy::$ui->title( __( 'Remote Destinations', 'it-l10n-backupbuddy' ) );
 echo '<div style="width: 100%;">';
-_e( 'BackupBuddy supports many remote destinations which you may transfer backups to.  You may manually send backups to these locations or automatically have them sent for scheduled backups. You may view the files in a remote destination by selecting a destination below once created. In addition to viewing files, you may copy remote backups to your server, and delete files.  All subscribed BackupBuddy customers are provided <b>free</b> storage to our own BackupBuddy Stash cloud destination.', 'it-l10n-backupbuddy' );
+_e( 'BackupBuddy supports many remote destinations which you may transfer backups to.  You may manually send backups to these locations or automatically have them sent for scheduled backups. You may view the files in a remote destination by selecting a destinatino below once created. In addition to viewing files, you may copy remote backups to your server, and delete files.  All subscribed BackupBuddy customers are provided <b>free</b> storage to our own BackupBuddy Stash cloud destination.', 'it-l10n-backupbuddy' );
 echo '</div>';
 
-echo '<br><br>';
+echo '<br><br><br>';
 pb_backupbuddy::$ui->start_tabs(
 	'destinations',
 	array(
@@ -99,7 +47,7 @@ pb_backupbuddy::$ui->start_tabs(
 			'slug'		=>		'destinations',
 		),
 		array(
-			'title'		=>		'Recently Transferred Files',
+			'title'		=>		'Recent Transfers Status',
 			'slug'		=>		'transfers',
 		),
 	),
@@ -108,23 +56,26 @@ pb_backupbuddy::$ui->start_tabs(
 
 
 pb_backupbuddy::$ui->start_tab( 'destinations' );
+echo '<br>';
 echo '<iframe id="pb_backupbuddy_iframe" src="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&action_verb=to%20manage%20files" width="100%" style="max-width: 850px;" height="1800" frameBorder="0">Error #4584594579. Browser not compatible with iframes.</iframe>';
 pb_backupbuddy::$ui->end_tab();
 
 
 pb_backupbuddy::$ui->start_tab( 'transfers' );
+echo '<div style="margin-top: 30px; margin-left: 15px;">';
+	echo '<h3 style="
+		margin: 6px 0 10px 0px;
+		font-weight: 200;
+		font-size: 20px;
+		font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",sans-serif;
+		color: #464646;
+	">' . __( 'Most recent file transfers to remote destinations', 'it-l10n-backupbuddy' ) . ':</h3>';
+	echo '<br>';
 	echo '<div style="margin-left: 0px;">';
 		require_once( 'server_info/remote_sends.php' );
 	echo '</div>';
+echo '</div>';
 pb_backupbuddy::$ui->end_tab();
 ?>
 
 <br style="clear: both;"><br style="clear: both;">
-
-<?php
-// Handles thickbox auto-resizing. Keep at bottom of page to avoid issues.
-if ( !wp_script_is( 'media-upload' ) ) {
-	wp_enqueue_script( 'media-upload' );
-	wp_print_scripts( 'media-upload' );
-}
-?>

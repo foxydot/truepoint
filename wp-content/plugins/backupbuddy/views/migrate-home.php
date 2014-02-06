@@ -28,25 +28,21 @@
 				
 				var password = prompt( '<?php _e( 'To download, enter a password to lock the ImportBuddy script from unauthorized access. You will be prompted for this password when you go to importbuddy.php in your browser. Since you have not defined a default password yet this will be used as your default and can be changed later from the Settings page.', 'it-l10n-backupbuddy' ); ?>' );
 				if ( ( password != null ) && ( password != '' ) ) {
-					window.location.href = '<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>&p=' + encodeURIComponent( password );
+					window.location.href = '<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>&p=' + password;
 				}
-				if ( password == '' ) {
-					alert( 'You have not set a default password on the Settings page so you must provide a password here to download ImportBuddy.' );
-				}
-				
 				return false;
+				
 				<?php
 			} else {
 				?>
 				var password = prompt( '<?php _e( 'To download, either enter a new password for just this download OR LEAVE BLANK to use your default ImportBuddy password (set on the Settings page) to lock the ImportBuddy script from unauthorized access.', 'it-l10n-backupbuddy' ); ?>' );
 				if ( password != null ) {
-					window.location.href = '<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>&p=' + encodeURIComponent( password );
+					window.location.href = '<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>&p=' + password;
 				}
 				return false;
 				<?php
 			}
 			?>
-			return false;
 		});
 		
 
@@ -84,10 +80,6 @@
 	
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
 		if ( callback_data != '' ) {
-			if ( callback_data == 'importbuddy.php' ) {
-				window.location.href = '<?php echo pb_backupbuddy::page_url(); ?>&destination=' + destination_id + '&destination_title=' + destination_title + '&callback_data=' + callback_data;
-				return false;
-			}
 			jQuery.post( '<?php echo pb_backupbuddy::ajax_url( 'remote_send' ); ?>', { destination_id: destination_id, destination_title: destination_title, file: callback_data, trigger: 'migration', send_importbuddy: '1' }, 
 				function(data) {
 					data = jQuery.trim( data );
@@ -113,78 +105,201 @@
 	
 	
 </script>
-<style>
-	.backupbuddyFileTitle {
-		color: #0084CB;
-		font-size: 1.2em;
+
+
+
+<style> 
+	.graybutton {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/grays2.png) top repeat-x;
+		min-width: 158px;
+		height: 138px;
+		display: block;
+		float: left;
+		-moz-border-radius: 6px;
+		border-radius: 6px;
+		border: 1px solid #c9c9c9;
+		margin-bottom: 3px;
+	}
+	.graybutton:hover {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/grays2.png) bottom repeat-x;
+		border: 1px solid #aaaaaa;
+	}
+	.graybutton:active {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/grays2.png) bottom repeat-x;
+		border: 1px solid transparent;
+	}
+	.leftround {
+		-moz-border-radius: 4px 0 0 4px;
+		border-radius: 4px 0 0 4px;
+		border-right: 1px solid #c9c9c9;
+	}
+	.rightround {
+		-moz-border-radius: 0 4px 4px 0;
+		border-radius: 0 4px 4px 0;
+	}
+	.dbonlyicon {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/dbonly-icon.png);
+		width: 60px;
+		height: 60px;
+		margin: 15px auto 0 auto;
+		display: block;
+		float: center;
+	}
+	.allcontenticon {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/allcontent-icon.png);
+		width: 60px;
+		height: 60px;
+		margin: 15px auto 0 auto;
+		display: block;
+		float: center;
+	}
+	.restoremigrateicon {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/restoremigrate-icon.png);
+		width: 60px;
+		height: 60px;
+		margin: 15px auto 0 auto;
+		display: block;
+		float: center;
+	}
+	.repairbuddyicon {
+		background: url(<?php echo pb_backupbuddy::plugin_url(); ?>/images/buttons/allcontent-icon.png);
+		width: 60px;
+		height: 60px;
+		margin: 15px auto 0 auto;
+		display: block;
+		float: center;
+	}
+	.bbbutton-text {
+		font-family: Georgia, Times, serif;
+		font-size: 18px;
+		font-style: italic;
+		min-width: 158px;
+		text-align: center;
+		
+		/* line-height: 60px; */
+		padding: 13px;
+		
+		color: #666666;
+		text-shadow: 1px 1px 1px #ffffff;
+		clear: both;
+		display: inline-block;
+	}
+	.bbbutton-smalltext {
+		font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
+		font-size: 9px;
+		font-style: normal;
+		text-shadow: 0;
+		padding-top: 3px;
 	}
 </style>
-
 <?php
-if ( pb_backupbuddy::$options['importbuddy_pass_hash'] == '' ) { // NO HASH SET.
-	echo '<span class="pb_label pb_label">Important</span> <b>Set an ImportBuddy password on the <a href="';
-		if ( is_network_admin() ) {
-			echo network_admin_url( 'admin.php' );
-		} else {
-			echo admin_url( 'admin.php' );
-		}
-		echo '?page=pb_backupbuddy_settings">Settings</a> page before attempting to Migrate to a new server with the link in the backup list.
-	</b><br><br>';
-}
-?>
+pb_backupbuddy::$ui->start_metabox( 'Manual Migration' . ' ' . pb_backupbuddy::video( 'jvL1X9w-CUY', __('Manual migration', 'it-l10n-backupbuddy' ), false ), true, 'width: 100%;' );
+	?>
+	
+	
+	<div style="float: right; margin-left: 12px;">
+		<div style="display: inline-block;">
+			<a href="<?php echo admin_url( 'admin-ajax.php' ) . '?action=pb_backupbuddy_repairbuddy'; ?>" style="text-decoration: none;" title="BETA! <?php _e('Download the restore & migration utility, importbuddy.php', 'it-l10n-backupbuddy' ); ?>">
+				<div style="position: absolute; width: 382px;">
+					<span style="position: absolute; z-index: 42; right: 0px; display: inline-block;">
+						<img src="<?php echo pb_backupbuddy::plugin_url(); ?>/images/beta.png" title="Beta" width="60" height="60">
+					</span>
+				</div>
+			</a>
+			
+			
+				<div class="graybutton">
+					<?php
+					echo '<a href="' . pb_backupbuddy::ajax_url( 'importbuddy' ) . '" class="pb_backupbuddy_get_importbuddy" style="text-decoration: none;" title="' . __('Download the restore & migration utility, importbuddy.php', 'it-l10n-backupbuddy' ) . '">';
+					?>
+						<div class="restoremigrateicon"></div>
+						<div class="bbbutton-text">
+							<?php _e('ImportBuddy', 'it-l10n-backupbuddy' );?><br />
+							<div class="bbbutton-smalltext"><?php _e('restoring & migration script', 'it-l10n-backupbuddy' );?></div>
+						</div>
+					</a>
+					<br>
+					<div style="text-align: center; margin-top: 5px;">
+						<?php
+						echo '<a href="' . pb_backupbuddy::ajax_url( 'importbuddy' ) . '" class="pb_backupbuddy_get_importbuddy" style="text-decoration: none;" title="' . __('Download the restore & migration utility, importbuddy.php', 'it-l10n-backupbuddy' ) . '">';
+						?>Download</a>
+						|
+						<a title="Send ImportBuddy to a Remote Destination" rel="importbuddy.php" style="text-decoration: none;" class="pb_backupbuddy_hoveraction_send" href="/wp-admin/network/admin.php?page=pb_backupbuddy_backup&amp;send=importbuddy.php&amp;value=importbuddy.php">Send</a>
+					</div>
+				</div>
+			
+			
+			<?php
+				if ( pb_backupbuddy::$options['repairbuddy_pass_hash'] == '' ) {
+					echo '<a onclick="alert(\'' . __( 'Please set a RepairBuddy password on the BackupBuddy Settings page to download this script. This is required to prevent unauthorized access to the script when in use.', 'it-l10n-backupbuddy' ) . '\'); return false;" href="" style="text-decoration: none;" title="' . __( 'Download the troubleshooting & repair script, repairbuddy.php', 'it-l10n-backupbuddy' ) . '">';
+				} else {
+					echo '<a href="' . admin_url( 'admin-ajax.php' ) . '?action=pb_backupbuddy_repairbuddy" style="text-decoration: none;" title="' . __('Download the troubleshooting & repair script, repairbuddy.php', 'it-l10n-backupbuddy' ) . '">';
+				}
+			?>
+				<span class="graybutton" style="margin-left: 10px;">
+					<span class="repairbuddyicon"></span>
+					<span class="bbbutton-text">
+						<?php _e('RepairBuddy', 'it-l10n-backupbuddy' );?><br />
+						<span class="bbbutton-smalltext"><?php _e('troubleshooting & repair script', 'it-l10n-backupbuddy' );?></span>
+					</span>
+					<br>
+					<div style="text-align: center; margin-top: 5px;">
+						Download
+					</div>
+				</span>
+			</a>
+			
+		</div>
+		
+	</div>
+	
+	
+	
+	Manually migrate or restore your site with the ImportBuddy tool (importbuddy.php).
+	This is a step-by-step process with instructions along the way.
+	Keep a copy of this script with your backups for restoring sites directly from backups.
+	For a more automated migration process you may select a backup from the "Automated Migration"
+	section below.
+	<ol>
+		<li>Download the <a href="<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>" class="pb_backupbuddy_get_importbuddy">importbuddy.php tool</a>.</li>
+		<li>Upload importbuddy.php & backup ZIP file to the destination site location.</li>
+		<li>Navigate to the uploaded importbuddy.php URL in your web browser.</li>
+		<li>Follow the on-screen directions until the restore / migration is complete.</li>
+	</ol>
+	<br class="clearfix">
+	<?php
+pb_backupbuddy::$ui->end_metabox();
 
 
-The best way to Restore or Migrate your site is by using a standalone PHP script named <b>importbuddy.php</b>. This file is run without first
-installing WordPress, in combination with your backup ZIP file will allow you to restore this server or to a new server entirely. Sites may be
-restored to a new site URL or domain.
-You should keep a copy of importbuddy.php for future restores.  It is also stored within backup ZIP files for your convenience. importbuddy.php files are not
-site/backup specific.
-<br><br>
-<ol>
-	<li>
-		<a id="pb_backupbuddy_downloadimportbuddy" href="<?php echo pb_backupbuddy::ajax_url( 'importbuddy' ); ?>" class="button button-primary pb_backupbuddy_get_importbuddy">Download importbuddy.php</a> or
-		<a id="pb_backupbuddy_sendimportbuddy" href="" rel="importbuddy.php" class="button button-primary pb_backupbuddy_hoveraction_send">Send importbuddy.php to a Destination</a>
-	</li>
-	<li>
-		Download a backup zip file from the list below or send it directly to a destination by selecting "Send file" when hovering over a backup below.
-	</li>
-	<li>
-		Upload importbuddy.php & the downloaded backup zip file to the destination server directory where you want your site restored.
-		<ul style="list-style-type: circle; margin-left: 20px; margin-top: 8px;">
-			<li>
-				Upload these into the FTP directory for your site's web root such as /home/buddy/public_html/.
-				If you want to restore into a subdirectory, put these files in it.
-			</li>
-			<li>
-				WordPress should not be installed prior to the restore. You should delete it if it already exists.
-			<li>
-				Full backups should be restored before restoring database only backups.
-			</li>
-		</ul>
-	</li>
-	<li>Navigate to the uploaded importbuddy.php URL in your web browser (ie http://your.com/importbuddy.php).</li>
-	<li>Follow the on-screen directions until the restore / migration is complete.</li>
-</ol>
-<br><br>
-
-<h3 id="pb_backupbuddy_restoremigratelisttitle">Hover Backup for Additional Options</h3>
-<?php
 
 
-$listing_mode = 'restore_migrate';
-require_once( '_backup_listing.php' );
-
-
-
-
-
-echo '<br><br><br><br><br><br><br><br><br><br><br>';
-echo '<small>';
-if ( pb_backupbuddy::$options['importbuddy_pass_hash'] == '' ) {
-	echo '<a class="description" onclick="alert(\'' . __( 'Please set a RepairBuddy password on the BackupBuddy Settings page to download this script. This is required to prevent unauthorized access to the script when in use.', 'it-l10n-backupbuddy' ) . '\'); return false;" href="" style="text-decoration: none;" title="' . __( 'Download the troubleshooting & repair script, repairbuddy.php', 'it-l10n-backupbuddy' ) . '">';
-} else {
-	echo '<a class="description" href="' . admin_url( 'admin-ajax.php' ) . '?action=pb_backupbuddy_repairbuddy" style="text-decoration: none;" title="' . __('Download the troubleshooting & repair script, repairbuddy.php', 'it-l10n-backupbuddy' ) . '">';
-}
-echo __( 'Download RepairBuddy troubleshooting & repair tool.', 'it-l10n-backupbuddy' ) . '</a>';
-echo '</small>';
+pb_backupbuddy::$ui->start_metabox( 'Automated Migration' . ' ' . pb_backupbuddy::video( 'uSBvBSfSjWM', __('Automated migration', 'it-l10n-backupbuddy' ), false ), true, 'width: 100%;' );
+	if ( pb_backupbuddy::$options['importbuddy_pass_hash'] == '' ) { // NO HASH SET.
+		echo '<b>Set an ImportBuddy password on the <a href="';
+			if ( is_network_admin() ) {
+				echo network_admin_url( 'admin.php' );
+			} else {
+				echo admin_url( 'admin.php' );
+			}
+			echo '?page=pb_backupbuddy_settings">Settings</a> page before you begin.
+		</b>';
+	}
+	?>
+	Automated migration allows you to quickly <b>migrate full backups to another location</b> such as another server or another directory on this server.
+	Your backup archive and the ImportBuddy tool (importbuddy.php) will automatically be transferred to the destination and run.
+	This feature cannot be used to restore a site back to the same location over this site.
+	<?php
+	if ( count( $backups ) > 0 ) { // $backups set in the controller as view data.
+		_e( 'Hover over the backup below you would like to migrate and select "Migrate this backup" to begin the automated migration process.', 'it-l10n-backupbuddy' );
+		echo '<br><br>';
+	} else {
+		echo '<br>';
+		_e( 'You must create a backup prior to migrating this site.', 'it-l10n-backupbuddy' );
+		echo '<br>';
+	}
+	
+	$listing_mode = 'migrate';
+	require_once( '_backup_listing.php' );
+	echo '<br>';
+pb_backupbuddy::$ui->end_metabox();
 ?>

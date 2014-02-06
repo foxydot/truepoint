@@ -52,8 +52,6 @@ RewriteRule . /index.php [L]\n
 		$oldurl = explode( '\\', $oldurl );
 		$oldurl[0] = '';
 		
-		$old_path = implode( '/', $oldurl );
-		
 		$newurl = strtolower( pb_backupbuddy::$options['siteurl'] );
 		$newurl = str_replace( '/', '\\', $newurl );
 		$newurl = str_replace( 'http:\\', '', $newurl );
@@ -72,8 +70,6 @@ RewriteRule . /index.php [L]\n
 			$rewrite_path = implode( '/', $newurl );
 			$file_array = file( ABSPATH . '.htaccess.bb_temp' );
 			
-			
-			// Loop through .htaccess lines, updating as needed.
 			foreach ($file_array as $line_number => $line) {
 				if ( $got_rewrite == true ) { // In a WordPress section.
 					if ( strstr( $line, 'END WordPress' ) ) { // End of a WordPress block so stop replacing.
@@ -85,37 +81,22 @@ RewriteRule . /index.php [L]\n
 						} elseif ( strstr( $line, 'RewriteRule' ) ) { // RewriteRule
 							if ( strstr( $line, '^index\.php$' ) ) { // Handle new strange rewriterule. Leave as is.
 								$rewrite_lines[] = $line;
-								pb_backupbuddy::status( 'details', '.htaccess ^index\.php$ detected. Leaving as is.' );
-							} elseif ( ! strstr( $line, 'RewriteRule . ') ) {
-								// Handle what is probably a user generated rule - better detection needed.
-								$new_line = str_replace( $old_path, $rewrite_path, $line );
-								$rewrite_lines[] = $new_line;
-								if ( $new_line != $line ) {
-									pb_backupbuddy::status( 'message', '.htaccess line changed from `' . trim( $line ) . '` to `' . trim( $new_line ) . '`.' );
-								}
+								pb_backupbuddy::status( 'details', 'Htaccess ^index\.php$ detected. Leaving as is.' );
 							} else { // Normal spot.
 								$rewrite_lines[] = 'RewriteRule . ' . $rewrite_path . '/index.php' . "\n";
 							}
 						} else {
 							$rewrite_lines[] =  $line; // Captures everything inside WordPress block we arent modifying.
-							if ( false !== strstr( $line, 'RewriteRule . ') ) { // RewriteRule, warn user potentially if path may need changed.
-								if ( $old_path !== $rewrite_path ) {
-									pb_backupbuddy::status( 'warning', 'User-defined RewriteRule found and WordPress path has changed so this rule MAY need manually updated by you to function properly.  Line: "' . $line . '".' );
-								}
-							}
 						}
 					}
-					
-					
 				} else { // Outside a WordPress section.
 					if ( strstr( $line, 'BEGIN WordPress' ) ) {
 						$got_rewrite = true; // Beginning of a WordPress block so start replacing.
 					}
 					$rewrite_lines[] =  $line; // Captures everything outside of WordPress block.
 				}
-			} // end foreach.
-			
-			
+			}
+				
 			$handling = fopen( ABSPATH . '.htaccess.bb_temp', 'w');
 			fwrite( $handling, implode( $rewrite_lines ) );
 			fclose( $handling );
@@ -148,14 +129,16 @@ RewriteRule . /index.php [L]\n
 		// Connect to database.
 		$this->connect_database();
 		
-		global $wpdb;
-		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '" . mysql_real_escape_string( str_replace( '_', '\_', $prefix ) ) . "%' AND table_schema = DATABASE()", ARRAY_A );
-		$table_wipe_count = count( $rows );
-		foreach( $rows as $row ) {
-			pb_backupbuddy::status( 'details', 'Dropping table `' . $row['table_name'] . '`.' );
-			$wpdb->query( 'DROP TABLE `' . $row['table_name'] . '`' );
+		$query = "SHOW TABLES LIKE '" . mysql_real_escape_string( str_replace( '_', '\_', $prefix ) ) . "%'"; // Underscore must be escaped for use in mysql LIKE to make literal.
+		
+		pb_backupbuddy::status( 'message', 'Drop query: `' . $query . '`.' );
+		$result = mysql_query( $query );
+		$table_wipe_count = mysql_num_rows( $result );
+		while( $row = mysql_fetch_row( $result ) ) {
+			pb_backupbuddy::status( 'details', 'Dropping table `' . $row[0] . '`.' );
+			mysql_query( 'DROP TABLE `' . $row[0] . '`' );
 		}
-		unset( $rows );
+		mysql_free_result( $result ); // Free memory.
 		pb_backupbuddy::status( 'message', 'Wiped database of ' . $table_wipe_count . ' tables.' );
 		
 		return true;
@@ -180,14 +163,16 @@ RewriteRule . /index.php [L]\n
 		// Connect to database.
 		$this->connect_database();
 		
-		global $wpdb;
-		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()", ARRAY_A );
-		$table_wipe_count = count( $rows );
-		foreach( $rows as $row ) {
-			pb_backupbuddy::status( 'details', 'Dropping table `' . $row['table_name'] . '`.' );
-			$wpdb->query( 'DROP TABLE `' . $row['table_name'] . '`' );
+		$query = "SHOW TABLES";
+		
+		pb_backupbuddy::status( 'message', 'Drop query: `' . $query . '`.' );
+		$result = mysql_query( $query );
+		$table_wipe_count = mysql_num_rows( $result );
+		while( $row = mysql_fetch_row( $result ) ) {
+			pb_backupbuddy::status( 'details', 'Dropping table `' . $row[0] . '`.' );
+			mysql_query( 'DROP TABLE `' . $row[0] . '`' );
 		}
-		unset( $rows );
+		mysql_free_result( $result ); // Free memory.
 		pb_backupbuddy::status( 'message', 'Wiped database of ' . $table_wipe_count . ' tables.' );
 		
 		return true;
@@ -221,7 +206,7 @@ RewriteRule . /index.php [L]\n
 	function migrate_wp_config() {
 		pb_backupbuddy::status( 'message', 'Starting migration of wp-config.php file...' );
 		
-		pb_backupbuddy::flush();
+		flush();
 		
 		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
 			// Useful REGEX site: http://gskinner.com/RegExr/
@@ -256,13 +241,10 @@ RewriteRule . /index.php [L]\n
 			$replace[5] = "define( 'DB_HOST', '" . pb_backupbuddy::$options['db_server'] . "' );";
 			
 			// If multisite, update domain.
-			if ( pb_backupbuddy::$options['domain'] != '' ) {
-				$pattern[6] = '/define\([\s]*(\'|")DOMAIN_CURRENT_SITE(\'|"),[\s]*(\'|")(.)*(\'|")[\s]*\);/i';
-				$replace[6] = "define( 'DOMAIN_CURRENT_SITE', '" . pb_backupbuddy::$options['domain'] . "' );";
-				pb_backupbuddy::status( 'details', 'wp-config.php: Setting DOMAIN_CURRENT_SITE (if applicable) to `' . pb_backupbuddy::$options['domain'] . '`.' );
-			} else {
-				pb_backupbuddy::status( 'details', 'wp-config.php did not update DOMAIN_CURRENT_SITE as it was blank.' );
-			}
+			$pattern[6] = '/define\([\s]*(\'|")DOMAIN_CURRENT_SITE(\'|"),[\s]*(\'|")(.)*(\'|")[\s]*\);/i';
+			$replace[6] = "define( 'DOMAIN_CURRENT_SITE', '" . pb_backupbuddy::$options['domain'] . "' );";
+			pb_backupbuddy::status( 'details', 'wp-config.php: Setting DOMAIN_CURRENT_SITE (if applicable) to `' . pb_backupbuddy::$options['domain'] . '`.' );
+			
 			/*
 			Update table prefix.
 			RegExp: /\$table_prefix[\s]*=[\s]*('|")(.)*('|");/gi
@@ -271,10 +253,8 @@ RewriteRule . /index.php [L]\n
 			$pattern[7] = '/\$table_prefix[\s]*=[\s]*(\'|")(.)*(\'|");/i';
 			$replace[7] = '$table_prefix = \'' . pb_backupbuddy::$options['db_prefix'] . '\';';
 			
-			
 			// Perform the actual replacement.
 			$lines = preg_replace( $pattern, $replace, $lines );
-			
 			
 			// Check that we can write to this file.
 			if ( !is_writable( ABSPATH . 'wp-config.php' ) ) {
@@ -291,7 +271,7 @@ RewriteRule . /index.php [L]\n
 			unset( $lines );
 		} else {
 			pb_backupbuddy::status( 'warning', 'Warning: wp-config.php file not found.' );
-			//pb_backupbuddy::alert( 'Note: wp-config.php file not found. This is normal for a database only backup.' );
+			pb_backupbuddy::alert( 'Note: wp-config.php file not found. This is normal for a database only backup.' );
 		}
 		
 		pb_backupbuddy::status( 'message', 'Migration of wp-config.php complete.' );
@@ -300,22 +280,13 @@ RewriteRule . /index.php [L]\n
 	} // End migrate_wp_config().
 	
 	
-	
-	/* get_dat_file_array()
-	 *
-	 * Get the DAT file contents as an array.
-	 *
-	 * @param		string		$dat_file		Full path to DAT file to decode and parse.
-	 * @return		array|false					Array of DAT content. Bool false when unable to read.
-	 *
-	 */
 	function get_dat_file_array( $dat_file ) {
 		pb_backupbuddy::status( 'details', 'Loading backup dat file.' );
 		
 		if ( file_exists( $dat_file ) ) {
 			$backupdata = file_get_contents( $dat_file );
 		} else { // Missing.
-			pb_backupbuddy::status( 'error', 'Error #9003: BackupBuddy data file (backupbuddy_dat.php) missing or unreadable. There may be a problem with the backup file, the files could not be extracted (you may manually extract the zip file in this directory to manually do this portion of restore), or the files were deleted before this portion of the restore was reached.  Start the import process over or try manually extracting (unzipping) the files then starting over. Restore will not continue to protect integrity of any existing data.' );
+			pb_backupbuddy::alert( 'Error #9003: BackupBuddy data file (backupbuddy_dat.php) missing or unreadable. There may be a problem with the backup file, the files could not be extracted (you may manually extract the zip file in this directory to manually do this portion of restore), or the files were deleted before this portion of the restore was reached.  Start the import process over or try manually extracting (unzipping) the files then starting over. Restore will not continue to protect integrity of any existing data.', true, '9003' );
 			die( ' Halted.' );
 		}
 		
@@ -329,20 +300,9 @@ RewriteRule . /index.php [L]\n
 			$return = unserialize( base64_decode( $backupdata ) );
 		}
 		
-		if ( ! is_array( $return ) ) { // Invalid DAT content.
-			pb_backupbuddy::status( 'error', 'Error #545545. Unable to read/decode DAT file.' );
-			return false;
-		}
-		
-		pb_backupbuddy::status( 'details', 'Successfully loaded backup dat file `' . $dat_file . '`.' );
-		$return_censored = $return;
-		$return_censored['db_password'] = '*HIDDEN*';
-		$return_censored = print_r( $return_censored, true );
-		$return_censored = str_replace( array( "\n", "\r" ), '; ', $return_censored );
-		pb_backupbuddy::status( 'details', 'DAT contents: ' . $return_censored );
+		pb_backupbuddy::status( 'details', 'Successfully loaded backup dat file.' );
 		return $return;
-	} // End get_dat_file_array().
-	
+	} // End load_dat_file().
 	
 	
 	// TODO: switch to using pb_backupbuddy::status_box() instead.
@@ -377,13 +337,23 @@ RewriteRule . /index.php [L]\n
 	 *	@return		boolean		True on success; else false. Success testing is very loose.
 	 */
 	function connect_database() {
+		// Set up database connection.
+		if ( false === @mysql_connect( pb_backupbuddy::$options['db_server'], pb_backupbuddy::$options['db_user'], pb_backupbuddy::$options['db_password'] ) ) {
+			pb_backupbuddy::alert( 'ERROR: Unable to connect to database server and/or log in. Verify the database server name, username, and password. Details: ' . mysql_error(), true, '9006' );
+			return false;
+		}
+		$database_name = mysql_real_escape_string( pb_backupbuddy::$options['db_name'] );
 		
-		pb_backupbuddy::flush();
+		flush();
 		
-		global $wpdb;
-		$wpdb = new wpdb( pb_backupbuddy::$options['db_user'], pb_backupbuddy::$options['db_password'], pb_backupbuddy::$options['db_name'], pb_backupbuddy::$options['db_server'] );
+		// Select the database.
+		if ( false === @mysql_select_db( pb_backupbuddy::$options['db_name'] ) ) {
+			pb_backupbuddy::status( 'error', 'Error: Unable to connect or authenticate to database `' . pb_backupbuddy::$options['db_name'] . '`.' );
+			return false;
+		}
 		
-		pb_backupbuddy::flush();
+		// Set up character set. Important.
+		mysql_query("SET NAMES 'utf8'");
 		
 		return true;
 	}

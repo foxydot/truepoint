@@ -3,7 +3,7 @@
 
 echo $this->status_box( 'Extracting files . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 $backup_archive = $this->import_options['file']; // Full path to file.
 $destination_directory = $this->import_options['extract_to'] . '/';

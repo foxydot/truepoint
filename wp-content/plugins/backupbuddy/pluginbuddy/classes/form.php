@@ -304,7 +304,7 @@ class pb_backupbuddy_form {
 		}
 		
 		
-		$return = '<form method="post" action="' . $action_url . '" class="pb_form" id="' . $this->_prefix . $this->_form_name . '_form">';
+		$return = '<form method="post" action="' . $action_url . '" id="' . $this->_prefix . $this->_form_name . '_form">';
 		$return .= '<input type="hidden" name="' . $this->_prefix . '" value="' . $this->_form_name . '">';
 		return $return;
 	} // End start().
@@ -388,7 +388,7 @@ class pb_backupbuddy_form {
 			if ( $input['type'] == 'text' ) {
 				
 				
-				$return .= '<input type="text" class="' . $classes . '" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<input type="text" class="' . $classes . '" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . $name . '"' . $css . '>';
 				
 				
 			/********** PLAINTEXT **********/
@@ -434,14 +434,14 @@ class pb_backupbuddy_form {
 					$css = ' style="width: 60px;"';
 				}
 				
-				$return .= '<input class="pb_colorpicker ' . $classes . '" type="text" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<input class="pb_colorpicker ' . $classes . '" type="text" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . $name . '"' . $css . '>';
 				
 				
 			/********** HIDDEN **********/
 			} elseif ( $input['type'] == 'hidden' ) {
 				
 				
-				$return .= '<input type="hidden" name="' . $prefix . $name . '" value="' . $input['value'] . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<input type="hidden" name="' . $prefix . $name . '" value="' . $input['value'] . '" class="' . $classes . '" id="' . $prefix . $name . '"' . $css . '>';
 				
 				
 			/********** WYSIWYG **********/
@@ -469,21 +469,21 @@ class pb_backupbuddy_form {
 			} elseif ( $input['type'] == 'textarea' ) {
 				
 				
-				$return .= '<textarea name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>' . $input['value'] . '</textarea>';
+				$return .= '<textarea name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . $name . '"' . $css . '>' . $input['value'] . '</textarea>';
 				
 				
 			/********** PASSWORD **********/
 			} elseif ( $input['type'] == 'password' ) {
 				
 				
-				$return .= '<input type="password" name="' . $prefix . $name . '" value="' . $input['value'] . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<input type="password" name="' . $prefix . $name . '" value="' . $input['value'] . '" class="' . $classes . '" id="' . $prefix . $name . '"' . $css . '>';
 				
 				
 			/********** SELECT **********/
 			} elseif ( $input['type'] == 'select' ) {
 				
 				
-				$return .= '<select name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<select name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . $name . '"' . $css . '>';
 				foreach ( $input['options'] as $option_value => $option_title ) {
 					$return .= '<option value="' . $option_value . '"';
 					if ( $option_value == $input['value'] ) { $return .= ' selected="selected"'; }
@@ -500,7 +500,7 @@ class pb_backupbuddy_form {
 				$i = 0;
 				foreach ( $input['options'] as $option_value => $option_title ) {
 					$i++;
-					$return .= '<input type="radio" name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '" value="' . $option_value . '"' . $css;
+					$return .= '<input type="radio" name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . $name . '" value="' . $option_value . '"' . $css;
 					
 					if ( $option_value == $input['value'] ) { // Check if this item is selected.
 						$return .= ' checked="checked"';
@@ -521,7 +521,7 @@ class pb_backupbuddy_form {
 				
 				
 				$return .= '<input type="hidden" name="' . $prefix . $name . '" value="' . $input['options']['unchecked'] . '">';
-				$return .= '<input type="checkbox" name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . str_replace( '#', '__', $name ) . '" value="' . $input['options']['checked'] . '"' . $css;
+				$return .= '<input type="checkbox" name="' . $prefix . $name . '" class="' . $classes . '" id="' . $prefix . $name . '" value="' . $input['options']['checked'] . '"' . $css;
 				if ( $input['options']['checked'] == $input['value'] ) {
 					$return .= ' checked';
 				}
@@ -533,7 +533,7 @@ class pb_backupbuddy_form {
 			} elseif ( $input['type'] == 'submit' ) {
 				
 				
-				$return .= '<input class="button-primary ' . $classes . '" type="submit" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . str_replace( '#', '__', $name ) . '"' . $css . '>';
+				$return .= '<input class="button-primary ' . $classes . '" type="submit" name="' . $prefix . $name . '" value="' . $input['value'] . '" id="' . $prefix . $name . '"' . $css . '>';
 				
 				
 			/********** ~UNKNOWN TYPE~ **********/
@@ -607,11 +607,7 @@ class pb_backupbuddy_form {
 			}
 		}
 		
-		if ( isset( $this->_inputs[$name]['rules'] ) ) {
-			return self::test_rule( $this->_inputs[$name]['rules'], $value );
-		} else { // No tests. Passed.
-			return true;
-		}
+		return self::test_rule( $this->_inputs[$name]['rules'], $value );
 	} // End test().
 	
 	

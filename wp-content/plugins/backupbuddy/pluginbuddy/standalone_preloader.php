@@ -86,10 +86,10 @@ function is_serialized( $data ) {
 	return false;
 } // End is_serialized().
 
-function __( $text, $domain = '' ) {
+function __( $text, $domain ) {
 	return $text;
 }
-function _e( $text, $domain = '' ) {
+function _e( $text, $domain ) {
 	echo $text;
 }
 
@@ -97,10 +97,9 @@ function wp_style_is( $name ) {
 	global $pb_styles;
 	return array_key_exists( $name, $pb_styles );
 }
-function wp_enqueue_style( $name, $file, $deps = array(), $ver = '' ) {
+function wp_enqueue_style( $name, $file ) {
 	global $pb_styles;
 	$pb_styles[$name]['file'] = $file;
-	$pb_styles[$name]['version'] = $ver;
 	$pb_styles[$name]['printed'] = false;
 }
 function wp_print_styles( $name ) {
@@ -108,7 +107,7 @@ function wp_print_styles( $name ) {
 	if ( $pb_styles[$name]['printed'] === false ) {
 		$pb_styles[$name]['printed'] = true;
 		
-		echo '<link rel="stylesheet" type="text/css" href="' . $pb_styles[$name]['file'] . '?ver=' . $pb_styles[$name]['version'] . '">';
+		echo '<link rel="stylesheet" type="text/css" href="' . $pb_styles[$name]['file'] . '">';
 	}
 }
 
@@ -116,10 +115,9 @@ function wp_script_is( $name ) {
 	global $pb_scripts;
 	return array_key_exists( $name, $pb_scripts );
 }
-function wp_enqueue_script( $name, $file, $deps = array(), $ver = '' ) {
+function wp_enqueue_script( $name, $file ) {
 	global $pb_scripts;
 	$pb_scripts[$name]['file'] = $file;
-	$pb_scripts[$name]['version'] = $ver;
 	$pb_scripts[$name]['printed'] = false;
 }
 function wp_print_scripts( $name ) {
@@ -127,7 +125,7 @@ function wp_print_scripts( $name ) {
 	if ( $pb_scripts[$name]['printed'] === false ) {
 		$pb_scripts[$name]['printed'] = true;
 		
-		echo '<script src="' . $pb_scripts[$name]['file'] . '?ver=' . $pb_scripts[$name]['version'] . '" type="text/javascript"></script>';
+		echo '<script src="' . $pb_scripts[$name]['file'] . '" type="text/javascript"></script>';
 	}
 }
 
@@ -229,19 +227,6 @@ function wp_nonce_field() {
 
 
 
-// Some PHP installs don't have ngettext. Needed by human_time_diff().
-if ( ! function_exists( 'ngettext' ) ) {
-	function ngettext( $singular, $plural, $num ) {
-		if ( $num > 1 ) {
-			return $plural;
-		} else {
-			return $singular;
-		}
-	}
-} // End ngettext().
-
-
-
 /**
  * Determines the difference between two timestamps.
  *
@@ -280,62 +265,6 @@ function human_time_diff( $from, $to = '' ) {
 	}
 	return $since;
 }
-
-
-
-/**
- * Unserialize value only if it was serialized.
- *
- * @since 2.0.0
- *
- * @param string $original Maybe unserialized original, if is needed.
- * @return mixed Unserialized data can be any type.
- */
-function maybe_unserialize( $original ) {
-	if ( is_serialized( $original ) ) // don't attempt to unserialize data that wasn't serialized going in
-		return @unserialize( $original );
-	return $original;
-}
-
-
-
-
-
-
-// NOT IMPLEMENTED BUT NON-BLOCKING.
-
-function register_activation_hook() {
-}
-function load_plugin_textdomain() {
-}
-
-
-
-
-function wp_die( $message ) {
-	pb_backupbuddy::status( 'error', 'wp_die() called with message: ' . $message );
-	echo $message;
-	die();
-}
-
-function wp_load_translations_early() {
-}
-
-function wp_debug_backtrace_summary() {
-}
-
-if ( !defined('WP_DEBUG') )
-	define( 'WP_DEBUG', false );
-// Add define('WP_DEBUG_DISPLAY', null); to wp-config.php use the globally configured setting for
-// display_errors and not force errors to be displayed. Use false to force display_errors off.
-if ( !defined('WP_DEBUG_DISPLAY') )
-	define( 'WP_DEBUG_DISPLAY', true );
-// Add define('WP_DEBUG_LOG', true); to enable error logging to wp-content/debug.log.
-if ( !defined('WP_DEBUG_LOG') )
-	define('WP_DEBUG_LOG', false);
-if ( !defined('WP_CACHE') )
-	define('WP_CACHE', false);
-
 
 
 ?>

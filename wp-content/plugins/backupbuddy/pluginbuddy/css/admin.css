@@ -1,6 +1,6 @@
 #tooltip {
 	position: absolute;
-	z-index: 999999;
+	z-index: 3000;
 	border: 2px solid #DFDFDF;
 	padding: 12px;
 	max-width: 300px;
@@ -28,33 +28,6 @@
 }
 .pluginbuddy_tip img {
 	vertical-align: -2px;
-}
-/* Scrollable text for displaying default dirs, etc. */
-.pb_scroll {
-	display: inline-block;
-	overflow-x: scroll;
-	white-space: nowrap;
-}
-.pb_scroll::-webkit-scrollbar {
-	-webkit-appearance: none;
-	width: 11px;
-	height: 11px;
-}
-.pb_scroll::-webkit-scrollbar-thumb {
-	border-radius: 8px;
-	border: 2px solid white; /* should match background, can't be transparent */
-	background-color: rgba(0, 0, 0, .1);
-}
-.pb_scroll::-webkit-scrollbar-corner{
-	background-color:rgba(0,0,0,0.0);
-}
-
-
-h3.title {
-	font-weight: 600;
-}
-.pb_form th, h3 {
-	font-weight: normal;
 }
 
 td.pb_draghandle {
@@ -97,9 +70,9 @@ tr.tDnD_whileDrag td,tr.tDnD_whileDrag th{
 }
 
 .pb_htitle {
-	font-size: 18px;
+	font-size: 15px;
 	border-bottom: 1px solid #DFDFDF;
-	padding-bottom: 4px;
+	margin-top: 20px;
 }
 
 .pb_toggle {
@@ -120,112 +93,40 @@ tr.tDnD_whileDrag td,tr.tDnD_whileDrag th{
 	height: 200px;
 }
 
-
-.backupbuddy-tab-blocks .backupbuddy-tab {
-	display: none;
-	padding-top: 25px;
-}
-.backupbuddy-tab-blocks .backupbuddy-tab:first-child {
-	display: block;
-}
-
-
-
-
-
 /* Tabs ----------------------------------*/
 .ui-tabs {
 	border-top: 1px solid #DFDFDF; margin-top: 20px; } /* padding: .2em; zoom: 1; */
-.ui-tabs .ui-tabs-nav { z-index: 15; list-style: none; position: relative; padding: 0px 0px 0px; margin-top: -28px; margin-left: 10px; }
-.ui-tabs .ui-tabs-nav li { margin: -12px 7px -1px 0px; position: relative; float: left; padding: 0; text-align: center; }
+.ui-tabs .ui-tabs-nav { z-index: 15; list-style: none; position: relative; padding: 0px 0px 0px; margin-top: -33px; margin-left: 10px; }
+.ui-tabs .ui-tabs-nav li { margin: -11px 3px -1px 0px; position: relative; float: left; padding: 0; text-align: center; }
 .ui-tabs .ui-tabs-nav li a {
-	background-color: #FFFFFF; /* #EDEDED Inactive bg. */
+	background-color: #EDEDED;
 	height: 27px;
 	float: left; text-decoration: none; padding-left: 15px; padding-right: 15px;
-	-moz-border-radius: 3px 3px 0px 0px;
-	-webkit-border-radius: 3px 3px 0px 0px;
-	border-radius: 3px 3px 0px 0px;
-	border: 1px solid #dfdfdf; outline: none; padding-top: 5px;
+	-moz-border-radius: 10px 10px 0px 0px;
+	-webkit-border-radius: 10px 10px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
+	border: 1px solid #DFDFDF; outline: none; padding-top: 5px;
 	border-bottom: 0px;
 	display: inline-block;
-	padding-top: 10px;
+	padding-top: 15px;
 	font-weight: 200;
 	font-size: 20px;
 	font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",sans-serif;
-	//color: #464646 !important;
-	color: #aaa;
+	color: #464646 !important;
 	
 }
-.ui-tabs .ui-tabs-nav .ui-tabs-active {
-	margin-top: -12px;
-}
-.ui-tabs .ui-tabs-nav .ui-tabs-active a {
-	background-color: #ffffff;
-	height: 28px;
-	border-color: #CCC;
-	color: #464646;
-}
-.ui-tabs .ui-tabs-nav .ui-tabs-active a:hover {
-	background-color: #ffffff;
-	//cursor: default;
-	//border-color: #CCC;
-}
-
-.ui-tabs .ui-tabs-nav li a:hover {
-	//background-color: #DFDFDF;
-	border-color: #CCC;
-	color: #d54e21;
-}
+.ui-tabs .ui-tabs-nav li a:hover { background-color: #DFDFDF; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {  } /* padding-bottom: 0px; */
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a {
-	height: 28px; cursor: text;
-	background-color: #FFFFFF; // F9F9F9
+	height: 28px; cursor: text; background-color: #FFFFFF; // F9F9F9
 	border-bottom: 1px solid #FFFFFF;
 }
-
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel { padding: 0; padding-top: 10px; display: block; border-width: 0; background: none; }
 .ui-tabs .ui-tabs-hide { display: none !important; }
-
-
 
 /*
 .ui-tabs-nav li a span .pb_backupbuddy_fancytab {
 	
 }
 */
-
-
-
-.pb_label {
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-.pb_label {
-	display: inline-block;
-	padding: 2px 4px;
-	font-size: 11.844px;
-	font-weight: bold;
-	line-height: 14px;
-	color: white;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	white-space: nowrap;
-	vertical-align: baseline;
-	background-color: #999;
-}
-.pb_label-success {
-	background-color: #468847;
-}
-.pb_label-warning {
-	background-color: #F89406;
-}
-.pb_label-important {
-	background-color: #dd4542; //#B94A48;
-}
-.pb_label-info {
-	background-color: #3A87AD;
-}
-.pb_label-inverse {
-	background-color: #333;
-}

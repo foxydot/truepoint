@@ -10,14 +10,14 @@ $new_db_prefix = $wpdb->get_blog_prefix( $blog_id );
 
 echo $this->status_box( 'Migrating users . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 $this->status( 'message', 'NOTE: If a user you are attempting to import already exists in the network then they will NOT be migrated. This may result in orphaned posts with no author listed.' );
 
 // Delete BackupBuddy options for imported site.
 $this->status( 'details', 'Clearing importing BackupBuddy options.' );
-$sql = "DELETE from {$new_db_prefix}options WHERE option_name = %s LIMIT 1";
-$wpdb->query( $wpdb->prepare( $sql, 'pluginbuddy_backupbuddy' ) );
+$sql = "DELETE from {$new_db_prefix}options WHERE option_name='pluginbuddy_backupbuddy' LIMIT 1";
+$wpdb->query( $wpdb->prepare( $sql ) );
 
 // Clear out all BackupBuddy cron jobs.
 $this->status( 'details', 'Clearing importing BackupBuddy scheduled crons.' );
@@ -33,8 +33,8 @@ $wipe_cron_hooks = array(
 						'pb_backupbuddy-cron_scheduled_backup', // Backward compat to BB 1.x.
 						'pb_backupbuddy-cron_remotesend',
 					);
-$sql = "SELECT option_value FROM `{$new_db_prefix}options` WHERE option_name= %s LIMIT 1";
-$crons = $wpdb->get_var( $wpdb->prepare( $sql, 'cron' ) );
+$sql = "SELECT option_value FROM `{$new_db_prefix}options` WHERE option_name='cron' LIMIT 1";
+$crons = $wpdb->get_var( $wpdb->prepare( $sql ) );
 $crons = unserialize( $crons );
 if ( $crons != '' ) {
 	foreach ( (array)$crons as $timestamp => $cron ) {
@@ -45,8 +45,8 @@ if ( $crons != '' ) {
 		}
 	}
 	$cron = serialize( $cron );
-	$sql = "UPDATE `{$new_db_prefix}options` SET option_value='{$cron}' WHERE option_name= %s LIMIT 1";
-	$wpdb->query( $wpdb->prepare( $sql, 'cron' ) );
+	$sql = "UPDATE `{$new_db_prefix}options` SET option_value='{$cron}' WHERE option_name='cron' LIMIT 1";
+	$wpdb->query( $wpdb->prepare( $sql ) );
 }
 
 
@@ -69,8 +69,8 @@ foreach( $usermeta_wipe_keys as $usermeta_wipe_key ) {
 
 
 // Migrate users.
-$sql = "select * from `{$new_db_prefix}users` WHERE 1 = %d";
-$users = $wpdb->get_results( $wpdb->prepare( $sql, '1' ) ); // Users to import.
+$sql = "select * from `{$new_db_prefix}users`";
+$users = $wpdb->get_results( $wpdb->prepare( $sql ) ); // Users to import.
 if ( !is_array( $users ) ) {
 	pb_backupbuddy::status( 'message', 'No users found to import.' );
 	return;
@@ -102,19 +102,17 @@ foreach ( $users as $user ) { // For each source user to migrate.
 	
 	$old_user_id = $user->ID;
 	$old_user_pass = $user->user_pass;
-	$sql = "select ID from {$wpdb->users} where user_login = '{$user->user_login}' or user_email = %s"; // Get user if they already exist on network.
-	$sql = $wpdb->prepare( $sql, $user->user_email );
-	$user_id = $wpdb->get_var( $sql ); // We will see if user already exists; 
-	
-	if ( null === $user_id ) { // User does NOT already exist in network.
+	$sql = "select ID from {$wpdb->users} where user_login = '{$user->user_login}' or user_email = '{$user->user_email}'"; // Get user if they already exist on network.
+	$user_id = $wpdb->get_var( $wpdb->prepare( $sql ) ); // We will see if user already exists; 
+	if ( !$user_id ) { // User does NOT already exist in network.
 		$new_destination_user_args = array();
 		foreach ( $user as $key => $user_param ) { // Loop through all user parameters.
 			$new_destination_user_args[ $key ] = $user_param;
 		}
 		//pb_backupbuddy::status( 'query', "select meta_value from {$new_db_prefix}usermeta where meta_key = '{$options['old_prefix']}capabilities' and user_id = {$old_user_id}" );
-		$sql = "select meta_value from {$new_db_prefix}usermeta where meta_key = '{$new_db_prefix}capabilities' and user_id = %d"; // Since the migrate step migrates the table prefix in the usermeta table the old table prefix is not in front of the capability, only the new.
+		$sql = "select meta_value from {$new_db_prefix}usermeta where meta_key = '{$new_db_prefix}capabilities' and user_id = {$old_user_id}"; // Since the migrate step migrates the table prefix in the usermeta table the old table prefix is not in front of the capability, only the new.
 		pb_backupbuddy::status( 'details', 'Getting old meta data from temporary usermeta table via sql: `' . $sql . '`' );
-		$user_role_var = $wpdb->get_var( $wpdb->prepare( $sql, $old_user_id )  );
+		$user_role_var = $wpdb->get_var( $wpdb->prepare( $sql )  );
 		//pb_backupbuddy::status( 'details', 'rolevar: ' . $user_role_var );
 		$user_role = maybe_unserialize( $user_role_var );
 		$new_user_role = '';
@@ -182,7 +180,7 @@ foreach ( $users as $user ) { // For each source user to migrate.
 		
 		
 	} else { // User already exists.
-		pb_backupbuddy::status( 'warning', 'Username `' . $user->user_login . '` or email `' . $user->user_email . '` already exists with user ID `' . $user_id . '`. User skipped.' );
+		pb_backupbuddy::status( 'warning', 'Username `' . $user->user_login . '` or email `' . $user->user_email . '` already exists. User skipped.' );
 		$users_skipped++;
 	}
 	
@@ -214,7 +212,7 @@ $this->status( 'details', 'Dropped temporary user tables.' );
 
 $this->status( 'message', 'Users migrated.' );
 echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-pb_backupbuddy::flush();
+flush();
 
 
 //Output form interface

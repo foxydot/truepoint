@@ -91,15 +91,11 @@ $auto_run = false;
 					
 				}
 				
-				if ( data.next_step != '0' ) {
-					pb_step = data.next_step; // Assign next step based on what AJAX response says it is.
-				} else { // Told next step is 0 which means something went wrong.
-					stop_polling = true;
-				}
-				
 				if ( stop_polling == false ) { // Continuing to poll since not told to stop.
 					setTimeout( 'backupbuddy_poll()' , 2000 );
 				}
+				
+				pb_step = data.next_step; // Assign next step based on what AJAX response says it is.
 			}
 		});
 		

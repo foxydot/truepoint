@@ -79,32 +79,24 @@ if ( ( $mode == 'edit' ) || ( $mode == 'add' ) ) {
 			
 			$account_info = $dropbuddy->get_account_info();
 			//echo '<div class="pb_dropbox_authorize"><a href="' . $dropbuddy->get_authorize_url() . '" class="button-primary" target="_new">Re-Authorize with Dropbox</a></div>';
-			echo '<!-- Authorized to Dropbox but not adding. -->';
 		} else {
 			//echo 'Access Denied. Did you authenticate via the URL?<br><br>';
 			if ( isset( $_GET['dropbox_auth'] ) && ( $_GET['dropbox_auth'] == 'true' ) ) {
 				// do nothing
-				echo 'Error #89485954. You indicated you authenticated but access was denied. Please go back and try again.';
+				echo 'Error #89485954. You indicated you authenicated but access was denied. Please go back and try again.';
 			} else { // First step to user adding a Dropbox account.
+				global $pb_hide_save;
+				global $pb_hide_test;
+				$pb_hide_save = true;
+				$hide_test = true;
 				
-				if ( $mode != 'edit' ) {
-					global $pb_hide_save;
-					global $pb_hide_test;
-					$pb_hide_save = true;
-					$pb_hide_test = true;
-					
-					echo '<br><b>Adding a Dropbox destination</b><ol>';
-					echo '<li>Click the <b>' . __('Connect to Dropbox & Authorize', 'it-l10n-backupbuddy' ) . '</b> button below.</li>';
-					echo '<li>In the new window that opens, login to Dropbox.com if prompted and click <b>Allow</b>.</li>';
-					echo '<li>Return to this window and click the <b>' . __( "Yes, I've Authorized BackupBuddy with Dropbox", 'it-l10n-backupbuddy' ) . '</b> button below.</li>';
-					echo '<li>Configure the destination and click the <b>+' . __('Add Destination', 'it-l10n-backupbuddy' ) . '</b> button.</li>';
-					echo '</ol>';
-					echo '<a href="' . $dropbuddy->get_authorize_url() . '" class="button-primary pb_dropbox_authorize" target="_new">' . __('Connect to Dropbox & Authorize (opens new window)', 'it-l10n-backupbuddy' ) . '</a>';
-				} else {
-					pb_backupbuddy::$options['dropboxtemptoken'] = ''; // Clear temp token.
-					pb_backupbuddy::save();
-					pb_backupbuddy::alert( 'Error #6557565: Dropbox authentication failed; BackupBuddy access to your account is no longer valid. You should delete this destination and re-add it.', true );
-				}
+				echo '<br><b>Adding a Dropbox destination</b><ol>';
+				echo '<li>Click the <b>' . __('Connect to Dropbox & Authorize', 'it-l10n-backupbuddy' ) . '</b> button below.</li>';
+				echo '<li>In the new window that opens, login to Dropbox.com if prompted and click <b>Allow</b>.</li>';
+				echo '<li>Return to this window and click the <b>' . __( "Yes, I've Authorized BackupBuddy with Dropbox", 'it-l10n-backupbuddy' ) . '</b> button below.</li>';
+				echo '<li>Configure the destination and click the <b>+' . __('Add Destination', 'it-l10n-backupbuddy' ) . '</b> button.</li>';
+				echo '</ol>';
+				echo '<a href="' . $dropbuddy->get_authorize_url() . '" class="button-primary pb_dropbox_authorize" target="_new">' . __('Connect to Dropbox & Authorize (opens new window)', 'it-l10n-backupbuddy' ) . '</a>';
 			}
 		}
 	}
@@ -171,17 +163,13 @@ if ( $hide_add !== true ) {
 	}
 	
 	
-	$default_name = NULL;
-	if ( 'add' == $mode ) {
-		$default_name = 'My Dropbox';
-	}
+	
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
 		'name'		=>		'title',
 		'title'		=>		__( 'Destination name', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( 'Name of the new destination to create. This is for your convenience only.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|string[1-45]',
-		'default'	=>		$default_name,
 	) );
 	
 	$settings_form->add_setting( array(
@@ -189,7 +177,7 @@ if ( $hide_add !== true ) {
 		'name'		=>		'directory',
 		'title'		=>		__( 'Directory (optional)', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Example: backupbuddy or backupbuddy/mysite/ or myfiles/backups/mysite] - Directory (or subdirectory) name to place the backups within.', 'it-l10n-backupbuddy' ),
-		'rules'		=>		'string[0-250]',
+		'rules'		=>		'required|string[1-250]',
 	) );
 	
 	$settings_form->add_setting( array(

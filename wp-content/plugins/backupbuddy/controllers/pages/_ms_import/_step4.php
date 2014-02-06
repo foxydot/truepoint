@@ -1,11 +1,11 @@
 <?php
 $blog_id = isset( $_POST[ 'blog_id' ] ) ? absint( $_POST[ 'blog_id' ] ) : 0;
-switch_to_blog( $blog_id );
+//switch_to_blog( $blog_id );
 
 
 echo $this->status_box( 'Migrating files (media, plugins, themes, etc) . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 	
 // VERIFY THIS IS NOT A NETWORK BACKUP SINCE WE CANNOT IMPORT A NETWORK INTO A NETWORK. Not doing this on previous page due to time limitations.
@@ -16,31 +16,23 @@ if ( isset( $this->_backupdata[ 'is_multisite' ] ) && ( ( $this->_backupdata[ 'i
 	pb_backupbuddy::alert( $error_9003, true, '9003' );
 	$this->status( 'error', 'Unable to continue. Import halted.' );
 	echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-	pb_backupbuddy::flush();
+	flush();
 } else { // Not a network being imported.
 	
 	// Set up destination upload path and URL information. We must pass these on in form since importing database will overwrite these.
-	$wp_upload_url = $this->get_ms_option( $blog_id, 'fileupload_url' ); // Ronalds: $site_uploads[ 'baseurl' ];
-	if ( $wp_upload_url == '' ) {
-		$wp_upload_array = wp_upload_dir();
-		//pb_backupbuddy::status( 'details', 'wp_upload_dir response: `' . print_r( $wp_upload_array, true ) . '`.' );
-		$wp_upload_url = $wp_upload_array['baseurl'];
-		$wp_upload_dir = $wp_upload_array['basedir'];
-		pb_backupbuddy::status( 'details', 'Upload URL option not found. Using new method to determine both URL and path. (WP 3.5+). Baseurl: `' . $wp_upload_url . '`. Basepath: `' . $wp_upload_dir . '`.' );
-	} else {
-		$wp_upload_dir = ABSPATH . $this->get_ms_option( $blog_id, 'upload_path' ); // Ronalds: $site_uploads[ 'basedir' ];
-	}
-	
+	// Ronalds: $site_uploads = wp_upload_dir();
+	$wp_upload_dir = ABSPATH . $this->get_ms_option( $blog_id, 'upload_path' ); // Ronalds: $site_uploads[ 'basedir' ];
 	$wp_upload_dir = rtrim( $wp_upload_dir, "\\/" ); // Trim trailing slash if there (shouldnt be by default but someone could have manually edited it)
-	pb_backupbuddy::status( 'details', 'Destination site uploads real file path: ' . $wp_upload_dir );
+	$this->status( 'details', 'Destination site uploads real file path: ' . $wp_upload_dir );
+	$wp_upload_url = $this->get_ms_option( $blog_id, 'fileupload_url' ); // Ronalds: $site_uploads[ 'baseurl' ];
 	$wp_upload_url = rtrim( $wp_upload_url, "\\/" ); // Trim trailing slash if there (shouldnt be by default but someone could have manually edited it)
-	pb_backupbuddy::status( 'details', 'Destination site virtual uploads URL (URL; no trailing slash): ' . $wp_upload_url );
+	$this->status( 'details', 'Destination site virtual uploads URL (URL; no trailing slash): ' . $wp_upload_url );
 	
 	$migrate_items = array();
 	
 	
 	// ********** BEGIN MEDIA FILES **********
-	pb_backupbuddy::status( 'message', 'Migrating media files . . .' );
+	$this->status( 'message', 'Migrating media files . . .' );
 	// Iterate through the temporary directory and get a list of files/directories to copy over.
 	$source_uploads_dir = $this->import_options[ 'extract_to' ] . '/wp-content/uploads';
 	if ( is_dir( $source_uploads_dir ) ) {
@@ -126,7 +118,7 @@ if ( isset( $this->_backupdata[ 'is_multisite' ] ) && ( ( $this->_backupdata[ 'i
 	
 	$this->status( 'message', 'Files migrated.' );
 	echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-	pb_backupbuddy::flush();
+	flush();
 	
 	$this->status( 'message', __('Files, such as media, plugins, and themes, were successfully migrated.', 'it-l10n-backupbuddy' ) );
 	?>

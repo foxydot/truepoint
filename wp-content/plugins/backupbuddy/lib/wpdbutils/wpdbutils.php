@@ -58,9 +58,8 @@ if ( !class_exists( "pluginbuddy_wpdbutils" ) ) {
 		 *	@return		null
 		 *
 		 */
-		public function __construct( &$db ) { // removed wpdb type hint Jan 9, 2013.
-			
-			pb_backupbuddy::status( 'details', 'Database kicker database object class: `' . get_class( $db ) . '`.' );
+		public function __construct( wpdb &$db ) {
+		
 			$this->_db = &$db;
 			
 		}

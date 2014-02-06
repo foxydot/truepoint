@@ -41,33 +41,17 @@ class pb_backupbuddy_cpanel {
 	 *	@param		
 	 *	@return		true|array		Boolean true on success, else an array of errors.
 	 */
-	public static function create_db( $cpanel_user, $cpanel_password, $cpanel_host, $db_name, $db_user, $db_userpass, $cpanel_port = '2082' ) {
+	public static function create_db( $cpanel_user, $cpanel_password, $cpanel_host, $db_name, $db_user, $db_userpass ) {
 		$cpanel_skin = "x3";
 		$errors = array();
 		
-		$cpanel_password = urlencode( $cpanel_password ); // Pass often has special chars so encode.
 		
 		// Calculate base URL.
-		$base_url = "http://{$cpanel_user}:{$cpanel_password}@{$cpanel_host}:{$cpanel_port}/frontend/{$cpanel_skin}";
+		$base_url = "http://{$cpanel_user}:{$cpanel_password}@{$cpanel_host}:2082/frontend/{$cpanel_skin}";
 		
 		// Generate create database URL.
 		$create_database_url = $base_url . "/sql/addb.html?db={$db_name}";
 		//echo $create_database_url . '<br>';
-		
-		
-		// Create request core obj for connecting to HTTP.
-		$request = new RequestCore( $create_database_url );
-		try {
-			$result = $request->send_request( false );
-		} catch (Exception $e) {
-			if ( stristr( $e->getMessage(), 'couldn\'t connect to host' ) !== false ) {
-				$errors[] = 'Unable to connect to host `' . $cpanel_host . '` on port `' . $cpanel_port . '`. Verify the cPanel domain/URL and make sure the server is able to initiate outgoing http connections on port ' . $cpanel_port . '. Some hosts block this.';
-				return $errors;
-			}
-			$errors[] = 'Caught exception: ' . $e->getMessage();
-			return $errors;
-		}
-		
 		
 		// Generate create database user URL.
 		$create_user_url = $base_url . "/sql/adduser.html?user={$db_user}&pass={$db_userpass}";
@@ -77,7 +61,18 @@ class pb_backupbuddy_cpanel {
 		$assign_user_url = $base_url . "/sql/addusertodb.html?user={$cpanel_user}_{$db_user}&db={$cpanel_user}_{$db_name}&ALL=ALL";
 		//echo $assign_user_url . '<br>';
 		
-		
+		// Create request core obj for connecting to HTTP.
+		$request = new RequestCore( $create_database_url );
+		try {
+			$result = $request->send_request( false );
+		} catch (Exception $e) {
+			if ( stristr( $e->getMessage(), 'couldn\'t connect to host' ) !== false ) {
+				$errors[] = 'Unable to connect to host `' . $cpanel_host . '` on port 2082. Verify the cPanel domain/URL and make sure the server is able to initiate outgoing http connections on port 2082. Some hosts block this.';
+				return $errors;
+			}
+			$errors[] = 'Caught exception: ' . $e->getMessage();
+			return $errors;
+		}
 		
 		if ( stristr( $result, 'Log in' ) !== false ) { // No sucess adding DB.
 			$errors[] = 'Unable to log into cPanel with given username/password. Verify the credentials are correct for this cPanel domain.';

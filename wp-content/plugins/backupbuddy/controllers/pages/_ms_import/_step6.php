@@ -6,7 +6,7 @@ $new_db_prefix = $wpdb->get_blog_prefix( $blog_id );
 
 echo $this->status_box( 'Migrating URLs in imported data . . .' );
 echo '<div id="pb_importbuddy_working" style="width: 100px;"><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-pb_backupbuddy::flush();
+flush();
 
 // Set up destination upload path and URL information.
 /*
@@ -39,7 +39,7 @@ $this->import_options['siteurl'] = $destination_url;
 
 global $wpdb;
 // Clean out some spam. TODO: any particular reason why this is done?
-$wpdb->query( $wpdb->prepare( "DELETE from {$new_db_prefix}_comments WHERE comment_approved = %s", 'spam' ) );
+$wpdb->query( $wpdb->prepare( "DELETE from {$new_db_prefix}_comments WHERE comment_approved = 'spam'" ) );
 
 
 
@@ -67,7 +67,7 @@ $this->migrate_database( $upload_url );
 
 $this->status( 'message', 'Database migrated.' );
 echo '<script type="text/javascript">jQuery("#pb_importbuddy_working").hide();</script>';
-pb_backupbuddy::flush();
+flush();
 
 
 global $current_site;

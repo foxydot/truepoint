@@ -1,0 +1,4 @@
+[10-Nov-2013 05:12:38 America/Chicago] PHP Fatal error:  Class 'Mappress_Obj' not found in /home/truepoin/public_html/wp-content/plugins/mappress-google-maps-for-wordpress/mappress_poi.php on line 2
+[10-Nov-2013 05:12:42 America/Chicago] PHP Fatal error:  Class 'Mappress_Obj' not found in /home/truepoin/public_html/wp-content/plugins/mappress-google-maps-for-wordpress/mappress_settings.php on line 5
+[10-Nov-2013 05:12:43 America/Chicago] PHP Fatal error:  Call to undefined function get_option() in /home/truepoin/public_html/wp-content/plugins/mappress-google-maps-for-wordpress/mappress_settings.php on line 98
+[10-Nov-2013 05:12:45 America/Chicago] PHP Fatal error:  Class 'Mappress_Obj' not found in /home/truepoin/public_html/wp-content/plugins/mappress-google-maps-for-wordpress/mappress_map.php on line 2

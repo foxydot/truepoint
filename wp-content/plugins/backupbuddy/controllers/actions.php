@@ -6,47 +6,26 @@
 class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 	
 	
-	
-	/* admin_notices()
-	 *
-	 * Run anything in the admin that may output a notice / error. Runs at proper time to not gunk up HTML.
-	 *
-	 */
-	function admin_notices() {
-		
-		backupbuddy_core::verify_directories();
-		
-	} // End admin_notices().
-	
-	
-	
 	function process_scheduled_backup( $cron_id ) {
-		
-		if ( ! class_exists( 'backupbuddy_core' ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-		}
-		
 		if ( !isset( pb_backupbuddy::$options ) ) {
 			$this->load();
 		}
-		
-		
-		// Verify directories.
-		backupbuddy_core::verify_directories();
-		
-		
 		pb_backupbuddy::status( 'details', 'cron_process_scheduled_backup: ' . $cron_id );
 		
+		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
+		}
 		
 		$preflight_message = '';
-		$preflight_checks = backupbuddy_core::preflight_check();
+		$preflight_checks = pb_backupbuddy::$classes['core']->preflight_check();
 		foreach( $preflight_checks as $preflight_check ) {
 			if ( $preflight_check['success'] !== true ) {
 				pb_backupbuddy::status( 'warning', $preflight_check['message'] );
 			}
 		}
 		
-		if ( isset( pb_backupbuddy::$options['schedules'][$cron_id] ) && ( is_array( pb_backupbuddy::$options['schedules'][$cron_id] ) ) ) {
+		if ( is_array( pb_backupbuddy::$options['schedules'][$cron_id] ) ) {
 			
 			// If schedule is disabled then just return. Bail out!
 			if ( isset( pb_backupbuddy::$options['schedules'][$cron_id]['on_off'] ) && ( pb_backupbuddy::$options['schedules'][$cron_id]['on_off'] == '0' ) ) {
@@ -62,59 +41,37 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 				pb_backupbuddy::$classes['backup'] = new pb_backupbuddy_backup();
 			}
 			
-			if ( pb_backupbuddy::$options['schedules'][$cron_id]['delete_after'] == '1' ) {
-				$delete_after = true;
-				pb_backupbuddy::status( 'details', 'Option to delete file after successful transfer enabled.' );
-			} else {
-				$delete_after = false;
-				pb_backupbuddy::status( 'details', 'Option to delete file after successful transfer disabled.' );
-			}
-			
 			// If any remote destinations are set then add these to the steps to perform after the backup.
 			$post_backup_steps = array();
 			$destinations = explode( '|', pb_backupbuddy::$options['schedules'][$cron_id]['remote_destinations'] );
-			$found_valid_destination = false;
-			
-			// Remove any invalid destinations from this run.
-			foreach( $destinations as $destination_index => $destination ) {
-				if ( ! isset( $destination ) || ( $destination == '' ) ) { // Remove.
-					unset( $destinations[ $destination_index ] );
-				}
-				if ( ! isset( pb_backupbuddy::$options['remote_destinations'][$destination] ) ) { // Destination ID is invalid; remove.
-					unset( $destinations[ $destination_index ] );
-				}
-			}
-			$destination_count = count( $destinations );
-			
-			$i = 0;
 			foreach( $destinations as $destination ) {
-						$i++;
-						if ( $i >= $destination_count ) { // Last destination. Delete after if enabled.
-							$this_delete_after = $delete_after;
-							pb_backupbuddy::status( 'details', 'Last destination set to send to so this file deletion will be determined by settings.' );
-						} else { // More destinations to send to. Only delete after final send.
-							$this_delete_after = false;
-							pb_backupbuddy::status( 'details', 'More destinations are set to send to so this file will not be deleted after send.' );
-						}
-						$args = array( $destination, $this_delete_after );
-						pb_backupbuddy::status( 'details', 'Adding send step with args `' . implode( ',', $args ) . '`.' );
-						array_push( $post_backup_steps, array(
-															'function'		=>		'send_remote_destination',
-															'args'			=>		$args,
-															'start_time'	=>		0,
-															'finish_time'	=>		0,
-															'attempts'		=>		0,
-														)
-									);
-						
-						$found_valid_destination = true;
-						pb_backupbuddy::status( 'details', 'Found valid destination.' );
+				if ( isset( $destination ) && ( $destination != '' ) ) {
+					array_push( $post_backup_steps, array(
+														'function'		=>		'send_remote_destination',
+														'args'			=>		array( $destination ),
+														'start_time'	=>		0,
+														'finish_time'	=>		0,
+														'attempts'		=>		0,
+													)
+								);
+				}
 			}
 			
-			$profile_array = pb_backupbuddy::$options['profiles'][ pb_backupbuddy::$options['schedules'][$cron_id]['profile'] ];
+			if ( pb_backupbuddy::$options['schedules'][$cron_id]['delete_after'] == '1' ) {
+				array_push( $post_backup_steps, array(
+												'function'		=>		'post_remote_delete',
+												'args'			=>		array(),
+												'start_time'	=>		0,
+												'finish_time'	=>		0,
+												'attempts'		=>		0,
+											)
+						);
+			}
 			
-			if ( pb_backupbuddy::$classes['backup']->start_backup_process( $profile_array, 'scheduled', array(), $post_backup_steps, pb_backupbuddy::$options['schedules'][$cron_id]['title'] ) !== true ) {
-				pb_backupbuddy::status( 'error', 'Error #4564658344443: Backup failure. See earlier logging details for more information.' );
+			if ( pb_backupbuddy::$classes['backup']->start_backup_process( pb_backupbuddy::$options['schedules'][$cron_id]['type'], 'scheduled', array(), $post_backup_steps, pb_backupbuddy::$options['schedules'][$cron_id]['title'] ) !== true ) {
+				error_log( 'FAILURE #4455484589 IN BACKUPBUDDY.' );
+				echo __('Error #4564658344443: Backup failure', 'it-l10n-backupbuddy' );
+				echo pb_backupbuddy::$classes['backup']->get_errors();
 			}
 		}
 		pb_backupbuddy::status( 'details', 'Finished cron_process_scheduled_backup.' );
@@ -131,7 +88,7 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 	 */
 	function wp_update_backup_reminder() {
 		ob_start( array( &$this, 'wp_update_backup_reminder_dump' ) );
-		add_action( 'admin_footer', create_function( '', '@ob_end_flush();' ) );
+		add_action( 'admin_footer', create_function( '', 'ob_end_flush();' ) );
 	}
 	
 	
@@ -170,22 +127,22 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 		if ( is_multisite() && current_user_can( 'manage_network' ) ) { // Network Admin in multisite. Don't show messages in this case.
 			//$admin_url = admin_url( 'network/admin.php' );
 			return $messages;
-		} elseif( !is_multisite() && current_user_can( pb_backupbuddy::$options['role_access'] ) ) { // User with access in standalone.
+		} elseif( !is_multisite() && current_user_can( 'administrator' ) ) { // Administrator in standalone.
 			$admin_url = admin_url( 'admin.php' );
 		} else {
 			return $messages;
 		}
 		$fullbackup = esc_url( add_query_arg( array(
 				'page' => 'pb_backupbuddy_backup',
-				'backupbuddy_backup' => '2'
+				'run_backup' => 'full'
 			), $admin_url
 		) );
 		$dbbackup = esc_url( add_query_arg( array(
 				'page' => 'pb_backupbuddy_backup',
-				'backupbuddy_backup' => '1'
+				'run_backup' => 'db'
 			), $admin_url
 		) );
-		$backup_message = " | <a href='{$dbbackup}'>" . __('Database Backup', 'it-l10n-backupbuddy' ) . "</a> | <a href='{$fullbackup}'>" . __('Full Backup', 'it-l10n-backupbuddy' ) . "</a>";
+		$backup_message = " | <a href='{$fullbackup}'>" . __('Full Backup', 'it-l10n-backupbuddy' ) . "</a> | <a href='{$dbbackup}'>" . __('Database Backup', 'it-l10n-backupbuddy' ) . "</a>";
 		
 		
 		$reminder_posts = array(); // empty array to store customized post messages array
@@ -230,7 +187,7 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 	 *	@return		
 	 */
 	function multisite_network_warning() {
-		pb_backupbuddy::alert( 'BackupBuddy Multisite support is experimental beta software and should NOT be used on live sites. BackupBuddy should be <a href="' . esc_url( admin_url( 'network/plugins.php' ) ) . '">Network Activated</a> when installed on a Multisite Network for experimental testing. You must add the following line to your wp-config.php to activate these experimental features: <b>define( \'PB_BACKUPBUDDY_MULTISITE_EXPERIMENT\', true );</b>', true );
+		pb_backupbuddy::alert( 'BackupBuddy should be <a href="' . esc_url( admin_url( 'network/plugins.php' ) ) . '">Network Activated</a> when installed on a Multisite Network.', true );
 	}
 	
 	

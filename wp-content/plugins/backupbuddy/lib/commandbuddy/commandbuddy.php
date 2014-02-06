@@ -43,7 +43,6 @@ class pb_backupbuddy_commandbuddy {
 			pb_backupbuddy::status( 'details', 'exec() command `' . $command . '` (with path definition).' );
 		}
 		
-		$exec_output = array();
 		@exec( $command, $exec_output, $exec_exit_code);
 		pb_backupbuddy::status( 'details', 'exec() command output: `' . implode( ',', $exec_output ) . '`; Exit code: `' . $exec_exit_code . '`; Exit code description: `' . pb_backupbuddy::$filesystem->exit_code_lookup( $exec_exit_code ) . '`' );
 		

@@ -1,11 +1,11 @@
 <?php
 
-// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_dropbox { // Change class name end to match destination name.
 	
 	public static $destination_info = array(
-		'name'			=>		'Dropbox v1 (legacy)',
+		'name'			=>		'Dropbox',
 		'description'	=>		'Dropbox.com is a popular online storage provider offering 2 GB of free storage to start with. Premium upgrades are available.',
 	);
 	
@@ -38,15 +38,16 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
+	public static function send( $settings = array(), $files = array() ) {
 		
 		$token = &$settings['token'];
-		$directory = '/' . ltrim( $settings['directory'], '/\\' );
+		$directory = $settings['directory'];
 		$limit = $settings['archive_limit'];
 		
 		
 		// Normalize picky dropbox directory.
 		$directory = trim( $directory, '\\/' );
+		$directory = str_replace( ' ', '%20', $directory );
 		
 		pb_backupbuddy::status( 'details', 'About to load Dropbuddy library...' );
 		require_once( pb_backupbuddy::plugin_path() . '/destinations/dropbox/lib/dropbuddy/dropbuddy.php' );
@@ -61,12 +62,9 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 			pb_backupbuddy::status( 'details', 'Authenticated to Dropbox.' );
 		}
 		
-		$memory = pb_backupbuddy_destination_dropbox::memory_guesstimate();
-		pb_backupbuddy::status( 'details', 'Dropbox limitation estimated to be max transfer size of ' . round( $memory['hypothesis'], 0 ) . 'MB based on PHP memory limit of ' . $memory['limit'] . 'MB & current loaded WordPress plugins.' );
-		
 		pb_backupbuddy::status( 'details', 'Looping through files to send to Dropbox.' );
 		foreach( $files as $file ) {
-			pb_backupbuddy::status( 'details',  'About to put file `' . basename( $file ) . '` (' . pb_backupbuddy::$format->file_size( filesize( $file ) ) . ') to Dropbox cron.' );
+			pb_backupbuddy::status( 'details',  'About to put object `' . basename( $file ) . '` to Dropbox cron.' );
 			try {
 				$status = $dropbuddy->put_file( $directory . '/' . basename( $file ), $file );
 			} catch( Dropbox_Exception $e ) {
@@ -88,13 +86,10 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 				$meta_data = $dropbuddy->get_meta_data( $directory );
 				
 				// Create array of backups and organize by date
-				$bkupprefix = backupbuddy_core::backup_prefix();
+				$bkupprefix = pb_backupbuddy::$classes['core']->backup_prefix();
 				
 				$backups = array();
 				foreach ( (array) $meta_data['contents'] as $looping_file ) {
-					if ( '1' == $looping_file['is_dir'] ) { // Additional safety layer to ignore subdirectory.
-						continue;
-					}
 					// check if file is backup
 					if ( ( strpos( $looping_file['path'], 'backup-' . $bkupprefix . '-' ) !== false ) ) {
 						$backups[$looping_file['path']] = strtotime( $looping_file['modified'] );
@@ -117,7 +112,7 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 					}
 					
 					if ( $delete_fail_count !== 0 ) {
-						backupbuddy_core::mail_error( sprintf( __('Dropbox remote limit could not delete %s backups.', 'it-l10n-backupbuddy' ), $delete_fail_count) );
+						pb_backupbuddy::$classes['core']->mail_error( sprintf( __('Dropbox remote limit could not delete %s backups.', 'it-l10n-backupbuddy' ), $delete_fail_count) );
 					}
 				}
 			} else {
@@ -158,7 +153,7 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 	 *	@param		
 	 *	@return				Associate array with multiple items.
 	 */
-	public static function memory_guesstimate() {
+	public function memory_guesstimate() {
 		
 		// CALCULATE MEMORY. **********************************************
 		$this_val = ini_get( 'memory_limit' );

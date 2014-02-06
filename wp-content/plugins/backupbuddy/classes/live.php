@@ -1,4 +1,4 @@
-//<?php
+<?php
 /* Class pb_backupbuddy_live
  *
  * Live backup of files to Stash servers.
@@ -22,64 +22,8 @@ class pb_backupbuddy_live {
 	 *
 	 * @return		null
 	 */
-	public function generate_queue( $root = '', $generate_sha1 = true ) {
-		
-		if ( $root == '' ) {
-			$root = WP_CONTENT_DIR . '/uploads/'; 
-		}
-		
-		echo 'mem:' . memory_get_usage(true) . '<br>';
-		$files = (array) pb_backupbuddy::$filesystem->deepglob( $root );
-		
-		echo 'mem:' . memory_get_usage(true) . '<br>';
-		$root_len = strlen( $root );
-		$new_files = array();
-		foreach( $files as $file_id => &$file ) {
-			$stat = stat( $file );
+	public function generate_queue() {
 			
-			if ( FALSE === $stat ) {
-				pb_backupbuddy::status( 'error', 'Unable to read file `' . $file . '` stat.' );
-			}
-			$new_file = substr( $file, $root_len );
-			
-			$sha1 = '';
-			if ( ( true === $generate_sha1 ) && ( $stat['size'] < 1073741824 ) ) { // < 100mb
-				$sha1 = sha1_file( $file );
-			}
-			
-			$new_files[$new_file] = array(
-				'scanned'	=>	time(),
-				'size'		=> $stat['size'],
-				'modified'	=> $stat['mtime'],
-				'sha1'		=> $sha1,
-				
-				
-				// TODO: don't render sha1 here? do it in a subsequent step(s) with cron to allow for more time? update fileoptions file every x number of tiles and a count attempts without proceeding to assume failure? max_overall attempts?
-				
-				
-			);
-			unset( $files[$file_id] ); // Better to free memory or leave out for performance?
-			
-		}
-		unset( $files );
-		echo 'mem:' . memory_get_usage(true) . '<br>';
-		
-		
-		function pb_queuearray_size_compare($a, $b) {
-			return ($a['size'] > $b['size']);
-		}
-
-		uasort( $new_files, 'pb_queuearray_size_compare' );
-		
-		echo '<pre>';
-		print_r( $new_files );
-		echo '</pre>';
-		
-		
-		// fileoptions file live_signatures.txt
-		
-		//backupbuddy_core::st_stable_options( 'xxx', 'test', 5 );
-		
 			// get file listing of site: glob and store in an array
 			// open previously generated master list (master file listing since last queue generation).
 			// loop through and compare file specs to specs in master list. ( anything changed AND not yet in queue AND not maxed out send attempts ) gets added into $queue_files[];

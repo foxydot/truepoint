@@ -33,7 +33,6 @@ jQuery(document).ready(function() {
 	});
 	
 	
-	
 	// NOT CURRENTLY BEING USED.
 	jQuery( '.pb_backupbuddy_sendlog' ).click( function(e) {
 		if ( confirm( 'This will send the logging information in the box above to PluginBuddy.com support. You will be given a unique identifier code that you may provide and post in the support forum so that support staff may view your sensitive logs without having to post them publicly in the forum. You will NOT receive a response to your submitted logs unless you open a support request via the forum. Are you sure you want to submit this data?' ) ) {

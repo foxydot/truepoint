@@ -1,11 +1,6 @@
 <?php
 if ( isset( $_POST[ 'add-site' ] ) ) {
 	global $current_user, $base;
-	if ( $base != '' ) {
-		$network_base = $base;
-	} else {
-		$network_base = '/';
-	}
 	global $current_blog;
 	$messages = array(
 		'updates' => array(),
@@ -43,11 +38,11 @@ if ( isset( $_POST[ 'add-site' ] ) ) {
 		} else {
 			//$newdomain = $domain . '.' . preg_replace( '|^www\.|', '', $current_blog->domain );
 			$newdomain = $domain;
-			$path = $network_base;
+			$path = $base;
 		}
 	} else {
 		$newdomain = $current_blog->domain;
-		$path = $network_base . $domain . '/';
+		$path = $base . $domain . '/';
 	}
 	$blog_id = 0;
 	if ( domain_exists( $newdomain, $path, $current_blog->blog_id ) ) {
@@ -55,7 +50,7 @@ if ( isset( $_POST[ 'add-site' ] ) ) {
 		$messages[ 'errors' ][] = __( 'This site address already exists.  Please choose another name or delete the existing site first.', 'it-l10n-backupbuddy' );
 	} else {
 		if ( count( $messages[ 'errors' ] ) <= 0 ) {
-			pb_backupbuddy::flush(); // Creation can take a second.
+			flush(); // Creation can take a second.
 			$messages[ 'updates' ][] = __( 'The site has been created. Click `Continue` to use this site.','it-l10n-backupbuddy' );
 			$blog_id = wpmu_create_blog( $newdomain, $path, 'temp title', $current_user->ID, array( 'public' => 1 ) );
 		}
@@ -108,7 +103,7 @@ if ( is_subdomain_install() ) {
 	?>
 	<?php echo '<strong>http://' . $path . '</strong>'; ?>
 <?php } else {
-	echo 'http://' . rtrim( $current_blog->domain, '/\\' ) . '<strong>' . $path . '</strong>'; ?>
+	echo 'http://' . $current_blog->domain . '<strong>' . $path . '</strong>'; ?>
 <?php }?>
 </p>
 <input type="hidden" name="backup_file" value="<?php echo htmlentities( $_POST['backup_file'] ) ?>">

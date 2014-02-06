@@ -12,10 +12,6 @@ jQuery.fn.prop = function() {
 
 //Formatting free form currency fields to currency
 jQuery(document).ready(function(){
-    jQuery(document).bind('gform_post_render', gformBindFormatPricingFields);
-});
-
-function gformBindFormatPricingFields(){
     jQuery(".ginput_amount, .ginput_donation_amount").bind("change", function(){
         gformFormatPricingField(this);
     });
@@ -23,8 +19,7 @@ function gformBindFormatPricingFields(){
     jQuery(".ginput_amount, .ginput_donation_amount").each(function(){
         gformFormatPricingField(this);
     });
-}
-
+});
 
 
 //------------------------------------------------
@@ -332,10 +327,10 @@ function gformCalculateProductPrice(formId, productFieldId){
         quantityElement = jQuery(".gfield_quantity_" + formId + "_" + productFieldId);
 
         quantity = 1;
-        if (quantityElement.find("select").length > 0)
-            quantity = quantityElement.find("select").val();
-        else if(quantityElement.find("input").length > 0)
+        if(quantityElement.find("input").length > 0)
             quantity = quantityElement.find("input").val();
+        else if (quantityElement.find("select").length > 0)
+            quantity = quantityElement.find("select").val();
 
         if(!gformIsNumber(quantity))
             quantity = 0;
@@ -480,7 +475,6 @@ function gformInitPriceFields(){
         gformRegisterPriceField(productIds);
 
        jQuery(this).find("input[type=\"text\"], input[type=\"number\"], select").change(function(){
-
            var productIds = gformGetProductIds("gfield_price", this);
            if(productIds.formId == 0)
                 productIds = gformGetProductIds("gfield_shipping", this);
@@ -693,7 +687,6 @@ var GFCalc = function(formId, formulaFields){
     this.isCalculating = {};
 
     this.init = function(formId, formulaFields) {
-
         var calc = this;
         jQuery(document).bind("gform_post_conditional_logic", function(){
             for(var i=0; i<formulaFields.length; i++) {
@@ -712,12 +705,15 @@ var GFCalc = function(formId, formulaFields){
 
     this.runCalc = function(formulaField, formId) {
 
-        var calcObj      = this,
-            field        = jQuery('#field_' + formId + '_' + formulaField.field_id),
-            formulaInput = jQuery('#input_' + formId + '_' + formulaField.field_id),
-            previous_val = formulaInput.val(),
-            expr         = calcObj.replaceFieldTags( formId, formulaField.formula, formulaField ).replace(/(\r\n|\n|\r)/gm,""),
-            result       = '';
+        var calcObj = this;
+        var formulaInput, expr;
+
+        var field = jQuery('#field_' + formId + '_' + formulaField.field_id);
+        formulaInput = jQuery('#input_' + formId + '_' + formulaField.field_id);
+        var previous_val = formulaInput.val();
+
+        expr = calcObj.replaceFieldTags(formId, formulaField.formula, formulaField.numberFormat);
+        result = '';
 
         if(calcObj.exprPatt.test(expr)) {
             try {
@@ -725,34 +721,18 @@ var GFCalc = function(formId, formulaFields){
                 //run calculation
                 result = eval(expr);
 
-            } catch( e ) { }
+            } catch (e) {}
         }
 
-        // if result is postive infinity, negative infinity or a NaN, defaults to 0
-        if( ! isFinite( result ) )
-            result = 0;
-
         // allow users to modify result with their own function
-        if( window["gform_calculation_result"] ) {
+        if(window["gform_calculation_result"])
             result = window["gform_calculation_result"](result, formulaField, formId, calcObj);
-            if( window.console )
-                console.log( '"gform_calculation_result" function is deprecated since version 1.8! Use "gform_calculation_result" JS hook instead.' );
-        }
-
-        // allow users to modify result with their own function
-        result = gform.applyFilters( 'gform_calculation_result', result, formulaField, formId, calcObj );
-
-        // allow result to be custom formatted
-        var formattedResult = gform.applyFilters( 'gform_calculation_format_result', false, result, formulaField, formId, calcObj );
 
         //formatting number
-        if( formattedResult !== false ) {
-            result = formattedResult;
-        }
-        else if( field.hasClass( 'gfield_price' ) ) {
+        if(field.hasClass('gfield_price')) {
             result = gformFormatMoney(result ? result : 0);
         }
-        else {
+        else{
 
             var decimalSeparator, thousandSeparator;
             if(formulaField.numberFormat == "decimal_comma"){
@@ -768,11 +748,12 @@ var GFCalc = function(formId, formulaFields){
 
         //If value doesn't change, abort.
         //This is needed to prevent an infinite loop condition with conditional logic
-        if( result == previous_val )
+        if(result == previous_val)
             return;
 
         // if this is a calucation product, handle differently
         if(field.hasClass('gfield_price')) {
+
             formulaInput.text(result);
             jQuery('#ginput_base_price_' + formId + '_' + formulaField.field_id).val(result).trigger('change');
             gformCalculateTotalPrice(formId);
@@ -782,7 +763,6 @@ var GFCalc = function(formId, formulaFields){
 
     }
 
-
     this.bindCalcEvents = function(formulaField, formId) {
 
         var calcObj = this;
@@ -791,10 +771,7 @@ var GFCalc = function(formId, formulaFields){
 
         calcObj.isCalculating[formulaFieldId] = false;
 
-        for(var i in matches) {
-
-            if(! matches.hasOwnProperty(i))
-                continue;
+        for(i in matches) {
 
             var inputId = matches[i][1];
             var fieldId = parseInt(inputId);
@@ -837,15 +814,12 @@ var GFCalc = function(formId, formulaFields){
 
     }
 
-    this.replaceFieldTags = function( formId, expr, formulaField ) {
+    this.replaceFieldTags = function(formId, expr, numberFormat) {
 
         var matches = getMatchGroups(expr, this.patt);
         var origExpr = expr;
 
         for(i in matches) {
-
-            if(! matches.hasOwnProperty(i))
-                continue;
 
             var inputId = matches[i][1];
             var fieldId = parseInt(inputId);
@@ -855,35 +829,48 @@ var GFCalc = function(formId, formulaFields){
             var input = jQuery('#field_' + formId + '_' + fieldId).find('input[name="input_' + inputId + '"], select[name="input_' + inputId + '"]');
 
             // radio buttons will return multiple inputs, checkboxes will only return one but it may not be selected, filter out unselected inputs
-            if( input.length > 1 || input.prop('type') == 'checkbox' )
+            if(input.length > 1 || input.prop('type') == 'checkbox')
                 input = input.filter(':checked');
 
-            var isVisible = window['gf_check_field_rule'] ? gf_check_field_rule( formId, fieldId, true, '' ) == 'show' : true;
+            var isVisible = window["gf_check_field_rule"] ? gf_check_field_rule(formId, fieldId, true, "") == "show" : true;
 
-            if( input.length > 0 && isVisible ) {
+            if(input.length > 0 && isVisible) {
 
                 var val = input.val();
-                val = val.split( '|' );
+                val = val.split('|');
 
-                if( val.length > 1 ) {
+                if(val.length > 1) {
                     value = val[1];
                 } else {
                     value = input.val();
                 }
-
             }
 
-            var numberFormat = gf_global.number_formats[formId][fieldId];
-            if( ! numberFormat )
-                numberFormat = gf_global.number_formats[formId][formulaField.field_id];
+            var decimalSeparator = ".";
+            if(numberFormat == "decimal_comma"){
+                decimalSeparator = ",";
+            }
+            else if(numberFormat == "decimal_dot"){
+                decimalSeparator = ".";
+            }
+            else if(window['gf_global']){
+                var inputType = input.attr("type");
+                var isDropDown = jQuery('#field_' + formId + '_' + fieldId).find('select[name="input_' + inputId + '"]').length > 0;
 
-            var decimalSeparator = numberFormat == 'decimal_dot' ? '.' : ',';
+                var isNumericFormat = inputType == "checkbox" || inputType == "radio" || isDropDown;
 
-            value = gformCleanNumber( value, '', '', decimalSeparator );
-            if( ! value )
+                //checkboxes, radio buttons and drop downs use the standard number notation and not the currency format
+                if(!isNumericFormat){
+                    var currency = new Currency(gf_global.gf_currency_config);
+                    decimalSeparator = currency.currency["decimal_separator"];
+                }
+            }
+
+            value = gformCleanNumber(value, "", "", decimalSeparator);
+            if(!value)
                 value = 0;
 
-            expr = expr.replace( matches[i][0], value );
+            expr = expr.replace(matches[i][0], value);
         }
 
         return expr;
@@ -976,17 +963,14 @@ var gform = {
         args = Array.prototype.slice.call(args, 1);
 
 		if ( undefined != gform.hooks[hookType][action] ) {
-			var hooks = gform.hooks[hookType][action], hook;
+			var hooks = gform.hooks[hookType][action];
 			//sort by priority
 			hooks.sort(function(a,b){return a["priority"]-b["priority"]});
 			for( var i=0; i<hooks.length; i++) {
-                hook = hooks[i].callable;
-                if(typeof hook != 'function')
-                    hook = window[hook];
 				if ( 'action' == hookType ) {
-                    hook.apply(null, args);
+					window[hooks[i].callable].apply(null, args);
 				} else {
-                    args[0] = hook.apply(null, args);
+					args[0] = window[hooks[i].callable].apply(null, args);
 				}
 			}
 		}

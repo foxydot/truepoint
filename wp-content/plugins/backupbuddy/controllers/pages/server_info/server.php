@@ -1,3 +1,4 @@
+<br>
 <style type="text/css">
 	.pb_backupbuddy_refresh_stats {
 		cursor: pointer;
@@ -34,53 +35,6 @@ function ini_get_bool( $a ) {
 			return (bool) (int) $b;
 	}
 }
-
-
-
-function pb_backupbuddy_get_loadavg() {
-	$result = array( 'n/a', 'n/a', 'n/a' );
-	if ( function_exists('sys_getloadavg') ) {
-		$load = @sys_getloadavg();
-		if (is_array($load)) {
-			if(count($load) == 3)
-				return $load;
-			else {
-				for($i=0;$i<count($load);$i++)
-					$result[$i] = $load[$i];
-			}
-		}
-	}
-	if ( substr( PHP_OS, 0, 3 ) == 'WIN' ) { // WINDOWS.
-		ob_start();
-		$status = null;
-		@passthru('typeperf -sc 1 "\processor(_total)\% processor time"',$status);
-		$content = ob_get_contents();
-		ob_end_clean();
-		if ($status === 0) {
-			if (preg_match("/\,\"([0-9]+\.[0-9]+)\"/",$content,$load)) {					
-				$result[0] = number_format_i18n($load[1],2).' %';
-				$result[1] = 'n/a';
-				$result[2] = 'n/a';
-				return $result;
-			}
-		}			
-	} else {
-		if (function_exists('file_get_contents') && @file_exists('/proc/loadavg')) {
-			$load = explode(chr(32), @file_get_contents('/proc/loadavg'));
-			if (is_array($load) && (count($load) >= 3)) {
-				$result = array_slice($load, 0, 3);
-				return $result;
-			}
-		}
-		if (function_exists('shell_exec')) {
-			$str = substr(strrchr(@shell_exec('uptime'),":"),1);
-			return array_map("trim",explode(",",$str));
-		}
-	}
-	return $result;
-}
-
-
 	
 	$tests = array();
 	
@@ -104,77 +58,6 @@ function pb_backupbuddy_get_loadavg() {
 		}
 		array_push( $tests, $parent_class_test );
 		*/
-		
-		
-		
-		// BACKUPBUDDY VERSION
-		$latest_backupbuddy_version_cache_minutes = 15; // Define how many minutes to cache the latest backupbuddy version number.
-		function pb_backupbuddy_split2( $string,$needle,$nth ) {
-			$max = strlen($string);
-			$n = 0;
-			for($i=0;$i<$max;$i++){
-				if ($string[$i]==$needle){
-					$n++;
-					if($n>=$nth){
-						break;
-					}
-				}
-			}
-			$arr[] = substr($string,0,$i);
-			$arr[] = substr($string,$i+1,$max);
-			return $arr;
-		}
-		$latest_backupbuddy_version = get_transient( 'pb_backupbuddy_latest_version' );
-		if ( false === $latest_backupbuddy_version ) {
-			$response = wp_remote_get( 'http://api.ithemes.com/product/version?apikey=ixho7dk0p244n0ob&package=backupbuddy&channel=stable', array(
-					'method' => 'GET',
-					'timeout' => 15,
-					'redirection' => 3,
-					'httpversion' => '1.0',
-					//'blocking' => true,
-					'headers' => array(),
-					'body' => null,
-					'cookies' => array()
-				)
-			);
-			if( is_wp_error( $response ) ) {
-				$latest_backupbuddy_version = '{Err:' . $response->get_error_message() . '}';
-			} else {
-				$latest_backupbuddy_version = $response['body'];
-				set_transient( 'pb_backupbuddy_latest_version', $response['body'], 60* $latest_backupbuddy_version_cache_minutes );
-			}
-		} // end not cached.
-		
-		$latest_backupbuddy_nonminor_version = pb_backupbuddy_split2( $latest_backupbuddy_version, '.', 3 );
-		$latest_backupbuddy_nonminor_version = $latest_backupbuddy_nonminor_version[0];
-		$suggestion_text = $latest_backupbuddy_nonminor_version;
-		if ( $latest_backupbuddy_version == pb_backupbuddy::settings( 'version' ) ) { // At absolute latest including minor.
-			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>)';
-		} elseif ( $latest_backupbuddy_nonminor_version != $latest_backupbuddy_version ) { // Minor version available that is newer than latest major.
-			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>; <a href="plugins.php?ithemes-updater-force-minor-update=1" title="Once you have licensed BackupBuddy you may select this to go to the Plugins page to upgrade to the latest quick release version. Typically only the main major versions are available for automatic updates but this option instructs the updater to display minor version updates for approximately one hour. If it does not immediately become available on the Plugins page, try refreshing a couple of times.">enable quick release update</a>)';
-		} else {
-			$suggestion_text .= ' (latest)';
-		}
-		$version_string = pb_backupbuddy::settings( 'version' );
-		// If on DEV system (.git dir exists) then append some details on current.
-		if ( @file_exists( pb_backupbuddy::plugin_path() . '/.git/logs/HEAD' ) ) {
-			$commit_log = escapeshellarg( pb_backupbuddy::plugin_path() . '/.git/logs/HEAD' );
-			$commit_line = exec( "tail -n 1 {$commit_log}" );
-			$version_string .= ' <span style="display: inline-block; max-width: 250px; font-size: 8px;">[DEV: ' . $commit_line . ']</span>';
-		}
-		$parent_class_test = array(
-						'title'			=>		'BackupBuddy Version',
-						'suggestion'	=>		$suggestion_text,
-						'value'			=>		$version_string,
-						'tip'			=>		__('Version of BackupBuddy currently running on this site.', 'it-l10n-backupbuddy' ),
-					);
-		if ( version_compare( pb_backupbuddy::settings( 'version' ), $latest_backupbuddy_nonminor_version, '<' ) ) {
-			$parent_class_test['status'] = __('WARNING', 'it-l10n-backupbuddy' );
-		} else {
-			$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		}
-		array_push( $tests, $parent_class_test );
-		
 		
 		
 		// WORDPRESS VERSION
@@ -241,7 +124,7 @@ function pb_backupbuddy_get_loadavg() {
 		
 		// Set up ZipBuddy when within BackupBuddy
 		require_once( pb_backupbuddy::plugin_path() . '/lib/zipbuddy/zipbuddy.php' );
-		pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( backupbuddy_core::getBackupDirectory() );
+		pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( pb_backupbuddy::$options['backup_directory'] );
 		
 		require_once( pb_backupbuddy::plugin_path() . '/lib/mysqlbuddy/mysqlbuddy.php' );
 		global $wpdb;
@@ -286,7 +169,6 @@ function pb_backupbuddy_get_loadavg() {
 	
 	
 	// Maximum PHP Runtime (ACTUAL TESTED!)
-	/*
 	if ( ! defined( 'PB_IMPORTBUDDY' ) ) {
 		$parent_class_test = array(
 						'title'			=>		'Tested PHP Max Execution Time (beta)',
@@ -297,7 +179,6 @@ function pb_backupbuddy_get_loadavg() {
 		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
 		array_push( $tests, $parent_class_test );
 	}
-	*/
 	
 	
 	
@@ -336,18 +217,12 @@ function pb_backupbuddy_get_loadavg() {
 			pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( ABSPATH );
 		}
 	}
-	$zip_methods = implode( ', ', pb_backupbuddy::$classes['zipbuddy']->_zip_methods );
 	
-	if ( ! defined( 'PB_IMPORTBUDDY' ) ) {
-		$zipmethod_refresh = '<a class="pb_backupbuddy_refresh_stats" rel="refresh_zip_methods" alt="' . pb_backupbuddy::ajax_url( 'refresh_zip_methods' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>';
-	} else {
-		$zipmethod_refresh = '';
-	}
 	$parent_class_test = array(
 					'title'			=>		'Zip Methods',
-					'suggestion'	=>		'Command line [fastest] > ziparchive > PHP-based (pclzip) [slowest]',
-					'value'			=>		'<span id="pb_stats_refresh_zip_methods">' . $zip_methods . '</span> ' . $zipmethod_refresh,
-					'tip'			=>		__('Methods your server supports for creating ZIP files. These were tested & verified to operate. Command line is magnitudes better than other methods and operates via exec() or other execution functions. ZipArchive is a PHP extension. PHP-based ZIP compression/extraction is performed via a PHP script called pclzip but it is slower and can be memory intensive.', 'it-l10n-backupbuddy' ),
+					'suggestion'	=>		'Command line (best) > ziparchive > PHP-based (worst)',
+					'value'			=>		implode( ', ', pb_backupbuddy::$classes['zipbuddy']->_zip_methods ),
+					'tip'			=>		__('Methods your server supports for creating ZIP files. These were tested & verified to operate. Command line is magnitudes better than other methods and operate via exec() or other execution functions. ZipArchive is a PHP extension. PHP-based ZIP compression/extraction is performed via a PHP script called pclzip but it is very slow and memory intensive and should only be used as a last effort.', 'it-l10n-backupbuddy' ),
 				);
 	if ( in_array( 'exec', pb_backupbuddy::$classes['zipbuddy']->_zip_methods ) ) {
 		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
@@ -361,7 +236,7 @@ function pb_backupbuddy_get_loadavg() {
 		
 		$parent_class_test = array(
 						'title'			=>		'Database Dump Methods',
-						'suggestion'	=>		'Command line [fastest] > PHP-based [slowest]',
+						'suggestion'	=>		'Command line (best) > PHP-based (slower)',
 						'value'			=>		implode( ', ', pb_backupbuddy::$classes['mysqlbuddy']->get_methods() ),
 						'tip'			=>		__('Methods your server supports for dumping (backing up) your mysql database. These were tested values unless compatibility / troubleshooting settings override.', 'it-l10n-backupbuddy' ),
 					);
@@ -382,7 +257,7 @@ function pb_backupbuddy_get_loadavg() {
 		}
 		$parent_class_test = array(
 						'title'			=>		'Site Size',
-						'suggestion'	=>		'n/a',
+						'suggestion'	=>		'N/A',
 						'value'			=>		'<span id="pb_stats_refresh_site_size">' . $site_size . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_site_size" alt="' . pb_backupbuddy::ajax_url( 'refresh_site_size' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
 						'tip'			=>		__('Total size of your site (starting in your WordPress main directory) INCLUDING any excluded directories / files.', 'it-l10n-backupbuddy' ),
 					);
@@ -398,43 +273,10 @@ function pb_backupbuddy_get_loadavg() {
 			$site_size_excluded = '<i>Unknown</i>';
 		}
 		$parent_class_test = array(
-						'title'			=>		'Site Size (Default Exclusions applied)',
-						'suggestion'	=>		'n/a',
+						'title'			=>		'Site Size with Exclusions',
+						'suggestion'	=>		'N/A',
 						'value'			=>		'<span id="pb_stats_refresh_site_size_excluded">' . $site_size_excluded . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_site_size_excluded" alt="' . pb_backupbuddy::ajax_url( 'refresh_site_size_excluded' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
 						'tip'			=>		__('Total size of your site (starting in your WordPress main directory) EXCLUDING any directories / files you have marked for exclusion.', 'it-l10n-backupbuddy' ),
-					);
-		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		array_push( $tests, $parent_class_test );
-		
-		
-		// Site Objects
-		if ( isset( pb_backupbuddy::$options['stats']['site_objects'] ) && ( pb_backupbuddy::$options['stats']['site_objects'] > 0 ) ) {
-			$site_objects = pb_backupbuddy::$options['stats']['site_objects'];
-		} else {
-			$site_objects = '<i>Unknown</i>';
-		}
-		$parent_class_test = array(
-						'title'			=>		'Site number of files',
-						'suggestion'	=>		'n/a',
-						'value'			=>		'<span id="pb_stats_refresh_objects">' . $site_objects . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_objects" alt="' . pb_backupbuddy::ajax_url( 'refresh_site_objects' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
-						'tip'			=>		__('Total number of files/folders in your site (starting in your WordPress main directory) INCLUDING any excluded directories / files.', 'it-l10n-backupbuddy' ),
-					);
-		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		array_push( $tests, $parent_class_test );
-		
-		
-		
-		// Site objects WITH EXCLUSIONS accounted for.
-		if ( isset( pb_backupbuddy::$options['stats']['site_objects_excluded'] ) && ( pb_backupbuddy::$options['stats']['site_objects_excluded'] > 0 ) ) {
-			$site_objects_excluded = pb_backupbuddy::$options['stats']['site_objects_excluded'];
-		} else {
-			$site_objects_excluded = '<i>Unknown</i>';
-		}
-		$parent_class_test = array(
-						'title'			=>		'Site number of files (Default Exclusions applied)',
-						'suggestion'	=>		'n/a',
-						'value'			=>		'<span id="pb_stats_refresh_objects_excluded">' . $site_objects_excluded . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_objects_excluded" alt="' . pb_backupbuddy::ajax_url( 'refresh_site_objects_excluded' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
-						'tip'			=>		__('Total number of files/folders site (starting in your WordPress main directory) EXCLUDING any directories / files you have marked for exclusion.', 'it-l10n-backupbuddy' ),
 					);
 		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
 		array_push( $tests, $parent_class_test );
@@ -444,7 +286,7 @@ function pb_backupbuddy_get_loadavg() {
 		// Database Size
 		$parent_class_test = array(
 						'title'			=>		'Database Size',
-						'suggestion'	=>		'n/a',
+						'suggestion'	=>		'N/A',
 						'value'			=>		'<span id="pb_stats_refresh_database_size">' .pb_backupbuddy::$format->file_size( pb_backupbuddy::$options['stats']['db_size'] ) . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_database_size" alt="' . pb_backupbuddy::ajax_url( 'refresh_database_size' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
 						'tip'			=>		__('Total size of your database INCLUDING any excluded tables.', 'it-l10n-backupbuddy' ),
 					);
@@ -455,8 +297,8 @@ function pb_backupbuddy_get_loadavg() {
 		
 		// Database size WITH EXCLUSIONS accounted for.
 		$parent_class_test = array(
-						'title'			=>		'Database Size (Default Exclusions applied)',
-						'suggestion'	=>		'n/a',
+						'title'			=>		'Database Size with Exclusions',
+						'suggestion'	=>		'N/A',
 						'value'			=>		'<span id="pb_stats_refresh_database_size_excluded">' . pb_backupbuddy::$format->file_size( pb_backupbuddy::$options['stats']['db_size_excluded'] ) . '</span> <a class="pb_backupbuddy_refresh_stats" rel="refresh_database_size_excluded" alt="' . pb_backupbuddy::ajax_url( 'refresh_database_size_excluded' ) . '" title="' . __('Refresh', 'it-l10n-backupbuddy' ) . '"><img src="' . pb_backupbuddy::plugin_url() . '/images/refresh_gray.gif" style="vertical-align: -1px;"> <span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span></a>',
 						'tip'			=>		__('Total size of your database EXCLUDING any tables you have marked for exclusion.', 'it-l10n-backupbuddy' ),
 					);
@@ -465,31 +307,17 @@ function pb_backupbuddy_get_loadavg() {
 		
 		
 		
-		/***** BEGIN AVERAGE WRITE SPEED *****/
-		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
-		
+		// Average write speed.
 		$write_speed_samples = 0;
 		$write_speed_sum = 0;
-		$backups = glob( backupbuddy_core::getBackupDirectory() . '*.zip' );
-		if ( ! is_array( $backups ) ) {
-			$backups = array();
-		}
-		foreach( $backups as $backup ) {
-			
-			$serial = backupbuddy_core::get_serial_from_file( $backup );
-			$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = true );
-			if ( true !== ( $result = $backup_options->is_ok() ) ) {
-				pb_backupbuddy::status( 'warning', 'Unable to open fileoptions file `' . backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt' . '`. Details: `' . $result . '`.' );
-			} 
-				
-				
-			if ( isset( $backup_options->options['integrity'] ) && isset( $backup_options->options['integrity']['size'] ) ) {
+		foreach( pb_backupbuddy::$options['backups'] as $backup ) {
+			if ( isset( $backup['integrity'] ) && isset( $backup['integrity']['size'] ) ) {
 				$write_speed_samples++;
 				
-				$size = $backup_options->options['integrity']['size'];
+				$size = $backup['integrity']['size'];
 				$time_taken = 0;
-				if ( isset( $backup_options->options['steps'] ) ) {
-					foreach( $backup_options->options['steps'] as $step ) {
+				if ( isset( $backup['steps'] ) ) {
+					foreach( $backup['steps'] as $step ) {
 						if ( $step['function'] == 'backup_zip_files' ) {
 							$time_taken = $step['finish_time'] - $step['start_time'];
 							break;
@@ -517,19 +345,18 @@ function pb_backupbuddy_get_loadavg() {
 		
 		$parent_class_test = array(
 						'title'			=>		'Average Write Speed',
-						'suggestion'	=>		'n/a',
+						'suggestion'	=>		'N/A',
 						'value'			=>		 $final_write_speed,
 						'tip'			=>		__('Average ZIP file creation write speed. Backup file sizes divided by the time taken to create each. Samples: `' . $write_speed_samples . '`.', 'it-l10n-backupbuddy' ),
 					);
 		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
 		array_push( $tests, $parent_class_test );
-		/***** END AVERAGE WRITE SPEED *****/
 		
 		
 		// Guess max site size to be able to backup.
 		$parent_class_test = array(
 						'title'			=>		'Guesstimate of max ZIP size',
-						'suggestion'	=>		'n/a',
+						'suggestion'	=>		'N/A',
 						'value'			=>		$final_write_speed_guess,
 						'tip'			=>		__('Calculated estimate of the largest .ZIP backup file that may be created. As ZIP files are compressed the site size that may be backed up should be larger than this.', 'it-l10n-backupbuddy' ),
 					);
@@ -539,7 +366,7 @@ function pb_backupbuddy_get_loadavg() {
 		
 		
 		// Http loopbacks.
-		if ( ( $loopback_response = backupbuddy_core::loopback_test() ) === true ) {
+		if ( ( $loopback_response = pb_backupbuddy::$classes['core']->loopback_test() ) === true ) {
 			$loopback_status = 'enabled';
 			$status = 'OK';
 		} else {
@@ -551,25 +378,6 @@ function pb_backupbuddy_get_loadavg() {
 						'suggestion'	=>		'enabled',
 						'value'			=>		$loopback_status,
 						'tip'			=>		__('Some servers do are not configured properly to allow WordPress to connect back to itself via the site URL (ie: http://your.com connects back to itself on the same server at http://your.com/ to trigger a simulated cron step). If this is the case you must either ask your hosting provider to fix this or enable WordPres Alternate Cron mode in your wp-config.php file.', 'it-l10n-backupbuddy' ),
-					);
-		$parent_class_test['status'] = __( $status, 'it-l10n-backupbuddy' );
-		array_push( $tests, $parent_class_test );
-		
-		
-		
-		// CRON disabled?
-		if ( defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ) {
-			$cron_status = 'disabled';
-			$status = 'FAIL';
-		} else {
-			$cron_status = 'enabled';
-			$status = 'OK';
-		}
-		$parent_class_test = array(
-						'title'			=>		'WordPress Cron',
-						'suggestion'	=>		'enabled',
-						'value'			=>		$cron_status,
-						'tip'			=>		__( 'This check verifies that the cron system has not been disabled by the DISABLE_WP_CRON constant. This may be defined by a plugin or other method to disable the cron system which may result in automated functionality not being available.', 'it-l10n-backupbuddy' ),
 					);
 		$parent_class_test['status'] = __( $status, 'it-l10n-backupbuddy' );
 		array_push( $tests, $parent_class_test );
@@ -613,12 +421,11 @@ function pb_backupbuddy_get_loadavg() {
 	}
 	$parent_class_test = array(
 					'title'			=>		'Disabled PHP Functions',
-					'suggestion'	=>		'n/a',
+					'suggestion'	=>		'N/A',
 					'value'			=>		$disabled_functions,
 					'tip'			=>		__('Some hosts block certain PHP functions for various reasons. Sometimes hosts block functions that are required for proper functioning of WordPress or plugins.', 'it-l10n-backupbuddy' ),
 				);
-	$disabled_functions = str_replace( ', ', ',', $disabled_functions ); // Normalize spaces or lack of spaces between disabled functions.
-	$disabled_functions_array = explode( ',', $disabled_functions );
+	$disabled_functions_array = explode( ', ', $disabled_functions );
 	$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
 	if (
 		( true === in_array( 'exec', $disabled_functions_array ) )
@@ -687,8 +494,6 @@ function pb_backupbuddy_get_loadavg() {
 	}
 	array_push( $tests, $parent_class_test );
 	
-	
-	
 	// SAFE MODE
 	if ( ini_get_bool( 'safe_mode' ) === true ) {
 		$parent_class_val = 'enabled';
@@ -708,192 +513,23 @@ function pb_backupbuddy_get_loadavg() {
 	}
 	array_push( $tests, $parent_class_test );
 	
-	
-	
-	// PHP API
-	$php_api = 'Unknown';
-	if ( is_callable( 'php_sapi_name' ) ) {
-		$php_api = php_sapi_name();
-	}
-	$parent_class_test = array(
-					'title'			=>		'PHP API',
-					'suggestion'	=>		'n/a',
-					'value'			=>		$php_api,
-					'tip'			=>		__('API mode PHP is running under.', 'it-l10n-backupbuddy' ),
-				);
-	$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-	array_push( $tests, $parent_class_test );
-	
-	
-	
-	// PHP Bits
-	$parent_class_test = array(
-					'title'			=>		'PHP Architecture',
-					'suggestion'	=>		'64-bit',
-					'value'			=>		( PHP_INT_SIZE * 8 ) . '-bit',
-					'tip'			=>		__('Whether PHP is running in 32 or 64 bit mode. 64-bit is recommended over 32-bit. Note: This only determines PHP status NOT status of other server functionality such as filesystem, command line zip, etc.', 'it-l10n-backupbuddy' ),
-				);
-	$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-	array_push( $tests, $parent_class_test );
-	
-	
-	
-	// http Server Software
-	if ( isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
-		$server_software = $_SERVER['SERVER_SOFTWARE'];
-	} else {
-		$server_software = 'Unknown';
-	}
-	$parent_class_test = array(
-					'title'			=>		'Http Server Software',
-					'suggestion'	=>		'n/a',
-					'value'			=>		$server_software,
-					'tip'			=>		__('Software running this http web server, such as Apache, IIS, or Nginx.', 'it-l10n-backupbuddy' ),
-				);
-	$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-	array_push( $tests, $parent_class_test );
-	
-	
-	
-	// Load Average
-	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		$load_average = pb_backupbuddy_get_loadavg();
-		foreach( $load_average as &$this_load ) {
-			$this_load = round( $this_load, 2 );
-		}
-		$parent_class_test = array(
-						'title'			=>		'Server Load Average',
-						'suggestion'	=>		'n/a',
-						'value'			=>		implode( ', ', $load_average ),
-						'tip'			=>		__('Server CPU use in intervals: 1 minute, 5 minutes, 15 minutes. E.g. .45 basically equates to 45% CPU usage.', 'it-l10n-backupbuddy' ),
-					);
-		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		array_push( $tests, $parent_class_test );
-	}
-	
-	
-	
-	// SFTP support?
-	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		$connect = 'no';
-		$sftp = 'no';
-		if ( is_callable( 'ssh2_connect' ) && ( false === in_array( 'ssh2_connect', $disabled_functions_array ) ) ) {
-			$connect = 'yes';
-		}
-		if ( is_callable( 'ssh2_ftp' ) && ( false === in_array( 'ssh2_ftp', $disabled_functions_array ) ) ) {
-			$connect = 'yes';
-		}
-		$parent_class_test = array(
-						'title'			=>		'PHP SSH2, SFTP Support',
-						'suggestion'	=>		'n/a',
-						'value'			=>		$connect . ', ' . $sftp,
-						'tip'			=>		__( 'Whether or not your server is configured to allow SSH2 connections over PHP or SFTP connections or PHP. Most hosts do not currently provide this feature. Information only; BackupBuddy cannot make use of this functionality at this time.', 'it-l10n-backupbuddy' ),
-					);
-		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		array_push( $tests, $parent_class_test );
-	}
-	
-	
-	
-	// ABSPATH
-	$parent_class_test = array(
-					'title'			=>		'WordPress ABSPATH',
-					'suggestion'	=>		'n/a',
-					'value'			=>		'<span style="display: inline-block; max-width: 250px;">' . ABSPATH . '</span>',
-					'tip'			=>		__( 'This is the directory which WordPress reports to BackupBuddy it is installed in.', 'it-l10n-backupbuddy' ),
-				);
-	if ( ! @file_exists( ABSPATH ) ) {
-		$parent_class_test['status'] = __('WARNING', 'it-l10n-backupbuddy' );
-	} else {
-		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-	}
-	array_push( $tests, $parent_class_test );
-	
-	
-	
 	// OS
-	$php_uname = '';
-	if ( is_callable( 'php_uname' ) ) {
-		$php_uname = ' <span style="display: inline-block; max-width: 250px; font-size: 8px;">(' . @php_uname() . ')</span>';
-	}
 	$parent_class_test = array(
 					'title'			=>		'Operating System',
 					'suggestion'	=>		'Linux',
-					'value'			=>		PHP_OS . $php_uname,
+					'value'			=>		PHP_OS,
 					'tip'			=>		__('The server operating system running this site. Linux based systems are encouraged. Windows users may need to perform additional steps to get plugins to perform properly.', 'it-l10n-backupbuddy' ),
 				);
-	if ( substr( PHP_OS, 0, 3 ) == 'WIN' ) {
+	if ( PHP_OS == 'WINNT' ) {
 		$parent_class_test['status'] = __('WARNING', 'it-l10n-backupbuddy' );
 	} else {
 		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
 	}
 	array_push( $tests, $parent_class_test );
-	
-	
-	
-	// Active plugins list.
-	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		// Active Plugins
-		$success = true;
-		$active_plugins = serialize( get_option( 'active_plugins' ) );
-		$found_plugins = array();
-		foreach( backupbuddy_core::$warn_plugins as $warn_plugin => $warn_plugin_title ) {
-			if ( FALSE !== strpos( $active_plugins, $warn_plugin ) ) { // Plugin active.
-				$found_plugins[] = $warn_plugin_title;
-				$success = false;
-			}
-		}
-		$parent_class_test = array(
-						'title'			=>		'Active WordPress Plugins',
-						'suggestion'	=>		'n/a',
-						'value'			=>		'<textarea style="width: 100%; max-height: 200px;" disabled="disabled">' . implode( ', ', unserialize( $active_plugins ) ) . '</textarea>',
-						'tip'			=>		__( 'Plugins currently activated for this site. A warning does not guarentee problems with a plugin but indicates that a plugin is activated that at one point may have caused operational issues.  Plugin conflicts can be specific and may only occur under certain circumstances such as certain plugin versions, plugin configurations, and server settings.', 'it-l10n-backupbuddy' ),
-					);
-		if ( false === $success ) {
-			$parent_class_test['status'] = __('WARNING', 'it-l10n-backupbuddy' );
-		} else {
-			$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		}
-		array_push( $tests, $parent_class_test );
-	}
-	
-	
-	
-	// PHP Process user/group.
-	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		$success = true;
-		$php_user = '<i>' . __( 'Unknown', 'it-l10n-backupbuddy' ) . '</i>';
-		$php_uid = '<i>' . __( 'Unknown', 'it-l10n-backupbuddy' ) . '</i>';
-		$php_gid = '<i>' . __( 'Unknown', 'it-l10n-backupbuddy' ) . '</i>';
-		
-		if ( is_callable( 'posix_geteuid' ) && ( false === in_array( 'posix_geteuid', $disabled_functions_array ) ) ) {
-			$php_uid = @posix_geteuid();
-			if ( is_callable( 'posix_getpwuid' ) && ( false === in_array( 'posix_getpwuid', $disabled_functions_array ) ) ) {
-				$php_user = @posix_getpwuid( $php_uid );
-				$php_user = $php_user['name'];
-			}
-		}
-		if ( is_callable( 'posix_getegid' ) && ( false === in_array( 'posix_getegid', $disabled_functions_array ) ) ) {
-			$php_gid = @posix_getegid();
-		}
-		$parent_class_test = array(
-						'title'			=>		'PHP Process User (UID:GID)',
-						'suggestion'	=>		'n/a',
-						'value'			=>		$php_user . ' (' . $php_uid . ':' . $php_gid . ')',
-						'tip'			=>		__( 'Current user, user ID, and group ID under which this PHP process is running. This user must have proper access to your files and directories. If the PHP user is not your own then setting up a system such as suphp is encouraged to ensure proper access and security.', 'it-l10n-backupbuddy' ),
-					);
-		if ( false === $success ) {
-			$parent_class_test['status'] = __('WARNING', 'it-l10n-backupbuddy' );
-		} else {
-			$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-		}
-		array_push( $tests, $parent_class_test );
-	}
 	
 	
 	
 ?>
-
 
 
 <table class="widefat">
@@ -901,10 +537,10 @@ function pb_backupbuddy_get_loadavg() {
 		<tr class="thead">
 			<th style="width: 15px;">&nbsp;</th>
 			<?php
-				echo '<th>', __('Server Configuration', 'it-l10n-backupbuddy' ), '</th>',
+				echo '<th>', __('Parameter', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th>', __('Suggestion', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th>', __('Value', 'it-l10n-backupbuddy' ), '</th>',
-					 //'<th>', __('Result', 'it-l10n-backupbuddy' ), '</th>',
+					 '<th>', __('Result', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th style="width: 60px;">', __('Status', 'it-l10n-backupbuddy' ), '</th>';
 			?>
 		</tr>
@@ -913,10 +549,10 @@ function pb_backupbuddy_get_loadavg() {
 		<tr class="thead">
 			<th style="width: 15px;">&nbsp;</th>
 			<?php
-				echo '<th>', __('Server Configuration', 'it-l10n-backupbuddy' ), '</th>',
+				echo '<th>', __('Parameter', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th>', __('Suggestion', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th>', __('Value', 'it-l10n-backupbuddy' ), '</th>',
-					 //'<th>', __('Result', 'it-l10n-backupbuddy' ), '</th>',
+					 '<th>', __('Result', 'it-l10n-backupbuddy' ), '</th>',
 					 '<th style="width: 15px;">', __('Status', 'it-l10n-backupbuddy' ), '</th>';
 			?>
 		</tr>
@@ -929,17 +565,14 @@ function pb_backupbuddy_get_loadavg() {
 			echo '	<td>' . $parent_class_test['title'] . '</td>';
 			echo '	<td>' . $parent_class_test['suggestion'] . '</td>';
 			echo '	<td>' . $parent_class_test['value'] . '</td>';
-			//echo '	<td>' . $parent_class_test['status'] . '</td>';
+			echo '	<td>' . $parent_class_test['status'] . '</td>';
 			echo '	<td>';
 			if ( $parent_class_test['status'] == __('OK', 'it-l10n-backupbuddy' ) ) {
-				echo '<span class="pb_label pb_label-success">Pass</span>';
-				//echo '<div style="background-color: #22EE5B; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
+				echo '<div style="background-color: #22EE5B; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
 			} elseif ( $parent_class_test['status'] == __('FAIL', 'it-l10n-backupbuddy' ) ) {
-				echo '<span class="pb_label pb_label-important">Fail</span>';
-				//echo '<div style="background-color: #CF3333; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
+				echo '<div style="background-color: #CF3333; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
 			} elseif ( $parent_class_test['status'] == __('WARNING', 'it-l10n-backupbuddy' ) ) {
-				echo '<span class="pb_label pb_label-warning">Warning</span>';
-				//echo '<div style="background-color: #FEFF7F; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
+				echo '<div style="background-color: #FEFF7F; border: 1px solid #E2E2E2;">&nbsp;&nbsp;&nbsp;</div>';
 			}
 			echo '	</td>';
 			echo '</tr>';
@@ -970,12 +603,14 @@ if ( isset( $_GET['phpinfo'] ) && $_GET['phpinfo'] == 'true' ) {
 } else {
 	echo '<br>';
 	echo '<center>';
-	
 	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		echo '<a href="#TB_inline?width=640&#038;height=600&#038;inlineId=pb_serverinfotext_modal" class="button button-secondary button-tertiary thickbox" title="Server Information Results">Display Server Configuration in Text Format</a> &nbsp;&nbsp;&nbsp; ';
-		echo '<a href="' . pb_backupbuddy::ajax_url( 'phpinfo' ) . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" title="' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '">' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '</a>';
+		echo '<a href="' . pb_backupbuddy::ajax_url( 'phpinfo' ) . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" style="margin-top: 3px;" title="' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '">' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '</a>';
 	} else {
-		echo '<a id="serverinfotext" class="button button-secondary button-tertiary button-primary thickbox toggle" title="Server Information Results">Display Results in Text Format</a> &nbsp;&nbsp;&nbsp; ';
+		if ( ( file_exists( ABSPATH . '/repairbuddy' ) ) && method_exists( $parent_class, 'page_link' ) ) {
+			echo '<a href="' . $parent_class->page_link( 'server_info', 'phpinfo' ) . '" class="button-secondary" style="margin-top: 3px; text-decoration: none;">'. __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '</a>';
+		} else {
+			//echo '<a href="?step=0&action=phpinfo&v=xv' . md5( $parent_class->_defaults['import_password'] . 'importbuddy' ) . '" class="button-secondary" style="margin-top: 3px; text-decoration: none;">'. __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '</a>';
+		}
 	}
 	echo '</center>';
 	
@@ -986,26 +621,3 @@ if ( isset( $_GET['phpinfo'] ) && $_GET['phpinfo'] == 'true' ) {
 	*/
 }
 ?><br>
-
-
-
-<div
-<?php
-if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-	echo 'id="pb_serverinfotext_modal"';
-} else {
-	echo 'id="toggle-serverinfotext"';
-}
-?> style="display: none;">
-		<?php
-		if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-			echo '<h3>' . __( 'Server Information Results', 'it-l10n-backupbuddy' ) . '</h3>';
-			echo '<textarea style="width: 100%; height: 300px;" wrap="off">';
-		} else {
-			echo '<textarea style="width: 95%; height: 300px;" wrap="off">';
-		}
-		foreach( $tests as $test ) {
-			echo '[' . $test['status'] . ']     ' . $test['title'] . '   =   ' . strip_tags( $test['value'] ) . "\n"; 
-		}
-		?></textarea>
-</div>

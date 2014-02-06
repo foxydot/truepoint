@@ -37,8 +37,7 @@ class pb_backupbuddy {
 		'init'				=>		'',
 	);
 	private static $_page_settings;				// Holds admin page settings for adding to the admin menu on a hook later.
-	public static $_status_serial = '';		// Serial for writing the status for this page load. May be string OR array of multiple serials to write to.
-	private static $_has_flushed = false;		/// Whether or not flush() has been called yet or not.
+	public static $_status_serial = '';		// Serial for writing the status for this page load.
 
 	// Controller objects. See: /controllers/ directory.
 	private static $_actions;					// Controller for WordPress actions.
@@ -57,7 +56,7 @@ class pb_backupbuddy {
 	//private static $_callbacks;				// DISABLED. Using create_function() to bypass need for this. Currently only holding callback for the admin menu . @see pluginbuddy_callbacks class
 	public static $_dashboard_widgets;   		// Holds tag and title for unconstructed dashboard widgets temporarily.
 	public static $_updater;					// Contains updater object (if enabled) of the most up to date updater found. Populated on init hook.
-	private static $_skiplog;					// if unable to write to log then skip all future attempts.
+	
 	
 	
 	// ********** FUNCTIONS **********
@@ -82,19 +81,13 @@ class pb_backupbuddy {
 		} else { // Generate URL and paths old way (old WordPress versions or inside ImportBuddy).
 			self::$_plugin_path = dirname( dirname( __FILE__ ) );
 			$relative_path = ltrim( str_replace( '\\', '/', str_replace( rtrim( ABSPATH, '\\\/' ), '', self::$_plugin_path ) ), '\\\/' );
-			if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-				self::$_plugin_url = 'importbuddy'; // Relative importbuddy path.
-			} else { // Normal full path.
-				self::$_plugin_url = site_url() . '/' . ltrim( $relative_path, '/' );
-				if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) { // Handle https URLs properly.
-					self::$_plugin_url = str_replace( 'http://', 'https://', self::$_plugin_url );
-				}
+			self::$_plugin_url = site_url() . '/' . ltrim( $relative_path, '/' );
+			if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) { // Handle https URLs properly.
+				self::$_plugin_url = str_replace( 'http://', 'https://', self::$_plugin_url );
 			}
 		}
 		if ( isset( $_GET['page'] ) ) { // If in an admin page then append page querystring.
-			$arr = explode( '?', $_SERVER['REQUEST_URI'] ); // avoid reference error by setting here.
-			self::$_self_link = array_shift( $arr ) . '?page=' . htmlentities( $_GET['page'] );
-			unset( $arr );
+			self::$_self_link = array_shift( explode( '?', $_SERVER['REQUEST_URI'] ) ) . '?page=' . htmlentities( $_GET['page'] );
 		}
 		
 		// Set the init file.
@@ -118,6 +111,13 @@ class pb_backupbuddy {
 		
 		if ( is_admin() ) {
 			
+			// Load automatic upgrades system if needed.
+			if ( isset( self::$_settings['modules']['updater'] ) && ( self::$_settings['modules']['updater'] === true ) ) {
+				require_once( self::$_plugin_path . '/pluginbuddy/lib/updater/updater.php' );
+				$preloader_class = 'pb_' . self::settings( 'slug' ) . '_updaterpreloader';
+				$updater_preloader = new $preloader_class( self::settings( 'slug' ) );
+			}
+			
 			// Load UI system.
 			self::init_class_controller( 'ui' );
 			
@@ -131,14 +131,28 @@ class pb_backupbuddy {
 			
 			// Load activation hook if in admin and activation file exists.
 			if ( file_exists( self::$_plugin_path . '/controllers/activation.php' ) ) {
-				$escaped_plugin_path = preg_replace( '#^\\\\\\\\#', '\\\\\\\\\\\\\\\\', self::$_plugin_path ); // Replace a path starting with \\ to be \\\\ so that when create_function parses the backslash it will return back to \\.
-				register_activation_hook( self::$_plugin_path . '/' . pb_backupbuddy::settings( 'init' ), create_function( '', "require_once('" . $escaped_plugin_path . "/controllers/activation.php');" ) ); // Run some code when plugin is activated in dashboard.
+				register_activation_hook( self::$_plugin_path . '/' . pb_backupbuddy::settings( 'init' ), create_function( '', "require_once('" . self::$_plugin_path . "/controllers/activation.php');" ) ); // Run some code when plugin is activated in dashboard.
 			}
 		} else { // Public side.
 			// Do nothing.
 		}
 		
 	} // End init().
+	
+	
+	
+	// ManageWP updates support.
+	public static function pb_filter_update() {
+		if ( defined( 'MMB_WORKER_VERSION' ) && isset( self::$_settings['modules']['updater'] ) && ( self::$_settings['modules']['updater'] === true ) ) {
+			$HTTP_RAW_POST_DATA = @file_get_contents('php://input');
+			$data = @base64_decode( $HTTP_RAW_POST_DATA );
+			if ( $data ) { // Appears to be ManageWP payload.
+				require_once( self::$_plugin_path . '/pluginbuddy/lib/updater/updater.php' );
+				$preloader_class = 'pb_' . self::settings( 'slug' ) . '_updaterpreloader';
+				$updater_preloader = new $preloader_class( self::settings( 'slug' ) );
+			}
+		}
+	} // ManageWP updates support.
 	
 	
 	
@@ -252,21 +266,20 @@ class pb_backupbuddy {
 	 *	@return		mixed		Value of POST variable if set. If not set returns a blank string ''.
 	 */
 	public static function _POST( $value = null ) {
-		if ( ( $value == '' ) || ( null == $value ) ) { // Requesting $_POST variable.
-			if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
-				return $_POST;
-			}
-			return stripslashes_deep( $_POST );
-		} else {
-			$postValue = '';
-			if ( isset( $_POST[$value] ) ) {
-				$postValue = $_POST[$value];
-			}
-			if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
-				return $postValue;
+		if ( isset( $_POST[$value] ) || ( $value === null ) ) {
+			if ( $value === null ) { // Requesting $_POST variable.
+				if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
+					return $_POST;
+				}
+				return stripslashes_deep( $_POST );
 			} else {
-				return stripslashes_deep( $postValue ); // Remove WordPress' magic-quotes-style escaping of data.
+				if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
+					return $_POST[$value];
+				}
+				return stripslashes_deep( $_POST[$value] ); // Remove WordPress' magic-quotes style escaping of data. *shakes head*
 			}
+		} else {
+			return '';
 		}
 	} // End _POST().
 	
@@ -281,21 +294,10 @@ class pb_backupbuddy {
 	 *	@return		mixed		Value of POST variable if set. If not set returns a blank string ''.
 	 */
 	public static function _GET( $value = '' ) {
-		if ( ( $value == '' ) || ( null == $value ) ) { // Requesting $_GET variable.
-			if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
-				return $_GET;
-			}
-			return stripslashes_deep( $_GET );
+		if ( isset( $_GET[$value] ) ) {
+			return $_GET[$value];
 		} else {
-			$getValue = '';
-			if ( isset( $_GET[$value] ) ) {
-				$getValue = $_GET[$value];
-			}
-			if ( defined( 'PB_STANDALONE' ) && ( PB_STANDALONE === true ) && !get_magic_quotes_gpc() ) { // If in ImportBuddy mode AND magic quotes is not on, dont strip. WP escapes for us if magic quotes are off.
-				return $getValue;
-			} else {
-				return stripslashes_deep( $getValue ); // Remove WordPress' magic-quotes-style escaping of data.
-			}
+			return '';
 		}
 	} // End _GET().
 	
@@ -505,78 +507,36 @@ class pb_backupbuddy {
 	 *	both index.htm files and .htaccess files turning browsing off.
 	 *
 	 *	@param		string		$directory		Full absolute pass to insert anti-directory-browsing files into. No trailing slash.
-	 *	@param		bool		$deny_all		When true also enforce denying ALL web-based access to directory. default false
 	 *	@return		boolean						True on success securing directory, false otherwise.
 	 */
-	public static function anti_directory_browsing( $directory = '', $die_on_fail = true, $deny_all = false, $suppress_alert = false ) {
-		
-		// Check directory exists & create if it doesn't.
+	public static function anti_directory_browsing( $directory = '', $die_on_fail = true ) {
+		// Create directory.
 		if ( !file_exists( $directory ) ) {
 			if ( self::$filesystem->mkdir( $directory ) === false ) {
-				$error = 'Error #9002: BackupBuddy unable to create directory `' . $directory . '`. Please verify write permissions for the parent directory `' . dirname( $directory ) . '` or manually create the specified directory & set permissions.';
-				if ( $suppress_alert !== true ) {
-					self::alert( $error, true, '9002' );
-				}
+				self::alert( 'Error #9002: Unable to create directory `' . $directory . '`. Please verify write permissions for this directory and/or manually create it.' );
 				if ( $die_on_fail === true ) {
-					die( $error );
+					die( 'Script halted for security. Please verify permissions on directory `' . $directory . '` allow writing & reading and try again.' );
 				}
 				return false;
 			}
 		}
 		
-		// Check writable.
-		if ( ! is_writable( $directory ) ) {
-			$error = 'Error #9002d: BackupBuddy directory `' . $directory . '` is indicated as NOT being writable. Please verify write permissions for it and parent directories as applicable.';
-			if ( $suppress_alert !== true ) {
-				self::alert( $error, true, '9002' );
-			}
-			if ( $die_on_fail === true ) {
-				die( $error );
-			}
-			return false;
-		}
-		
-		// .htaccess contents for denying.
-		if ( true === $deny_all ) {
-			$deny_all = "\ndeny from all";
-		} else {
-			$deny_all = '';
-		}
-		
 		$error = '';
-		
-		// index.php
-		if ( ! file_exists( $directory . '/index.php' ) ) {
-			if ( false === @file_put_contents( $directory . '/index.php', '<html></html>' ) ) {
-				$error .= 'Unable to write index.php file. ';
-			}
+		if ( false === @file_put_contents( $directory . '/index.php', '<html></html>' ) ) {
+			$error .= 'Unable to write index.php file. ';
 		}
-		
-		// index.htm
-		if ( ! file_exists( $directory . '/index.htm' ) ) {
-			if ( false === @file_put_contents( $directory . '/index.htm', '<html></html>' ) ) {
-				$error .= 'Unable to write index.htm file. ';
-			}
+		if ( false === @file_put_contents( $directory . '/index.htm', '<html></html>' ) ) {
+			$error .= 'Unable to write index.htm file. ';
 		}
-		
-		// index.html
-		if ( ! file_exists( $directory . '/index.html' ) ) {
-			if ( false === @file_put_contents( $directory . '/index.html', '<html></html>' ) ) {
-				$error .= 'Unable to write index.html file. ';
-			}
+		if ( false === @file_put_contents( $directory . '/index.html', '<html></html>' ) ) {
+			$error .= 'Unable to write index.html file. ';
 		}
-		
-		// .htaccess
-		if ( ! file_exists( $directory . '/.htaccess' ) ) {
-			if ( false === @file_put_contents( $directory . '/.htaccess', 'Options -Indexes' . $deny_all ) ) {
-				$error .= 'Unable to write .htaccess file. ';
-			}
+		if ( false === @file_put_contents( $directory . '/.htaccess', 'Options -Indexes' ) ) {
+			$error .= 'Unable to write .htaccess file. ';
 		}
 		
 		if ( $error != '' ) { // Failure.
-			if ( true !== $suppress_alert ) {
-				self::alert( 'Error creating anti directory browsing security files in directory `' . $directory . '`. Please verify this directory\'s permissions allow writing & reading. Errors: `' . $error . '`.' );
-			}
+			self::alert( 'Error creating anti directory browsing security files in director `' . $directory . '`. Please verify this directory\'s permissions allow writing & reading. Errors: `' . $error . '`.' );
 			if ( $die_on_fail === true ) {
 				die( 'Script halted for security. Please verify permissions and try again.' );
 			}
@@ -598,74 +558,7 @@ class pb_backupbuddy {
 		
 		self::$_status_serial = $serial;
 		
-		return;
-		
 	} // End set_status_serial().
-	
-	
-	
-	/*	add_status_serial()
-	 *	
-	 *	Add a serial for all subsequent status() calls to log to in addition to any currently logging serials.
-	 *	
-	 *	@param		string		$serial		Unique identifier to add to serials to log to.
-	 *	@return		null
-	 */
-	public static function add_status_serial( $serial ) {
-		
-		pb_backupbuddy::status( 'details', 'Adding status serial `' . $serial . '`.' );
-		if ( is_array( self::$_status_serial ) ) {
-			self::$_status_serial[] = $serial;
-		} else {
-			self::$_status_serial = array( self::$_status_serial, $serial );
-		}
-		
-		return;
-		
-	} // End add_status_serial().
-	
-	
-	
-	/*	remove_status_serial()
-	 *	
-	 *	Remove a serial for all subsequent status() calls to log to in addition to any currently logging serials.
-	 *	
-	 *	@param		string		$serial		Unique identifier to remove from serials to log to.
-	 *	@return		null
-	 */
-	public static function remove_status_serial( $serial ) {
-		
-		if ( is_array( self::$_status_serial ) ) { // array
-			foreach( self::$_status_serial as $i => $this_serial ) {
-				if ( $this_serial == $serial ) {
-					unset( self::$_status_serial[$i] );
-					return;
-				}
-			}
-		} else { // string
-			if ( self::$_status_serial == $serial ) {
-				self::$_status_serial == '';
-			}
-		}
-		pb_backupbuddy::status( 'details', 'Removed status serial `' . $serial . '`.' );
-		
-		return;
-		
-	} // End remove_status_serial().
-	
-	
-	
-	/*	get_status_serial()
-	 *	
-	 *	Get current serial status logs are going to.
-	 *	
-	 *	@return		string		$serial		Current serial set.
-	 */
-	public static function get_status_serial() {
-		
-		return self::$_status_serial;
-		
-	} // End get_status_serial().
 	
 	
 	
@@ -678,25 +571,13 @@ class pb_backupbuddy {
 	 *
 	 *	@see self::get_status().
 	 *
-	 *	@param	string			$type		Valid types: error, warning, details, message
-	 *	@param	string			$text		Text message to log.
-	 *	@param	string|array	$serial		Optional. Optional unique identifier for this plugin's message. Status messages are unique per plugin so this adds an additional unique layer for retrieval.
-	 *										If self::$_status_serial has been set by set_status_serial() then it will override if $serial is blank.
+	 *	@param	string	$type		Valid types: error, warning, details, message
+	 *	@param	string	$text		Text message to log.
+	 *	@param	string	$serial		Optional. Optional unique identifier for this plugin's message. Status messages are unique per plugin so this adds an additional unique layer for retrieval.
+	 *								If self::$_status_serial has been set by set_status_serial() then it will override if $serial is blank.
 	 *	@return	null
 	 */
-	public static function status( $type, $message, $serials = '', $js_mode = false ) {
-		
-		if ( ! class_exists( 'backupbuddy_core' ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-		}
-		
-		if ( ( self::$_status_serial != '' ) && ( $serials == '' ) ) {
-			$serials = self::$_status_serial;
-		}
-		if ( ! is_array( $serials ) ) {
-			$serials = array( $serials );
-		}
-		
+	public static function status( $type, $message, $serial = '', $js_mode = false ) {
 		global $pb_backupbuddy_js_status;
 		if ( defined( 'PB_IMPORTBUDDY' ) || ( isset( $pb_backupbuddy_js_status ) && ( $pb_backupbuddy_js_status === true ) ) ) {
 			$status = pb_backupbuddy::$format->date( time() ) . "\t" .
@@ -706,17 +587,21 @@ class pb_backupbuddy {
 						str_replace( chr(9), '   ', $message )
 					;
 			$status = str_replace( '\\', '/', $status );
-			echo '<script type="text/javascript">pb_status_append("' . str_replace( "\n", '\n', str_replace( '"', '&quot;', $status ) ) . '");</script>';
-			pb_backupbuddy::flush();
-		}
-		
-		if ( defined( 'BACKUPBUDDY_WP_CLI' ) && ( true === BACKUPBUDDY_WP_CLI ) ) {
-			if ( class_exists( 'WP_CLI' ) ) {
-				WP_CLI::line( $type . ' - ' . $message );
+			echo '<script type="text/javascript">jQuery( "#';
+			if ( defined( 'PB_IMPORTBUDDY' ) ) {
+				echo 'importbuddy_status';
+			} else {
+				echo 'pb_backupbuddy_status';
 			}
+			echo '" ).append( "\n' . str_replace( '"', '&quot;', $status ) . '");	textareaelem = document.getElementById( "importbuddy_status" );	textareaelem.scrollTop = textareaelem.scrollHeight;	</script>';
+			flush();
+			//return;
 		}
 		
 		$delimiter = '|~|';
+		if ( ( self::$_status_serial != '' ) && ( $serial == '' ) ) {
+			$serial = self::$_status_serial;
+		}
 		
 		// Make sure we have a unique log serial for all logs for security.
 		if ( !isset( self::$options['log_serial'] ) || ( self::$options['log_serial'] == '' ) ) {
@@ -724,83 +609,78 @@ class pb_backupbuddy {
 			self::save();
 		}
 		
-		foreach( $serials as $serial ) {
-			// Determine whether writing to main file.
-			$write_main = false;
-			if ( self::$options['log_level'] == 0 ) { // No logging.
-					$write_main = false;
-			} elseif ( self::$options['log_level'] == 1 ) { // Errors only.
-				if ( $type == 'error' ) {
-					$write_main = true;
-					self::log( '[' . $serial . '] ' . $message, 'error' );
-				}
-			} else { // Everything else.
+		// Determine whether writing to main file.
+		$write_main = false;
+		if ( self::$options['log_level'] == 0 ) { // No logging.
+				$write_main = false;
+		} elseif ( self::$options['log_level'] == 1 ) { // Errors only.
+			if ( $type == 'error' ) {
 				$write_main = true;
-				self::log( '[' . $serial . '] ' . $message, $type );
+				self::log( '[' . $serial . '] ' . $message, 'error' );
 			}
-			
-			// Determine whether writing to serial file. Ignores log level.
-			if ( $serial != '' ) {
-				$write_serial = true;
-			} else {
-				$write_serial = false;
-			}
-			
-			// Return if not writing to any file.
-			if ( ( $write_main !== true )  && ( $write_serial !== true ) ) {
-				return;
-			}
-			
-			// Calculate log directory.
-			$log_directory = backupbuddy_core::getLogDirectory(); // Also handles when within importbuddy.
-			
-			// Prepare directory for log files. Return if unable to do so.
-			if ( true === self::$_skiplog ) { // bool true so skip.
-				return;
-			} elseif( false !== self::$_skiplog ) { // something other than bool false so check directory before proceeding.
-				if ( true !== self::anti_directory_browsing( $log_directory, $die_on_fail = false, $deny_all = false, $suppress_alert = true ) ) { // Unable to secure directory. Fail.
-					self::$_skiplog = true;
-					return;
-				} else {
-					self::$_skiplog = false;
-				}
-			}
-			
-			// Function for writing actual log CSV data. Used later.
-			if ( !function_exists( 'write_status_line' ) ) {
-				function write_status_line( $file, $content_array, $delimiter ) {
-					$delimiter = '|~|';
-					if ( false !== ( $file_handle = @fopen( $file, 'a') ) ) { // Append mode.
-						//fputcsv ( $file_handle , $content_array );
-						@fwrite( $file_handle, trim( implode( $delimiter, $content_array ) ) . PHP_EOL );
-						@fclose( $file_handle );
-					} else {
-						pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
-					}
-				}
-			}
-			
-			$content_array = array(
-								pb_backupbuddy::$format->localize_time( time() ), //time(),
-								sprintf( "%01.2f", round ( microtime( true ) - self::$start_time, 2 ) ),
-								sprintf( "%01.2f", round( memory_get_peak_usage() / 1048576, 2 ) ),
-								$type,
-								str_replace( chr(9), '   ', $message ),
-							);
-			
-			/********** MAIN LOG FILE **********/
-			if ( $write_main === true ) { // WRITE TO MAIN LOG FILE.
-				$main_file = $log_directory . 'status-' . self::$options['log_serial'] . '.txt';
-				write_status_line( $main_file, $content_array, $delimiter );
-			}
-			
-			/********** SERIAL LOG FILE **********/
-			if ( $write_serial === true ) {
-				$serial_file = $log_directory . 'status-' . $serial . '_' . self::$options['log_serial'] . '.txt';
-				write_status_line( $serial_file, $content_array, $delimiter );
-			}
-		} // end foreach $serials.
+		} else { // Everything else.
+			$write_main = true;
+			self::log( '[' . $serial . '] ' . $message, $type );
+		}
 		
+		// Determine whether writing to serial file. Ignores log level.
+		if ( $serial != '' ) {
+			$write_serial = true;
+		} else {
+			$write_serial = false;
+		}
+		
+		// Return if not writing to any file.
+		if ( ( $write_main !== true )  && ( $write_serial !== true ) ) {
+			return;
+		}
+		
+		// Calculate log directory.
+		if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
+			$log_directory = ABSPATH . 'importbuddy/';
+		} else {
+			$log_directory = WP_CONTENT_DIR . '/uploads/pb_' . self::settings( 'slug' ) . '/';
+		}
+		
+		// Prepare directory for log files. Return if unable to do so.
+		if ( true !== self::anti_directory_browsing( $log_directory ) ) { // Unable to secure directory. Fail.
+			self::alert( 'Unable to create / verify anti directory browsing measures for status file `' . $status_file . '`. Log not written for security.' );
+			return;
+		}
+		
+		// Function for writing actual log CSV data. Used later.
+		if ( !function_exists( 'write_status_line' ) ) {
+			function write_status_line( $file, $content_array, $delimiter ) {
+				$delimiter = '|~|';
+				if ( false !== ( $file_handle = @fopen( $file, 'a') ) ) { // Append mode.
+					//fputcsv ( $file_handle , $content_array );
+					fwrite( $file_handle, trim( implode( $delimiter, $content_array ) ) . PHP_EOL );
+					fclose( $file_handle );
+				} else {
+					pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
+				}
+			}
+		}
+		
+		$content_array = array(
+							pb_backupbuddy::$format->localize_time( time() ), //time(),
+							sprintf( "%01.2f", round ( microtime( true ) - self::$start_time, 2 ) ),
+							sprintf( "%01.2f", round( memory_get_peak_usage() / 1048576, 2 ) ),
+							$type,
+							str_replace( chr(9), '   ', $message ),
+						);
+		
+		/********** MAIN LOG FILE **********/
+		if ( $write_main === true ) { // WRITE TO MAIN LOG FILE.
+			$main_file = $log_directory . 'status-' . self::$options['log_serial'] . '.txt';
+			write_status_line( $main_file, $content_array, $delimiter );
+		}
+		
+		/********** SERIAL LOG FILE **********/
+		if ( $write_serial === true ) {
+			$serial_file = $log_directory . 'status-' . $serial . '_' . self::$options['log_serial'] . '.txt';
+			write_status_line( $serial_file, $content_array, $delimiter );
+		}
 	} // End status().
 		
 	
@@ -825,7 +705,11 @@ class pb_backupbuddy {
 		$delimiter = '|~|';
 		
 		// Calculate log directory.
-		$log_directory = backupbuddy_core::getLogDirectory(); // Also handles when importbuddy.
+		if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
+			$log_directory = ABSPATH . 'importbuddy/';
+		} else {
+			$log_directory = WP_CONTENT_DIR . '/uploads/pb_' . self::settings( 'slug' ) . '/';
+		}
 		
 		$status_file = $log_directory . 'status-';
 		if ( $serial != '' ) {
@@ -834,6 +718,8 @@ class pb_backupbuddy {
 		$status_file .= self::$options['log_serial'] . '.txt';
 		
 		if ( !file_exists( $status_file ) ) {
+			//self::alert( 'Unable to load status file `' . $status_file . '`. It does not exist.' );
+			//return array( array( '0', 'warning', 'Log file `' . $status_file . '` does not exist for serial `' . $serial . '`; nothing written to it since last clearing?' ) );
 			return array(); // No log.
 		}
 		
@@ -899,82 +785,57 @@ class pb_backupbuddy {
 	 *
 	 */
 	public static function set_greedy_script_limits( $supress_status = false )  {
-	
-		$requested_socket_timeout = 60 * 60 * 2;
-		$requested_execution_time = 60 * 60 * 2;
-		
 		// Don't abort script if the client connection is lost/closed
 		@ignore_user_abort( true );
 		
-		// Set socket timeout to requested period.
-		@ini_set( 'default_socket_timeout', $requested_socket_timeout );
+		// Set socket timeout to 2 hours.
+		@ini_set( 'default_socket_timeout', 60 * 60 * 2 );
 		
-		// Set maximum execution time to requested period if not already better than that
-		// See if we can get a current value (of any sort)
-		if ( false === ( $original_execution_time = @ini_get( 'max_execution_time' ) ) ) {
-			$original_execution_time = 'Unknown';
+		
+		// Set maximum runtime to 2 hours.
+		$skip_runtime_increase = false;
+		$original_maximum_runtime = ini_get( 'max_execution_time' );
+		if ( is_numeric( $original_maximum_runtime ) ) {
+			if ( ( $original_maximum_runtime == 0 ) || ( $original_maximum_runtime > 7200 ) ) {
+				$skip_runtime_increase = true;
+			}
+		}
+		if ( $skip_runtime_increase === true ) {
+			self::status( 'details', 'Maximum PHP runtime was not modified due it to being already higher with the value of `' . $original_maximum_runtime . '`.' );
+		} else { // dont skip.
+			@set_time_limit( 60 * 60 * 2 );
+			if ( $supress_status === false ) {
+				self::status( 'details', 'Attempted to increase maximum PHP runtime. Original: ' . $original_maximum_runtime . '; New: ' . @ini_get( 'max_execution_time' ) . '.' );
+			}
 		}
 		
-		// Check if we need to try and set/increase
-		if ( is_numeric( $original_execution_time ) && ( ( 0 == $original_execution_time ) || ( $requested_execution_time <= $original_execution_time ) ) ) {
-			// There is no need to change max_execution_time
-			if ( false === $supress_status ) {
-				if ( false === ( $configured_execution_time = @get_cfg_var( 'max_execution_time' ) ) ) {
-					$configured_execution_time = 'Unknown';
+		
+		// Increase the memory limit
+		$current_memory_limit = trim( @ini_get( 'memory_limit' ) );
+		
+		// Make sure a minimum memory limit of 256MB is set.
+		if ( preg_match( '/(\d+)(\w*)/', $current_memory_limit, $matches ) ) {
+			$current_memory_limit = $matches[1];
+			$unit = $matches[2];
+			// Up memory limit if currently lower than 256M.
+			if ( 'g' !== strtolower( $unit ) ) {
+				if ( ( $current_memory_limit < 256 ) || ( 'm' !== strtolower( $unit ) ) ) {
+					@ini_set('memory_limit', '256M');
+					if ( $supress_status === false ) {
+						self::status( 'details', __('Set memory limit to 256M. Previous value < 256M.', 'it-l10n-backupbuddy' ) );
+					}
 				}
-				if ( false === ( $current_execution_time = @ini_get( 'max_execution_time' ) ) ) {
-					$current_execution_time = 'Unknown';
-				}
-				self::status( 'details', __( 'Maximum PHP execution time was not modified', 'it-l10n-backupbuddy' ) );
-				self::status( 'details', sprintf( __( 'Reported PHP execution time - Configured: %1$s; Original: %2$s; Current: %3$s', 'it-l10n-backupbuddy' ), $configured_execution_time, $original_execution_time, $current_execution_time ) );
 			}
 		} else {
-			// Either not a numeric value or we need to try and increase
-			@set_time_limit( $requested_execution_time );
-			if ( false === $supress_status ) {
-				if ( false === ( $configured_execution_time = @get_cfg_var( 'max_execution_time' ) ) ) {
-					$configured_execution_time = 'Unknown';
-				}
-				if ( false === ( $current_execution_time = @ini_get( 'max_execution_time' ) ) ) {
-					$current_execution_time = 'Unknown';
-				}
-				self::status( 'details', sprintf( __( 'Attempted to set PHP execution time to %1$s', 'it-l10n-backupbuddy' ), $requested_execution_time ) );
-				self::status( 'details', sprintf( __( 'Reported PHP execution time - Configured: %1$s; Original: %2$s; Current: %3$s', 'it-l10n-backupbuddy' ), $configured_execution_time, $original_execution_time, $current_execution_time ) );
+			// Couldn't determine current limit, set to 256M to be safe.
+			@ini_set('memory_limit', '256M');
+			if ( $supress_status === false ) {
+				self::status( 'details', __('Set memory limit to 256M. Previous value unknown.', 'it-l10n-backupbuddy' ) );
 			}
 		}
-		
-		
-		// Set memory_limit to either the user defined (WordPress defaulted) or over-ridden value
-		// Need to get the original value here as we will be updating it
-		if ( false === ( $original_memory_limit = @ini_get( 'memory_limit' ) ) ) {
-			$original_memory_limit = 'Unknown';
+		if ( $supress_status === false ) {
+			self::status( 'details', 'Original PHP memory limit: ' . $current_memory_limit . '; New: ' . @ini_get( 'memory_limit' ) . '.' );
 		}
-
-		// Need to check if we are running outside of WordPress in which case we don't try and change anything
-		// but just report the memory_limit values. The user will have to update config if necessary because
-		// there is no other mechanism to set the valid memory_limit.
-		// If we are running under WordPress then need a little fakery for earlier versions.
-		if ( ! defined( 'PB_STANDALONE' ) || ( defined( 'PB_STANDALONE' ) && ( false === PB_STANDALONE ) ) ) {	
-			// Note: WP_MAX_MEMORY_LIMIT was introduced WP3.2 so we need to fake it if constant not already defined
-			// Use the default value that WordPress uses if the user hasn't defined it
-			if ( ! defined( 'WP_MAX_MEMORY_LIMIT' ) ) {
-				define( 'WP_MAX_MEMORY_LIMIT', '256M' );
-			}
-			@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
-			if ( false === $supress_status ) {
-				self::status( 'details', sprintf( __( 'Attempted to set PHP memory limit to user defined WP_MAX_MEMORY_LIMIT (%1$s) or over-ridden value', 'it-l10n-backupbuddy' ), WP_MAX_MEMORY_LIMIT ) );
-			}
-		}
-		if ( false === $supress_status ) {
-			if ( false === ( $configured_memory_limit = @get_cfg_var( 'memory_limit' ) ) ) {
-				$configured_memory_limit = 'Unknown';
-			}
-			if ( false === ( $current_memory_limit = @ini_get( 'memory_limit' ) ) ) {
-				$current_memory_limit = 'Unknown';
-			}
-			self::status( 'details', sprintf( __( 'Reported PHP memory limits - Configured: %1$s; Original: %2$s; Current: %3$s', 'it-l10n-backupbuddy' ), $configured_memory_limit, $original_memory_limit, $current_memory_limit ) );
-		}
-
 	} // End set_greedy_script_limits().
 	
 	
@@ -1101,7 +962,6 @@ class pb_backupbuddy {
 	 *	@return		string/null					If not echoing tip then the string will be returned. When echoing there is no return.
 	 */
 	public static function video( $video_key, $title = '', $echo_tip = true ) {
-		self::init_class_controller( 'ui' ); // $ui class required pages controller and may not be set up if not in our own pages.
 		return self::$ui->video( $video_key, $title, $echo_tip );
 	} // End video().
 	
@@ -1118,7 +978,6 @@ class pb_backupbuddy {
 	 *	@return		string/null					If not echoing alert then the string will be returned. When echoing there is no return.
 	 */
 	public static function alert( $message, $error = false, $error_code = '' ) {
-		self::init_class_controller( 'ui' ); // $ui class required pages controller and may not be set up if not in our own pages.
 		self::$ui->alert( $message, $error, $error_code );
 	} // End alert().
 	
@@ -1126,7 +985,6 @@ class pb_backupbuddy {
 	
 	// Dismissable alert system. Uses alert().
 	public static function disalert( $unique_id, $message ) {
-		self::init_class_controller( 'ui' ); // $ui class required pages controller and may not be set up if not in our own pages.
 		self::$ui->disalert( $unique_id, $message );
 	} // End disalert().
 	
@@ -1164,7 +1022,7 @@ class pb_backupbuddy {
  	 *	@param		int			$position			Priority on where in the menu to add this. By default it is added to the bottom of the menu. It's possible to overwrite another menu item if this number matches. Use caution. Default: null.
 	 *	@return		null
 	 */
-	public static function add_page( $parent_slug, $page_slug, $page_title, $capability = 'activate_plugins', $icon = 'icon_menu_16x16.png', $slug_prefix = 'DEFAULT', $position = NULL ) {
+	public static function add_page( $parent_slug, $page_slug, $page_title, $capability = 'activate_plugins', $icon = 'icon_16x16.png', $slug_prefix = 'DEFAULT', $position = NULL ) {
 		if ( $slug_prefix == 'DEFAULT' ) {
 			$slug_prefix = 'pb_' . self::settings( 'slug' ) . '_';
 		}
@@ -1247,16 +1105,9 @@ class pb_backupbuddy {
 				$page_title = $page['title'];
 				$page_title_alt = $page['title'];
 			}
-			
-			// Calculate icon.
-			if ( '' != $page['icon'] ) { // If icon specified then figure out url.
-				$icon = $page['icon']; //self::plugin_url() . '/images/' . $page['icon'];
-			} else { // No icon. Usually used when manually doing CSS for retina icon.
-				$icon = '';
-			}
-			
+
 			if ( self::blank( $page['parent'] ) ) { // Top-level menu.
-				add_menu_page( $page_title, $page_title, $page['capability'], $menu_slug, array( &self::$_pages, $page['slug'] ), $icon, $page['position'] );
+				add_menu_page( $page_title, $page_title, $page['capability'], $menu_slug, array( &self::$_pages, $page['slug'] ), self::plugin_url() . '/images/' . $page['icon'], $page['position'] );
 				add_submenu_page( $menu_slug, self::settings( 'name' ) . ' &lsaquo; ' . $page_title_alt, $page_title_alt, $page['capability'], $menu_slug, array( &self::$_pages, $page['slug'] ) ); // Allows naming of first submenu item differently from the parent. Else its auto created with same name.
 			} else { // Sub-menu.
 				add_submenu_page( $parent_slug, self::settings( 'name' ) . ' &lsaquo; ' . $page_title, $page_title, $page['capability'], $menu_slug, array( &self::$_pages, $page['slug'] ) );
@@ -1503,26 +1354,20 @@ class pb_backupbuddy {
 	public static function load_script( $script, $core_script = false ) {
 		if ( strstr( $script, '.js' ) ) { // Loading a file specifically.
 			if ( $core_script === true ) {
-				if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-					$url_path = 'importbuddy/pluginbuddy/js/';
-				} else {
-					$url_path = self::$_plugin_url . '/pluginbuddy/js/';
-				}
 				$local_path = self::$_plugin_path . '/pluginbuddy/js/';
+				$url_path = self::$_plugin_url . '/pluginbuddy/js/';
+				
 				$script_name = 'pb_' . self::settings( 'slug' ) . '_core_' . $script;
 			} else {
-				if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-					$url_path = 'importbuddy/js/';
-				} else {
-					$url_path = self::$_plugin_url . '/js/';
-				}
 				$local_path = self::$_plugin_path . '/js/';
+				$url_path = self::$_plugin_url . '/js/';
+				
 				$script_name = 'pb_' . self::settings( 'slug' ) . '_' . $script;
 			}
 			
 			if ( !wp_script_is( $script_name ) ) { // Only load script once.
 				if ( file_exists( $local_path . $script ) ) { // Load our local script if file exists.
-					wp_enqueue_script( $script_name, $url_path . $script, array(), pb_backupbuddy::settings( 'version' ) );
+					wp_enqueue_script( $script_name, $url_path . $script );
 					wp_print_scripts( $script_name );
 				} else {
 					echo '{Error: Javascript file was set to load that did not exist: `' . $url_path . $script . '`}';
@@ -1550,26 +1395,18 @@ class pb_backupbuddy {
 	public static function load_style( $style, $core_style = false ) {
 		if ( strstr( $style, '.css' ) ) { // Loading a file specifically.
 			if ( $core_style === true ) {
-				if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-					$url_path = 'importbuddy/pluginbuddy/css/';
-				} else {
-					$url_path = self::$_plugin_url . '/pluginbuddy/css/';
-				}
 				$local_path = self::$_plugin_path . '/pluginbuddy/css/';
+				$url_path = self::$_plugin_url . '/pluginbuddy/css/';
 				$core_type = 'core';
 			} else {
-				if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-					$url_path = 'importbuddy/css/';
-				} else {
-					$url_path = self::$_plugin_url . '/css/';
-				}
 				$local_path = self::$_plugin_path . '/css/';
+				$url_path = self::$_plugin_url . '/css/';
 				$core_type = 'noncore';
 			}
 			$style_name = 'pb_' . self::settings( 'slug' ) . '_' . $core_type . '_' . $style;
 			if ( !wp_style_is( $style_name ) ) { // Only load style once.
 				if ( file_exists( $local_path . $style ) ) { // Load our local style if file exists.
-					wp_enqueue_style( $style_name, $url_path . $style, array(), pb_backupbuddy::settings( 'version' ) );
+					wp_enqueue_style( $style_name, $url_path . $style );
 					wp_print_styles( $style_name );
 				} else {
 					echo '{Error: CSS file was set to load that did not exist: `' . $url_path . $style . '`}';
@@ -1674,34 +1511,6 @@ class pb_backupbuddy {
 	
 	
 	
-	/* flush()
-	 *
-	 * Attempt to strongarm a flush to actually work.
-	 * Prevent flushing by adding this to wp-config.php:
-	 *		define( 'BACKUPBUDDY_NOFLUSH', true );
-	 *  OR
-	 *		set advanced option to prevent flush
-	 *
-	 */
-	public static function flush() {
-		if ( defined( 'BACKUPBUDDY_NOFLUSH' ) && BACKUPBUDDY_NOFLUSH === true ) { // Some servers seem to die on multiple flushes in the same pageload. Define this to prevent flushing.
-			return;
-		}
-		if ( isset( pb_backupbuddy::$options ) && ( isset( pb_backupbuddy::$options['prevent_flush'] ) ) && ( '1' == pb_backupbuddy::$options['prevent_flush'] ) ) {
-			return;
-		}
-		if ( true !== self::$_has_flushed ) { // Only run this once.
-			if ( function_exists( 'apache_setenv' ) ) {
-				@apache_setenv('no-gzip', 1); // Compression could cause server to wait for page to finish before proceeding. Turn off compression.
-			}
-			@ini_set('zlib.output_compression', 0); // Compression could cause server to wait for page to finish before proceeding. Turn off compression.
-			self::$_has_flushed = true;
-		}
-		@ob_flush();
-		flush();
-	} // End flush().
-	
-	
 	/*	reset_defaults()
 	 *	
 	 *	Reset plugin options to defaults. Getting started page uses this.
@@ -1709,8 +1518,8 @@ class pb_backupbuddy {
 	 *	@return		boolean			True on success; false otherwise.
 	 */
 	public static function reset_defaults() {
-		if ( isset( pb_backupbuddy::$_settings['default_options'] ) ) {
-			pb_backupbuddy::$options = pb_backupbuddy::$_settings['default_options'];
+		if ( isset( pb_backupbuddy::$settings['default_options'] ) ) {
+			pb_backupbuddy::$options = pb_backupbuddy::$settings['default_options'];
 			pb_backupbuddy::save();
 			return true;
 		} else {
@@ -1730,6 +1539,7 @@ if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
 // ********** Load core classes **********
 
 require_once( dirname( __FILE__ ) . '/classes/core_controllers.php' );
+//require_once( dirname( __FILE__ ) . '/classes/ui.php' ); Now handled in self::_construct().
 require_once( dirname( __FILE__ ) . '/classes/form.php' );
 require_once( dirname( __FILE__ ) . '/classes/settings.php' );
 
@@ -1761,9 +1571,7 @@ if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
 }
 
 // Used for ManageWP support.
-/*
 if( !is_admin() && function_exists( 'add_action' ) ){
 	add_action( 'setup_theme', 'pb_backupbuddy::pb_filter_update' );
 }
-*/
 ?>
