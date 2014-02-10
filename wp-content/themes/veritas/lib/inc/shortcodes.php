@@ -51,7 +51,7 @@ function column_shortcode($atts, $content = null){
 
 add_shortcode('columns','column_shortcode');
 
-function good_advice_sitemap() { 
+function msdlab_sitemap() { 
         $ret = '
             <div class="archive-page">
 
@@ -72,4 +72,4 @@ function good_advice_sitemap() {
         return $ret;
 }
 
-add_shortcode('sitemap','good_advice_sitemap');
+add_shortcode('sitemap','msdlab_sitemap');

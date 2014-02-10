@@ -13,7 +13,7 @@ function msdlab_pre_header(){
 }
 
 //add language widget after subnav
-function good_advice_language_widget(){
+function msdlab_language_widget(){
     $instance = array (
     'type' => 'both',
     'hide-title' => 'on',
@@ -27,9 +27,9 @@ function good_advice_language_widget(){
   return $matches[0];
 }
 
-function good_advice_subnav_right( $menu, $args ) {
+function msdlab_subnav_right( $menu, $args ) {
     $args = (array) $args;
-    $langs = good_advice_language_widget();
+    $langs = msdlab_language_widget();
     $menu = preg_replace('@<a.*?>Choose Language</a>@i','<a href="#">Choose Language</a>'."\n".$langs,$menu);
     return $menu;
 }

@@ -10,7 +10,7 @@ function msdlab_add_homepage_hero_flex_sidebars(){
     'id' => 'homepage-top'
             ));
     genesis_register_sidebar(array(
-    'name' => 'Homepage Widgets Right',
+    'name' => 'Homepage Widgets',
     'description' => 'Homepage central widget areas',
     'id' => 'homepage-widgets',
     'before_widget' => genesis_markup( array(
@@ -32,7 +32,7 @@ function msdlab_add_homepage_hero_flex_sidebars(){
  */
 function msdlab_add_homepage_callout_sidebars(){
     genesis_register_sidebar(array(
-    'name' => 'Homepage Widgets Left',
+    'name' => 'Homepage Callout',
     'description' => 'Homepage call to action',
     'id' => 'homepage-callout'
             ));
@@ -71,12 +71,7 @@ function msdlab_callout(){
 function msdlab_homepage_widgets(){
 	print '<div id="homepage-widgets" class="widget-area">';
 	print '<div class="wrap">';
-        print '<div class="left">';
-        dynamic_sidebar('homepage-callout');
-        print '</div>';
-        print '<div class="right">';
         dynamic_sidebar('homepage-widgets');
-        print '</div>';
   	print '</div>';
 	print '</div>';
 }
