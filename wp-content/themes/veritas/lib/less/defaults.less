@@ -199,15 +199,6 @@ textarea:focus {
   outline: none;
 }
 
-::-moz-placeholder {
-  color: @ltgrey;
-  opacity: 1;
-}
-
-::-webkit-input-placeholder {
-  color: @ltgrey;
-}
-
 button,
 input[type="button"],
 input[type="reset"],
@@ -246,6 +237,27 @@ input:hover[type="submit"],
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button {
   display: none;
+}
+
+
+*::-webkit-input-placeholder {
+   color: @blue !important;
+   opacity: 1;
+}
+
+*:-moz-placeholder { /* Firefox 18- */
+   color: @blue;  
+   opacity: 1;
+}
+
+*::-moz-placeholder {  /* Firefox 19+ */
+   color: @blue;  
+   opacity: 1;
+}
+
+*:-ms-input-placeholder {  
+   color: @blue;  
+   opacity: 1;
 }
 
 /* Tables

@@ -22,28 +22,6 @@
           }
       }
      }
-    .search-form{
-      display: inline-block;
-      padding: 1rem 0 1rem 1rem;
-      position: relative;
-      input[type="search"] {
-        padding: 0.5rem;
-      }
-      input[type="submit"] {
-        .fontawesome;
-        font-size: 1.4rem;
-        border: 0;
-        clip: auto;
-        height: auto;
-        margin: 0;
-        padding: 0.5rem;
-        position: absolute;
-        width: auto;
-        background: none;
-        right: 0.5rem;
-        color: @medgrey;
-      }
-    }
   }
 }
 
@@ -58,6 +36,38 @@ Site Header
 .site-header .wrap {
   padding: 40px 0;
   padding: 4rem 0;
+  .widget-area{
+    padding-top: 24px;
+    padding-top: 2.4rem;
+    .menu{
+      li.menu-item{
+        margin: 0 10px;
+        margin: 0 1rem;
+      }
+    }
+    .search-form{
+      display: inline-block;
+      padding: 1rem 0 1rem 1rem;
+      position: relative;
+      input[type="search"] {
+        padding: 0.5rem;
+        width: 80%;
+      }
+      input[type="submit"] {
+        border: 0;
+        height: 24px;
+        margin: 3px;
+        padding: 0;
+        position: relative;
+        width: 24px;
+        color: @blue;
+        background: 0;
+        font-size: 24px;
+        font-size: 2.4rem;
+        .fontawesome;
+      }
+    }
+  }
 }
 
 /* Title Area
@@ -139,10 +149,4 @@ Site Header
 }
 
 .header-image .site-header .widget-area {
-}
-
-.site-header .search-form {
-  float: right;
-  margin-top: 24px;
-  margin-top: 2.4rem;
 }

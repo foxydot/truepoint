@@ -39,7 +39,7 @@ function msdlab_subnav_right( $menu, $args ) {
  * Customize search form input
  */
 function msdlab_search_text($text) {
-    $text = esc_attr( 'Search...' );
+    $text = esc_attr( 'Search' );
     return $text;
 } 
  
@@ -200,16 +200,17 @@ function msdlab_grid_divider() {
  */
 function msdlab_do_social_footer(){
     global $msd_social;
-    if(has_nav_menu('footer_menu')){$social .= wp_nav_menu( array( 'theme_location' => 'footer_menu','container_class' => 'ftr-menu ftr-links','echo' => FALSE ) );}
+    if(has_nav_menu('footer_menu')){$footer_menu .= wp_nav_menu( array( 'theme_location' => 'footer_menu','container_class' => 'ftr-menu ftr-links','echo' => FALSE ) );}
     
     if($msd_social){
         $copyright .= '&copy; Copyright '.date('Y').' '.$msd_social->get_bizname().' &middot; All Rights Reserved';
     } else {
         $copyright .= '&copy; Copyright '.date('Y').' '.get_bloginfo('name').' &middot; All Rights Reserved ';
     }
+    $address = '<span>'.$msd_social->get_bizname().'</span> | '.
     
-    print '<div id="social" class="social creds">'.$social.'</div>';
-    print '<div id="copyright" class="copyright gototop">'.$copyright.'</div>';
+    print '<div id="footer-left" class="social">'.$address.'</div>';
+    print '<div id="footer-right" class="menu">'.$footer_menu.'</div>';
 }
 
 /**

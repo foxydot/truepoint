@@ -11,12 +11,11 @@ Site Navigation
   .menu-item {
     display: inline-block;
     text-align: left;
+    position: relative;
     a {
       border: none;
       color: @blue;
       display: block;
-      padding: 28px 24px;
-      padding: 2rem 2.2rem;
       position: relative;
     }
     a:hover{
@@ -40,7 +39,6 @@ Site Navigation
   -ms-transition:     opacity .4s ease-in-out;
   -o-transition:      opacity .4s ease-in-out;
   transition:         opacity .4s ease-in-out;
-  width: 200px;
   z-index: 99;
   a {
     background: @white;
@@ -48,32 +46,19 @@ Site Navigation
     border-top: none;
     font-size: 14px;
     font-size: 1.4rem;
-    padding: 16px 20px;
-    padding: 1.6rem 2rem;
     position: relative;
-    width: 196px;
   }
 }
 
 .genesis-nav-menu .sub-menu .sub-menu {
-  margin: -54px 0 0 190px;
 }
 
 .genesis-nav-menu .menu-item:hover {
-  position: static;
 }
 
 .genesis-nav-menu .menu-item:hover > .sub-menu {
-  left: auto;
+  left: 0;
   opacity: 1;
-}
-
-.genesis-nav-menu > .first-child > a {
-  padding-left: 0;
-}
-
-.genesis-nav-menu > .last-child > a {
-  padding-right: 0;
 }
 
 .genesis-nav-menu > .right {
@@ -100,6 +85,17 @@ Site Navigation
   padding: 1.4rem 0 0;
 }
 
+.menu{
+  li.menu-item{
+    a{
+      i{
+        padding: 0 6px 0 0;
+        padding: 0 0.6rem 0 0;
+      }
+    }
+  }
+}
+
 /* Site Header Navigation
 --------------------------------------------- */
 
@@ -115,43 +111,32 @@ Site Navigation
 --------------------------------------------- */
 
 .nav-primary {
-  margin-top: 2em;
-  font-size: 2em;
-  margin-top: 2rem;
-  font-size: 2rem;
   li.menu-item{
+    width: 50%;
+    background: @blue;
+    text-align: center;
+    margin-left: -3px;
+    position: relative;
+    .border-radius(12,12,0,0);
     a{
-      color: @blue;
-      text-transform: uppercase;
+      color: @white;
     }
     .sub-menu{
-      border: 2px solid @ltgrey;
-      background-color: @white;
+      width: 100%;
+      background: @white;
       li.menu-item{
-        background-color: @white;
+        margin-left: -4px;
+        background: 0;
+        width: auto;
+        .border-radius(0);
         a{
-          background-color: none;
-          border: none;
           color: @blue;
         }
       }
-      li:hover>a{
-        background-color: @ltgrey;
-        color: @orange;
-        text-decoration: none;
-      }
     }
   }
-  li:hover, li.current-menu-item, li.current-menu-ancestor{
-    a, a:hover{
-      color:@orange;
-      text-decoration: none;
-      }
-  }
 }
-.mainNav>ul>li.first>ul>li.title>ul>li>ul>li {
-  padding: 3px 0;
-}
+
 
 /* Secondary Navigation
 --------------------------------------------- */
