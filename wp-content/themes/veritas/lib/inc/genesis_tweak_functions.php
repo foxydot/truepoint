@@ -203,14 +203,14 @@ function msdlab_do_social_footer(){
     if(has_nav_menu('footer_menu')){$footer_menu .= wp_nav_menu( array( 'theme_location' => 'footer_menu','container_class' => 'ftr-menu ftr-links','echo' => FALSE ) );}
     
     if($msd_social){
+        $address = '<span itemprop="name">'.$msd_social->get_bizname().'</span> | <span itemprop="streetAddress">'.get_option('msdsocial_street').'</span> | <span itemprop="addressLocality">'.get_option('msdsocial_city').'</span>, <span itemprop="addressRegion">'.get_option('msdsocial_state').'</span> <span itemprop="postalCode">'.get_option('msdsocial_zip').'</span> | '.$msd_social->get_digits();
         $copyright .= '&copy; Copyright '.date('Y').' '.$msd_social->get_bizname().' &middot; All Rights Reserved';
     } else {
         $copyright .= '&copy; Copyright '.date('Y').' '.get_bloginfo('name').' &middot; All Rights Reserved ';
     }
-    $address = '<span>'.$msd_social->get_bizname().'</span> | '.
     
-    print '<div id="footer-left" class="social">'.$address.'</div>';
-    print '<div id="footer-right" class="menu">'.$footer_menu.'</div>';
+    print '<div id="footer-left" class="footer-left social">'.$address.'</div>';
+    print '<div id="footer-right" class="footer-right menu">'.$footer_menu.'</div>';
 }
 
 /**
