@@ -39,6 +39,7 @@ jQuery(document).ready(function($) {
 	//bootstrap
     $('.site-inner').addClass('container');
     //$('.wrap').addClass('row');
+    $('.content-sidebar .breadcrumb').addClass('row');
     $('.content-sidebar .content-sidebar-wrap').addClass('row');
     $('.content-sidebar .content').addClass('col-md-8 col-sm-12');
     $('.content-sidebar .sidebar').addClass('col-md-4');
