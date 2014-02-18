@@ -39,16 +39,3 @@ function aboutyou_footer_hook()
     </script><?php    
     }
 }
-
-/*function msdlab_do_post_subtitle() {
-    global $subtitle_metabox;
-    $subtitle_metabox->the_meta();
-    $subtitle = $subtitle_metabox->get_the_value('subtitle');
-
-    if ( strlen( $subtitle ) == 0 )
-        return;
-
-    $subtitle = sprintf( '<h2 class="entry-subtitle">%s</h2>', apply_filters( 'genesis_post_title_text', $subtitle ) );
-    echo apply_filters( 'genesis_post_title_output', $subtitle ) . "\n";
-
-}*/
