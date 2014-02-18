@@ -111,27 +111,103 @@ Site Navigation
 --------------------------------------------- */
 
 .nav-primary {
-  li.menu-item{
-    width: 50%;
-    background: @blue;
-    text-align: center;
-    margin-left: -3px;
+  ul.menu-primary{
     position: relative;
-    .border-radius(12,12,0,0);
-    a{
-      color: @white;
-    }
-    .sub-menu{
-      width: 100%;
-      background: @white;
-      li.menu-item{
-        margin-left: -4px;
-        background: 0;
-        width: auto;
-        .border-radius(0);
-        a{
-          color: @blue;
+    li.menu-item{
+      width: 50%;
+      float: left;
+      background: @medgrey;
+      text-align: center;
+      .border-radius(12,12,0,0);
+      font-size: 26px;
+      font-size: 2.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      position: static;
+      a{
+        padding-top: 10px;
+        padding-top: 1rem;
+        color: @white;
+      }
+      .sub-menu{
+        width: 100%;
+        background: @blue;
+        border-top: 0.5px solid @white;
+        font-size: 18px;
+        font-size: 1.8rem;
+        li.menu-item-has-children>a:after{
+          content:"\f078";
+          .fontawesome;
+          margin-left: 0.6em;
         }
+        li.menu-item{
+          float: none;
+          margin-left: -4px;
+          background: 0;
+          width: auto;
+          .border-radius(0);
+          border-bottom: 3px solid @blue;
+          position: relative;
+          a{
+          font-size: 18px;
+          font-size: 1.8rem;
+            padding: 6px 16px;
+            padding: 0.6rem 1.6rem;
+            margin: 0;
+            background: 0;
+            border: 0;
+            color: @white;
+          }
+          .sub-menu{
+            position: absolute;
+            left: 0;
+            background: white;
+            li.menu-item-has-children>a:after{
+              content:"\f054";
+            }
+            li.menu-item{
+              display: block;
+              float: none;
+              border-bottom: 1px solid @ltgrey;
+              background: white;
+              text-align: left;
+              a{
+                font-weight: 400;
+                font-size: 14px;
+                font-size: 1.4rem;
+                text-transform: none;
+              }
+            }
+            li.menu-item:hover{
+              background: lighten(@ltgrey,6%);
+            }
+          }
+        }
+        li.menu-item:hover{
+          background: @white;
+          border-bottom: 3px solid @orange;
+          a{
+            color: @blue;
+          }
+        }
+      }
+    }
+    li.menu-item:hover{
+      background: @blue;
+      a{
+        text-decoration: none;
+        color: @white;
+      }
+    }
+    >li.menu-item.first-child{
+      border-right: 1px solid @white;
+      .sub-menu{
+        text-align: left;
+      }
+    }
+    >li.menu-item.last-child{
+      .sub-menu{
+        text-align: right;
       }
     }
   }

@@ -35,14 +35,6 @@ jQuery(document).ready(function($) {
 			return '<li class="separator">|</li>';
 		}
 	});
-	
-	//bootstrap
-    $('.site-inner').addClass('container');
-    //$('.wrap').addClass('row');
-    $('.content-sidebar .breadcrumb').addClass('row');
-    $('.content-sidebar .content-sidebar-wrap').addClass('row');
-    $('.content-sidebar .content').addClass('col-md-8 col-sm-12');
-    $('.content-sidebar .sidebar').addClass('col-md-4');
     
     //icons
     $('.menu').not('#menu-primary-links').children('li.menu-item').children('a').prepend('<i class="fa"></i>');

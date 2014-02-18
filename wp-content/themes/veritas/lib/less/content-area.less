@@ -53,6 +53,27 @@ article.entry {
   margin-bottom: 0;
 }
 
+.entry-content{
+  ol,ul{
+    list-style: none outside none;
+    li{
+      list-style: none outside none;
+      margin-bottom: 1rem;
+      text-indent: -1em;
+      strong,b{
+        font-weight: 700;
+        color: @blue;
+        font-size: 1.8rem;
+      }
+    }
+    li:before {
+       content: "•";
+       color: @orange; /* or whatever color you prefer */
+       margin-right: 0.5em;
+    }
+  }
+}
+
 .entry-content .search-form {
   width: 50%;
 }

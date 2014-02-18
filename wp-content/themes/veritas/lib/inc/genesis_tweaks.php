@@ -18,6 +18,8 @@ add_filter('genesis_do_subnav','msdlab_subnav_right',10,2);
 add_filter('widget_text', 'do_shortcode');//shortcodes in widgets
 
 /*** CONTENT ***/
+
+add_filter('genesis_home_crumb', '__return_false');
 add_filter('genesis_breadcrumb_args', 'msdlab_breadcrumb_args'); //customize the breadcrumb output
 remove_action('genesis_before_loop', 'genesis_do_breadcrumbs'); //move the breadcrumbs 
 add_filter( 'genesis_post_info', 'sp_post_info_filter' );
