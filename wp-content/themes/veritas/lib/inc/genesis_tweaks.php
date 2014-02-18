@@ -49,4 +49,12 @@ add_action('after_setup_theme','msdlab_add_homepage_callout_sidebars'); //create
 
 /*** Blog Header ***/
 //add_action('genesis_before_loop','msd_add_blog_header');
-//add_action('wp_head', 'collections');
+add_action('wp_head', 'msdlab_custom_hooks_management');
+
+/*** Bootstrappin **/
+
+add_filter( 'genesis_attr_site-inner', 'msdlab_bootstrap_site_inner', 10);
+add_filter( 'genesis_attr_breadcrumb', 'msdlab_bootstrap_breadcrumb', 10);
+add_filter( 'genesis_attr_content-sidebar-wrap', 'msdlab_bootstrap_content_sidebar_wrap', 10);
+add_filter( 'genesis_attr_content', 'msdlab_bootstrap_content', 10);
+add_filter( 'genesis_attr_sidebar-primary', 'msdlab_bootstrap_sidebar', 10);
