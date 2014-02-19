@@ -11,7 +11,75 @@
   }
 }
 
+.about-you-tabs{
+  h3,h4 {
+  font-weight: normal;
+  font-size: 18px;
+  font-size: 1.8rem;
+  color: @blue;
+  margin: 4px 0;
+  }
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: transparent;
+    border: none;
+    border-image: none;
+    cursor: default;
+}
 
+  .nav-tabs > li.active > a:after, .nav-tabs > li.active > a:hover:after, .nav-tabs > li.active > a:focus:after {
+    content: '\f111';
+    .fontawesome;
+    color: @orange;
+    position: absolute;
+    margin-left: -6px;
+  }
+  .nav-tabs > li:hover > a:after {
+    content: '\f111';
+    .fontawesome;
+    color: @blue;
+    position: absolute;
+    margin-left: -6px;
+  }
+  .nav-tabs{
+    li{
+      text-align: center;
+      a{
+        border:0;
+        img{
+          padding: 1rem;
+        }
+        h4{}
+      }
+      a:hover,a:focus{
+        background: none;
+        border:0;
+      }
+    }
+    li:hover,li:focus{
+      background: none;
+    }
+  }
+  .nav-tabs.tabs-4{
+    li{
+      width: 24.9%;
+    }
+  }
+  .nav-tabs.tabs-5{
+    li{
+      width: 19.9%;
+    }
+  }
+  .nav-tabs.tabs-6{
+    li{
+      width: 16.5%;
+    }
+  }
+  .tab-content{
+    padding: 2rem 0;
+    border-bottom: 1px solid #DDDDDD;
+    h3{}
+  }
+}
 
 
 

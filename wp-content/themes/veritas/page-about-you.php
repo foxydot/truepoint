@@ -13,14 +13,20 @@ function msdlab_do_post_tabs() {
         $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_key($aboutyou_metabox->get_the_value('title')).'"><h3 class="content-title">'.$aboutyou_metabox->get_the_value('title').'</h3>'.$aboutyou_metabox->get_the_value('content').'</div>';
         $i++;
     endwhile; //end loop
+    print '<div class="about-you-tabs">
+    ';
     print '<!-- Nav tabs -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs tabs-'.count($nav_tabs).'">
         '.implode("\n", $nav_tabs).'
-        </ul>';
+        </ul>
+        ';
     print '<!-- Tab panes -->
         <div class="tab-content">
         '.implode("\n", $tab_content).'
-        </div>'; 
+        </div>
+        '; 
+    print '</div>
+    ';
 }
 add_action('genesis_after_loop','msdlab_do_post_tabs');
 genesis();
