@@ -27,18 +27,12 @@
 }
 
   .nav-tabs > li.active > a:after, .nav-tabs > li.active > a:hover:after, .nav-tabs > li.active > a:focus:after {
-    content: '\f111';
-    .fontawesome;
     color: @orange;
-    position: absolute;
-    margin-left: -6px;
+    opacity: 1;
   }
   .nav-tabs > li:hover > a:after {
-    content: '\f111';
-    .fontawesome;
     color: @blue;
-    position: absolute;
-    margin-left: -6px;
+    opacity: 1;
   }
   .nav-tabs{
     li{
@@ -53,6 +47,15 @@
       a:hover,a:focus{
         background: none;
         border:0;
+      }
+      a:after{
+        content: '\f111';
+        .fontawesome;
+        color: @white;
+        opacity: 0;
+        position: absolute;
+        margin-left: -6px;
+        transition: color 0.5s ease, opacity 0.5s ease;
       }
     }
     li:hover,li:focus{
