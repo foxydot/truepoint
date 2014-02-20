@@ -9,7 +9,9 @@ function msdlab_do_post_tabs() {
     $nav_tabs = $tab_content = array();
     $i=0;
     while($aboutyou_metabox->have_fields('tabs')):
-        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_key($aboutyou_metabox->get_the_value('title')).'" data-toggle="tab"><img class="img-circle" src="'.$aboutyou_metabox->get_the_value('image').'" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
+        $attachment_id = get_attachment_id_from_src($aboutyou_metabox->get_the_value('image'));
+        $image = wp_get_attachment_image_src( $attachment_id, 'tab' );
+        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_key($aboutyou_metabox->get_the_value('title')).'" data-toggle="tab"><img class="img-circle grayscale" src="'.$image[0].'" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
         $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_key($aboutyou_metabox->get_the_value('title')).'"><h3 class="content-title">'.$aboutyou_metabox->get_the_value('title').'</h3>'.$aboutyou_metabox->get_the_value('content').'</div>';
         $i++;
     endwhile; //end loop

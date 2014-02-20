@@ -1,3 +1,6 @@
+jQuery(window).load(function($){
+    graytabs();
+});
 jQuery(document).ready(function($) {	
 	$('ul li:first-child').addClass('first-child');
 	$('ul li:last-child').addClass('last-child');
@@ -42,7 +45,21 @@ jQuery(document).ready(function($) {
     $('li.Contact-Us>a>i').addClass('fa-comments');
     $('li.Disclosures>a>i').addClass('fa-align-left');
     $('li.Careers>a>i').addClass('fa-briefcase');
-	
+    
+    //tab greys
+    var tabimg = jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale');
+    tabimg.mouseover(function(){
+        grayscale.reset($(this));
+    }).mouseout(function(){
+        graytabs();
+        //grayscale($(this));
+    });
+    
+   /* jQuery('.nav-tabs li').on('show.bs.tab',function(e){
+        var active = jQuery(e.target).find('.grayscale');
+        graytabs();
+    });
+    
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
     //jQuery('.menu').not('#footer .menu, #footer-widgets .menu').wrap('<div id="nav-response" class="nav-responsive">');
@@ -83,3 +100,8 @@ jQuery(document).ready(function($) {
                 } );
             }
 });
+
+function graytabs(){
+    var tabimg = jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale');
+    grayscale(tabimg);
+}
