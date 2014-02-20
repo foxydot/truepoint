@@ -28,7 +28,7 @@ function msdlab_do_post_tabs() {
     print '</div>
     ';
     if(is_active_sidebar('aboutyou')){
-        print '<div class="about-you-widget-area col-sm-12">';
+        print '<div class="about-you-widget-area row">';
         dynamic_sidebar('aboutyou');
         print '</div>';
     }
