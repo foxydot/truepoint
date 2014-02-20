@@ -34,6 +34,26 @@ function msdlab_do_post_tabs() {
         dynamic_sidebar('aboutyou');
         print '</div>';
     }
+    ?>
+    <script>
+    function graytabs(){
+        var tabimg = jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale');
+        grayscale(tabimg);
+    }
+    jQuery(window).load(function($){
+        graytabs();
+    });
+    jQuery(document).ready(function($) {
+        
+        //tab greys
+        jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseover(function(){
+            grayscale.reset($(this));
+        });
+        jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseout(function(){
+            grayscale($(this));
+        });
+    });
+    </script>
 }
 add_action('genesis_after_loop','msdlab_do_post_tabs');
 genesis();
