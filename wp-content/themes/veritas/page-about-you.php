@@ -27,6 +27,11 @@ function msdlab_do_post_tabs() {
         '; 
     print '</div>
     ';
+    if(is_active_sidebar('aboutyou')){
+        print '<div class="about-you-widget-area col-sm-12">';
+        dynamic_sidebar('aboutyou');
+        print '</div>';
+    }
 }
 add_action('genesis_after_loop','msdlab_do_post_tabs');
 genesis();

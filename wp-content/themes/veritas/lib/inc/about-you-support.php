@@ -39,3 +39,15 @@ function aboutyou_footer_hook()
     </script><?php    
     }
 }
+/**
+ * Footer widget area
+ */
+ add_action('after_setup_theme','msdlab_add_aboutyou_sidebars'); 
+ 
+function msdlab_add_aboutyou_sidebars(){
+    genesis_register_sidebar(array(
+    'name' => 'About You Footer',
+    'description' => 'Widgets in the tabbed pages',
+    'id' => 'aboutyou'
+            ));
+}
