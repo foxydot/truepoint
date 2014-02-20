@@ -2,12 +2,11 @@
 /**
  * Add new image sizes
  */
-add_image_size('post-thumb', 225, 160, TRUE);
-add_image_size( 'post-image', 760, 158, TRUE ); //image to float at the top of the post. Reversed Out does these a lot.
-
-add_image_size('tiny_thumb', 45, 45, TRUE);
-add_image_size('child_full', 730, 380, TRUE);
-add_image_size('child_thumbnail', 350, 170, TRUE);
+add_image_size('home-banner', 1170, 415, TRUE);
+add_image_size('headshot-lg', 375, 300, TRUE);
+add_image_size('headshot-md', 270, 220, TRUE);
+add_image_size('tab', 170, 170, TRUE);
+add_image_size('mini-thumbnail', 115, 115, TRUE);
 
 //* Display a custom favicon
 add_filter( 'genesis_pre_load_favicon', 'sp_favicon_filter' );
