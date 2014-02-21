@@ -2,6 +2,7 @@
 /*
 Template Name: About You Section Template
 */
+wp_enqueue_script('grayscale',get_stylesheet_directory_uri().'/lib/js/grayscale.js',FALSE,FALSE,TRUE);
 add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 function msdlab_do_post_tabs() {
     global $aboutyou_metabox;
@@ -11,7 +12,7 @@ function msdlab_do_post_tabs() {
     while($aboutyou_metabox->have_fields('tabs')):
         $attachment_id = get_attachment_id_from_src($aboutyou_metabox->get_the_value('image'));
         $image = wp_get_attachment_image_src( $attachment_id, 'tab' );
-        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_key($aboutyou_metabox->get_the_value('title')).'" data-toggle="tab"><img class="img-circle grayscale" src="'.$image[0].'" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
+        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_key($aboutyou_metabox->get_the_value('title')).'" data-toggle="tab" data-option-value=".'.sanitize_key($aboutyou_metabox->get_the_value('title')).'"><img class="img-circle grayscale" src="'.$image[0].'" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
         $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_key($aboutyou_metabox->get_the_value('title')).'"><h3 class="content-title">'.$aboutyou_metabox->get_the_value('title').'</h3>'.$aboutyou_metabox->get_the_value('content').'</div>';
         $i++;
     endwhile; //end loop
@@ -46,14 +47,21 @@ function msdlab_do_post_tabs() {
     jQuery(document).ready(function($) {
         
         //tab greys
-        jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseover(function(){
+        /*jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseenter(function(){
             grayscale.reset($(this));
         });
-        jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseout(function(){
+        jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseleave(function(){
             grayscale($(this));
+        });*/
+        jQuery('.nav-tabs li').on('show.bs.tab',function(e){
+            console.log(e.target);
+            grayscale.reset(jQuery(e.target).find('.grayscale'));
+            grayscale(jQuery(e.relatedTarget).find('.grayscale'));
         });
+
     });
     </script>
+    <?php
 }
 add_action('genesis_after_loop','msdlab_do_post_tabs');
 genesis();
