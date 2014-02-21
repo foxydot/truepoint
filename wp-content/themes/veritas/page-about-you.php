@@ -57,8 +57,11 @@ function msdlab_do_post_tabs() {
             console.log(e.target);
             grayscale.reset(jQuery(e.target).find('.grayscale'));
             grayscale(jQuery(e.relatedTarget).find('.grayscale'));
+            var filter = $(e.target).attr('href').replace('#','');  
+            $('.about-you-widget-area .widget').show();  
+            $('.about-you-widget-area .widget:not(.' + filter + ')').hide();  
         });
-
+        
     });
     </script>
     <?php
