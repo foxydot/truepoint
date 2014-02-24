@@ -66,8 +66,20 @@
       a{
         border:0;
         padding: 10px 0;
+        position: relative;
         img{
           padding: 1rem;
+        }
+        img.logo-mark{
+          height: 170px;
+          width: 170px;
+          padding: 2rem;
+          position: absolute;
+          z-index: 100;
+          margin: 0 auto;
+          align: center;
+          top:20px;
+          left: 10px;
         }
         h4{}
       }
@@ -92,11 +104,21 @@
   .nav-tabs.tabs-4{
     li{
       width: 24.9%;
+      a{
+        img.logo-mark{
+          left: 58px;
+        }
+      }
     }
   }
   .nav-tabs.tabs-5{
     li{
       width: 19.9%;
+      a{
+        img.logo-mark{
+          left: 10px;
+        }
+      }
     }
   }
   .nav-tabs.tabs-6{
