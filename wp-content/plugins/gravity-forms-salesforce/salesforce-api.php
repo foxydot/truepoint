@@ -3,7 +3,8 @@
 Plugin Name: Gravity Forms Salesforce API Add-On
 Plugin URI: https://katz.co/plugins/gravity-forms-salesforce/
 Description: Integrates <a href="http://formplugin.com?r=salesforce">Gravity Forms</a> with Salesforce allowing form submissions to be automatically sent to your Salesforce account. Requires Salesforce API access. <strong>If you don't have API access</strong>, use the "Gravity Forms Salesforce - Web-to-Lead Add-On" plugin instead.
-Version: 2.6.1
+Version: 2.6.4
+Requires at least: 3.3
 Author: Katz Web Services, Inc.
 Author URI: http://www.katzwebservices.com
 
@@ -37,7 +38,7 @@ class GFSalesforce {
 	private static $path = "gravity-forms-salesforce/salesforce-api.php";
 	private static $url = "http://formplugin.com";
 	private static $slug = "gravity-forms-salesforce";
-	private static $version = "2.6.1";
+	private static $version = "2.6.4";
 	private static $min_gravityforms_version = "1.3.9";
 	private static $is_debug = NULL;
 	private static $cache_time = 86400; // 24 hours
@@ -54,6 +55,14 @@ class GFSalesforce {
 	//Plugin starting point. Will load appropriate files
 	public static function init(){
 		global $pagenow;
+
+		// SOAP isn't available.
+		// You can override this check by adding a filter on `gf_salesforce_soap_is_available` with `__return_true`
+		if(!class_exists("SOAPClient") && !apply_filters( 'gf_salesforce_soap_is_available', false )) {
+			add_action("admin_notices", array('GFSalesforce', 'is_soap_installed'), 10);
+			return;
+		}
+
 		require_once(self::get_base_path() . "/edit-form.php");
 		if($pagenow === 'plugins.php' && is_admin()) {
 			add_action("admin_notices", array('GFSalesforce', 'is_gravity_forms_installed'), 10);
@@ -193,6 +202,13 @@ EOD;
 			return true;
 		}
 		return $installed;
+	}
+
+	/**
+	 * Show a notice if SOAP isn't available
+	 */
+	public static function is_soap_installed() {
+		echo sprintf('<div id="message" class="error"><h3>%s</h3>%s</div>', __('The Gravity Form Salesforce Add-On could not be loaded.', 'gravity-forms-salesforce'), wpautop(__('The Gravity Form Salesforce Add-On requires that your server support SOAP. Please contact your hosting provider and ask them to enable SOAP on your server.', 'gravity-forms-salesforce')));
 	}
 
 	public static function plugin_row(){
@@ -1583,7 +1599,7 @@ EOD;
 		}
 
 		// Both admin_init and gforms_after_update_entry will have this set
-		if(empty($_POST['gforms_save_entry']) || empty($_POST['action']) || empty($_POST['update_to_salesforce'])) { return; }
+		if( empty( $_POST['gforms_save_entry'] ) || empty( $_POST['action'] ) || empty( $_POST['update_to_salesforce'] ) ) { return; }
 
 		// Verify authenticity of request
 		check_admin_referer('gforms_save_entry', 'gforms_save_entry');
@@ -1900,7 +1916,7 @@ EOD;
 	public static function entry_info_send_to_salesforce_button( $button = '' ) {
 
 		// If this entry's form isn't connected to salesforce, don't show the button
-		if(!self::show_send_to_salesforce_button()) { return $button; }
+		if(!self::show_send_to_salesforce_button() || !apply_filters( 'gf_salesforce_show_manual_export_button', true ) ) { return $button; }
 
 		// Is this the view or the edit screen?
 		$mode = empty($_POST["screen_mode"]) ? "view" : $_POST["screen_mode"];
@@ -1925,12 +1941,16 @@ EOD;
 	public static function entry_info_send_to_salesforce_checkbox( $form_id, $lead ) {
 
 		// If this entry's form isn't connected to salesforce, don't show the checkbox
-		if(!self::show_send_to_salesforce_button()) { return; }
+		if(!self::show_send_to_salesforce_button() ) { return; }
 
 		// If this is not the Edit screen, get outta here.
 		if(empty($_POST["screen_mode"]) || $_POST["screen_mode"] === 'view') { return; }
 
-		printf('<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1" /><label for="update_to_salesforce" title="%s">%s</label><br /><br />', esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'), esc_html__('Send to Salesforce', 'gravity-forms-salesforce'));
+		if( apply_filters( 'gf_salesforce_show_manual_export_button', true ) ) {
+			printf('<input type="checkbox" name="update_to_salesforce" id="update_to_salesforce" value="1" /><label for="update_to_salesforce" title="%s">%s</label><br /><br />', esc_html__('Create or update this entry in Salesforce. The fields will be mapped according to the form feed settings.', 'gravity-forms-salesforce'), esc_html__('Send to Salesforce', 'gravity-forms-salesforce'));
+		} else {
+			echo '<input type="hidden" name="update_to_salesforce" id="update_to_salesforce" value="1" />';
+		}
 	}
 
 

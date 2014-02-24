@@ -1,13 +1,13 @@
 === Gravity Forms Salesforce Add-on ===
 Tags: gravity forms, forms, gravity, form, crm, gravity form, salesforce, salesforce plugin, form, forms, gravity, gravity form, gravity forms, secure form, simplemodal contact form, wp contact form, widget, sales force, customer, contact, contacts, address, addresses, address book, web to lead, web to case, web-to-lead, web-to-case, cases, leads, lead
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.8.1
 Stable tag: trunk
 Contributors: katzwebdesign,katzwebservices
 Donate link:https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=zackkatz%40gmail%2ecom&item_name=Gravity%20Forms%20Salesforce%20Addon&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 License: GPLv2 or later
 
-Integrate the remarkable Gravity Forms plugin with Salesforce.
+This is the most powerful Salesforce integration available for WordPress.
 
 == Description ==
 
@@ -39,14 +39,7 @@ If you use the following Editions, you will use the included Web-to-Lead Add-on:
 ### Web to Case
 When using the Web-to-Lead Add-on, you can choose to have form entries sent to Salesforce as Cases (like when using the Web-to-Case form) instead of as Leads.
 
-#### Other Gravity Forms Add-ons:
-
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-highrise/">Gravity Forms Highrise Add-on</a> - Integrate Gravity Forms with Highrise, a CRM
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-addons/">Gravity Forms Directory & Addons</a> - Turn Gravity Forms into a WordPress Directory plugin.
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-constant-contact/">Gravity Forms + Constant Contact</a> - If you use Constant Contact and Gravity Forms, this plugin is for you.
-* <a href="http://wordpress.org/extend/plugins/gravity-forms-exacttarget/">Gravity Forms ExactTarget Add-on</a> - Integrate Gravity Forms with ExactTarget
-
-If you have questions, comments, or issues with this plugin, <strong>please leave your feedback on the <a href="http://wordpress.org/tags/gravity-forms-salesforce?forum_id=10">Plugin Support Forum</a></strong>.
+If you have questions, comments, or issues with this plugin, <strong>please leave your feedback on the <a href="https://github.com/katzwebservices/Gravity-Forms-Salesforce/issues?state=open">Plugin Support Forum</a></strong>.
 
 == Screenshots ==
 
@@ -236,10 +229,38 @@ function filter_the_gf_salesforce_datetime($use_datetime = false, $key = '', $va
 }
 `
 
+= I know I have SOAP enabled and the API plugin says I don't. =
+Add this to the bottom of your theme's `functions.php` file to force loading even if a `SOAPClient` class does not exist:
+
+`add_filter( 'gf_salesforce_soap_is_available', '__return_true');`
+
 = What's the license for this plugin? =
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.6.4 (February 20, 2014) =
+* Fixed (API Version): Live Remote Field Mapping improvements
+	- Fixed endless spinning
+	- Empty options are better managed; shows "No Picklist Fields" message
+	- Now shows an error message if the field cannot be used for Remote Field Mapping
+	- Static PHP warning fixed when `WP_DEBUG` enabled
+
+= 2.6.3.4 (February 20, 2014) =
+* Added (API Version): new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
+
+= 2.6.3 to 2.6.3.3 (February 14, 2014) =
+* Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
+	- Integrated that method into the KWSAddon class
+* Web-to-Lead: HotFix: Check for correct Add-on class name (`KWSGFAddOn2_1`)
+* Web-to-Lead: Fix: show multiple "Salesforce enabled" icons in the forms page
+
+= 2.6.2 (February 11, 2014) =
+* API Version: Added a check to make sure server supports SOAP
+* API Version: Added a filter to override the SOAP check. Use `add_filter( 'gf_salesforce_soap_is_available', '__return_true');` to force loading even if a `SOAPClient` class does not exist.
+
+= 2.6.1.1 (February 6, 2014) =
+* Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
 
 = 2.6 & 2.6.1 (January 23, 2014) =
 * Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
@@ -368,6 +389,29 @@ This plugin is released under a GPL license.
 * Launch!
 
 == Upgrade Notice ==
+
+= 2.6.4 (February 20, 2014) =
+* Fixed (API Version): Live Remote Field Mapping improvements
+	- Fixed endless spinning
+	- Empty options are better managed; shows "No Picklist Fields" message
+	- Now shows an error message if the field cannot be used for Remote Field Mapping
+	- Static PHP warning fixed when `WP_DEBUG` enabled
+
+= 2.6.3.4 (February 20, 2014) =
+* Added (API Version): new hook "gf_salesforce_show_manual_export_button" to disable "send to salesforce" button/checkbox
+
+= 2.6.3 to 2.6.3.3 (February 14, 2014) =
+* Web-to-Lead: Re-added the functionality to show the "Salesforce enabled" icon in the forms list that indicate active feeds are enabled for that form.
+	- Integrated that method into the KWSAddon class
+* Web-to-Lead: HotFix: Check for correct Add-on class name (`KWSGFAddOn2_1`)
+* Web-to-Lead: Fix: show multiple "Salesforce enabled" icons in the forms page
+
+= 2.6.2 (February 11, 2014) =
+* API Version: Added a check to make sure server supports SOAP
+* API Version: Added a filter to override the SOAP check. Use `add_filter( 'gf_salesforce_soap_is_available', '__return_true');` to force loading even if a `SOAPClient` class does not exist.
+
+= 2.6.1.1 (February 6, 2014) =
+* Added: Add a new filter `gf_salesforce_format_date` to change date format for Date field type before exporting to Salesforce
 
 = 2.6 & 2.6.1 (January 23, 2014) =
 * Added: Manual export of leads - a new setting in the Form settings configuration that prevents all entries from being sent to Salesforce; only manually-approved entries may be sent.
