@@ -20,6 +20,7 @@ if (!class_exists('MSDTeamCPT')) {
             //Actions
             add_action( 'init', array(&$this,'register_tax_practice_areas') );
             add_action( 'init', array(&$this,'register_cpt_team_member') );
+            add_action( 'init', array(&$this,'add_custom_metaboxes') );
             add_action('admin_head', array(&$this,'plugin_header'));
             add_action('admin_print_scripts', array(&$this,'add_admin_scripts') );
             add_action('admin_print_styles', array(&$this,'add_admin_styles') );
@@ -116,12 +117,7 @@ if (!class_exists('MSDTeamCPT')) {
          
         function add_admin_scripts() {
             global $current_screen;
-            if($current_screen->post_type == $this->cpt){
-                wp_enqueue_script('media-upload');
-                wp_enqueue_script('thickbox');
-                wp_register_script('my-upload', plugin_dir_url(dirname(__FILE__)).'/js/msd-upload-file.js', array('jquery','media-upload','thickbox'),FALSE,TRUE);
-                wp_enqueue_script('my-upload');
-            }
+            if($current_screen->post_type == $this->cpt){}
         }
         
         function add_admin_styles() {
@@ -172,6 +168,7 @@ if (!class_exists('MSDTeamCPT')) {
             if($current_screen->post_type == $this->cpt){
                 ?><script type="text/javascript">
                         jQuery('#postdivrich').before(jQuery('#_contact_info_metabox'));
+                        jQuery('#titlediv').after(jQuery('#_jobtitle_metabox'));
                     </script><?php
             }
         }
@@ -194,6 +191,23 @@ if (!class_exists('MSDTeamCPT')) {
                     $query->set( 'meta_query', array() );
                 }
             }
-        }           
+        } 
+        
+        function add_custom_metaboxes(){
+            global $jobtitle_metabox;
+            $jobtitle_metabox = new WPAlchemy_MetaBox(array
+            (
+                'id' => '_jobtitle',
+                'title' => 'Title/Position',
+                'types' => array($this->cpt),
+                'context' => 'normal', // same as above, defaults to "normal"
+                'priority' => 'high', // same as above, defaults to "high"
+                'template' => WP_PLUGIN_DIR.'/'.plugin_dir_path('msd-custom-cpt/msd-custom-cpt.php') . '/lib/template/jobtitle-meta.php',
+                'autosave' => TRUE,
+                'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
+                'prefix' => '_msdlab_' // defaults to NULL
+            ));
+        }
+                     
   } //End Class
 } //End if class exists statement
