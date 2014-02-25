@@ -69,7 +69,7 @@ if (!class_exists('MSDTeamDisplay')) {
             if(count($terms)>0){
                 $i = 0;
                 foreach($terms AS $term){
-                    $more_practice_areas = $i==2?' <a href="'.get_post_permalink($team->ID).'"><i class="icon-circle-arrow-right"></i></a>':'';
+                    $more_practice_areas = $i==2?' <a href="'.get_post_permalink($team->ID).'"><i class="fa fa-circle-arrow-right"></i></a>':'';
                     if($term->slug == $the_pa){
                         if($test = get_page_by_path('/practice-areas/'.$term->slug)){
                             $first = '<li><a href="/practice-areas/'.$term->slug.'">'.$term->name.'</a>'.$more_practice_areas.'</li>';
@@ -109,27 +109,27 @@ if (!class_exists('MSDTeamDisplay')) {
             $contact_info->the_meta($team->ID);
             $contact_info->the_field('_team_member_phone');
             if($contact_info->get_the_value() != ''){ 
-                $team_contact_info .= '<li class="phone"><i class="icon-phone icon-large"></i> '.msd_str_fmt($contact_info->get_the_value(),'phone').'</li>';
+                $team_contact_info .= '<li class="phone"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-phone fa-stack-1x fa-inverse"></i></span>'.msd_str_fmt($contact_info->get_the_value(),'phone').'</li>';
             } 
             
             $contact_info->the_field('_team_member_mobile');
             if($contact_info->get_the_value() != ''){
-                $team_contact_info .= '<li class="mobile"><i class="icon-mobile-phone icon-large"></i> '.msd_str_fmt($contact_info->get_the_value(),'phone').'</li>';
+                $team_contact_info .= '<li class="mobile"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-mobile-phone fa-stack-1x fa-inverse"></i></span> '.msd_str_fmt($contact_info->get_the_value(),'phone').'</li>';
             }
             
             $contact_info->the_field('_team_member_linked_in');
             if($contact_info->get_the_value() != ''){
-                $team_contact_info .= '<li class="linkedin"><a href="'.$contact_info->get_the_value().'"><i class="icon-linkedin-sign icon-large"></i> Connect</a></li>';
+                $team_contact_info .= '<li class="linkedin"><a href="'.$contact_info->get_the_value().'"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin-square fa-stack-1x fa-inverse"></i></span> Connect</a></li>';
             }
             
             $contact_info->the_field('_team_member_bio_sheet');
             if($contact_info->get_the_value() != ''){
-                $team_contact_info .= '<li class="vcard"><a href="'.$contact_info->get_the_value().'"><i class="icon-download-alt icon-large"></i> Download Bio</a></li>';
+                $team_contact_info .= '<li class="vcard"><a href="'.$contact_info->get_the_value().'"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-download-alt fa-stack-1x fa-inverse"></i></span> Download Bio</a></li>';
             }
             
             $contact_info->the_field('_team_member_email');
             if($contact_info->get_the_value() != ''){
-                $team_contact_info .= '<li class="email"><i class="icon-envelope-alt icon-large"></i> '.msd_str_fmt($contact_info->get_the_value(),'email').'</li>';
+                $team_contact_info .= '<li class="email"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span> '.msd_str_fmt($contact_info->get_the_value(),'email').'</li>';
             }
             $teamstr = '
             <div class="team '.$team->post_name.'">
@@ -208,7 +208,7 @@ if (!class_exists('MSDTeamDisplay')) {
             $fields = array(
                     'phone' => 'phone',
                     'mobile' => 'mobile-phone',
-                    'linkedin' => 'linkedin-sign',
+                    'linkedin' => 'linkedin-square',
                     'vcard' => 'download-alt',
                     'email' => 'envelope-alt',
             );
@@ -216,27 +216,27 @@ if (!class_exists('MSDTeamDisplay')) {
             <ul class="team-member-contact-info">
                 <?php $contact_info->the_field('_team_phone'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="phone"><i class="icon-phone icon-large"></i> <?php print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
+                    <li class="phone"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-phone fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_mobile'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="mobile"><i class="icon-mobile-phone icon-large"></i> <?php print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
+                    <li class="mobile"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-mobile-phone fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_linked_in'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="linkedin"><a href="<?php print $contact_info->get_the_value(); ?>"><i class="icon-linkedin-sign icon-large"></i> Connect</a></li>
+                    <li class="linkedin"><a href="<?php print $contact_info->get_the_value(); ?>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin-square fa-stack-1x fa-inverse"></i></span></a></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_bio_sheet'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="vcard"><a href="<?php print $contact_info->get_the_value(); ?>"><i class="icon-download-alt icon-large"></i> Download Bio</a></li>
+                    <li class="vcard"><a href="<?php print $contact_info->get_the_value(); ?>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-download-alt fa-stack-1x fa-inverse"></i></span></a></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_email'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="email"><i class="icon-envelope-alt icon-large"></i> <?php print msd_str_fmt($contact_info->get_the_value(),'email'); ?></li>
+                    <li class="email"><a href="mailto:<?php print antispambot($contact_info->get_the_value());?>" class="email"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'email'); ?></a></li>
                 <?php } ?>
             </ul>
             <?php
@@ -255,7 +255,7 @@ if (!class_exists('MSDTeamDisplay')) {
                     'education' => 'Education',
             );
             $i = 0; ?>
-            <h3 class="toggle">More Info<span class="expand">Expand <i class="icon-angle-down"></i></span><span class="collapse">Collapse <i class="icon-angle-up"></i></span></h3>
+            <h3 class="toggle">More Info<span class="expand">Expand <i class="fa fa-angle-down"></i></span><span class="collapse">Collapse <i class="fa fa-angle-up"></i></span></h3>
             <ul class="team-additional-info">
             <?php
             foreach($fields AS $k=>$v){
@@ -276,7 +276,7 @@ if (!class_exists('MSDTeamDisplay')) {
         function font_awesome_lists($str){
             $str = strip_tags($str,'<a><li><ul><h3><b><strong><i>');
             $str = preg_replace('/<ul(.*?)>/i','<ul class="icons-ul"\1>',$str);
-            $str = preg_replace('/<li>/i','<li><i class="icon-li icon-caret-right"></i>',$str);
+            $str = preg_replace('/<li>/i','<li><i class="fa fa-li fa fa-caret-right"></i>',$str);
             return $str;
         }
         function msd_team_sidebar(){
