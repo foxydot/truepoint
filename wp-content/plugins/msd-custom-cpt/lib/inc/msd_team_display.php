@@ -18,7 +18,7 @@ if (!class_exists('MSDTeamDisplay')) {
             $this->plugin_url = plugin_dir_url('msd-custom-cpt/msd-custom-cpt.php');
             $this->plugin_path = plugin_dir_path('msd-custom-cpt/msd-custom-cpt.php');
             //Actions
-                        
+                     
             //Filters
             add_filter( 'genesis_attr_headshot', array(&$this,'msdlab_headshot_context_filter' ));
         }
@@ -51,7 +51,7 @@ if (!class_exists('MSDTeamDisplay')) {
             $posts = get_posts($args);
             $i = 0;
             foreach($posts AS $post){
-                $posts[$i]->lastname = get_post_meta($post->ID,'_team_member__team_member_last_name',TRUE);
+                $posts[$i]->lastname = get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
                 $i++;
             }
             usort($posts,array(&$this,'sort_by_lastname'));
@@ -59,52 +59,21 @@ if (!class_exists('MSDTeamDisplay')) {
         }     
         
         function team_display($team,$attr = array()){
-            global $post,$msd_custom,$contact_info,$primary_practice_area;
+            global $post,$msd_custom,$contact_info,$primary_practice_area,$jobtitle_metabox;
             extract($attr);
-            $headshot = get_the_post_thumbnail($team->ID,'mini-headshot');
+            $headshot = get_the_post_thumbnail($team->ID,'headshot-md');
             $terms = wp_get_post_terms($team->ID,'practice_area');
             $primary_practice_area->the_meta($team->ID);
-            $ppa = $primary_practice_area->get_the_value('primary_practice_area');
+            $jobtitle_metabox->the_meta($team->ID);
             $practice_areas = '';
             if(count($terms)>0){
-                $i = 0;
                 foreach($terms AS $term){
-                    $more_practice_areas = $i==2?' <a href="'.get_post_permalink($team->ID).'"><i class="fa fa-circle-arrow-right"></i></a>':'';
-                    if($term->slug == $the_pa){
-                        if($test = get_page_by_path('/practice-areas/'.$term->slug)){
-                            $first = '<li><a href="/practice-areas/'.$term->slug.'">'.$term->name.'</a>'.$more_practice_areas.'</li>';
-                        } else {
-                            $first = '<li>'.$term->name.$more_practice_areas.'</li>';
-                        }
-                    } elseif($term->slug == $ppa){
-                        if($test = get_page_by_path('/practice-areas/'.$term->slug)){
-                            $second = '<li><a href="/practice-areas/'.$term->slug.'">'.$term->name.'</a>'.$more_practice_areas.'</li>';
-                        } else {
-                            $second = '<li>'.$term->name.$more_practice_areas.'</li>';
-                        }
-                    } else {
-                        if($test = get_page_by_path('/practice-areas/'.$term->slug)){
-                            $practice_areas[$i] .= '<li><a href="/practice-areas/'.$term->slug.'">'.$term->name.'</a>'.$more_practice_areas.'</li>';
-                        } else {
-                            $practice_areas[$i] .= '<li>'.$term->name.$more_practice_areas.'</li>';
-                        }
-                    }
-                    $i++;
-                }
-                if($first && $second){
-                    array_unshift($practice_areas,$first,$second);
-                } elseif($first) {
-                    array_unshift($practice_areas,$first);
-                } elseif($second) {
-                    array_unshift($practice_areas,$second);
+                    $practice_areas[] = $term->slug;
                 }
                 
-                if(count($practice_areas)>3){
-                    $practice_areas = array_slice($practice_areas, 0, 3);
-                }
                 $practice_areas = implode(' ', $practice_areas);
             }
-            $mini_bio = msd_child_excerpt($team->ID);
+            $mini_bio = msdlab_excerpt($team->ID);
             $team_contact_info = '';
             $contact_info->the_meta($team->ID);
             $contact_info->the_field('_team_member_phone');
@@ -132,26 +101,17 @@ if (!class_exists('MSDTeamDisplay')) {
                 $team_contact_info .= '<li class="email"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span> '.msd_str_fmt($contact_info->get_the_value(),'email').'</li>';
             }
             $teamstr = '
-            <div class="team '.$team->post_name.'">
+            <a class="team-member '.$practice_areas.' '.$team->post_name.'" href="'.get_post_permalink($team->ID).'">
                 <div class="headshot">
                     '.$headshot.'
                 </div>
                 <div class="info">
-                    <h4><a href="'.get_post_permalink($team->ID).'" title="'.$team->post_title.'">'.$team->post_title.'</a></h4>
-                    <strong>Practice Areas</strong>
-                    <ul class="practice-areas">
-                    '.$practice_areas.'
-                    </ul>';
-                    if($dobio){
-                        $teamstr .= '
-                        <div class="bio">'.$mini_bio.'</div>';
-                        }
+                    <h4>'.$team->post_title.'</h4>
+                    <h5>'.$jobtitle_metabox->get_the_value('jobtitle').'</h5>
+                    ';
             $teamstr .= '
-                    <ul class="team_member-contact-info">
-                    '.$team_contact_info.'
-                    </ul>
                 </div>
-            </div>';
+            </a>';
             return $teamstr;
     }   
         
@@ -166,7 +126,7 @@ if (!class_exists('MSDTeamDisplay')) {
         function msd_add_team_member_headshot(){
             global $post;
             //setup thumbnail image args to be used with genesis_get_image();
-            $size = 'headshot'; // Change this to whatever add_image_size you want
+            $size = 'headshot-lg'; // Change this to whatever add_image_size you want
             $default_attr = array(
                     'class' => "attachment-$size $size",
                     'alt'   => $post->post_title,
@@ -322,7 +282,6 @@ if (!class_exists('MSDTeamDisplay')) {
         
             $jobtitle = sprintf( '<h2 class="entry-subtitle">%s</h2>', apply_filters( 'genesis_post_title_text', $jobtitle ) );
             echo apply_filters( 'genesis_post_title_output', $jobtitle ) . "\n";
-        
         }
   } //End Class
 } //End if class exists statement
