@@ -23,7 +23,7 @@ function msdlab_team(){
     print '</div>';
 }
 add_action('genesis_entry_content','msdlab_team');
-function msdlab_team_footer_scripts(){
+function msdlab_team_header_scripts(){
     print '<script>
         jQuery(document).ready(function($) {
             $("#team-members").isotope({
@@ -44,5 +44,5 @@ function msdlab_team_footer_scripts(){
         } );
     </script>';
 }
-add_action('wp_footer','msdlab_team_footer_scripts');
+add_action('wp_head','msdlab_team_header_scripts');
 genesis();
