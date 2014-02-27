@@ -63,7 +63,95 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 }
 
 /*** NAV ***/
+class msdlab_walker_nav_menu extends Walker_Nav_Menu {
+    
+// create submenu based on tabs?
+ function start_el( &$output, $item, $depth, $args ) {
+    global $wp_query;
+    // build html
+    $output .= $indent . '<li id="nav-menu-item-'. $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
+  
+    // link attributes
+    $attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+    $attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
+    $attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
+    $attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
+    $attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
+  
+    $item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
+        $args->before,
+        $attributes,
+        $args->link_before,
+        apply_filters( 'the_title', $item->title, $item->ID ),
+        $args->link_after,
+        $args->after
+    );
+  
+    // build html
+    $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+}
+}
+/**
+ * Echo the "Primary Navigation" menu.
+ *
+ * The preferred option for creating menus is the Custom Menus feature in WordPress. There is also a fallback to using
+ * the Genesis wrapper functions for creating a menu of Pages, or a menu of Categories (maintained only for backwards
+ * compatibility).
+ *
+ * Either output can be filtered via `genesis_do_nav`.
+ *
+ * @since 1.0.0
+ *
+ * @uses genesis_nav_menu_supported() Checks for support of specific nav menu.
+ * @uses genesis_markup()             Contextual markup.
+ * @uses genesis_html5()              Check for HTML5 support.
+ * @uses genesis_structural_wrap()    Adds optional internal wrap divs.
+ */
+function msdlab_do_nav() {
 
+    //* Do nothing if menu not supported
+    if ( ! genesis_nav_menu_supported( 'primary' ) )
+        return;
+
+    //* If menu is assigned to theme location, output
+    if ( has_nav_menu( 'primary' ) ) {
+
+        $class = 'menu genesis-nav-menu menu-primary';
+        if ( genesis_superfish_enabled() )
+            $class .= ' js-superfish';
+
+        $args = array(
+            'theme_location' => 'primary',
+            'container'      => '',
+            'menu_class'     => $class,
+            'echo'           => 0,
+            'walker' => new msdlab_walker_nav_menu
+        );
+
+        $nav = wp_nav_menu( $args );
+
+        //* Do nothing if there is nothing to show
+        if ( ! $nav )
+            return;
+
+        $nav_markup_open = genesis_markup( array(
+            'html5'   => '<nav %s>',
+            'xhtml'   => '<div id="nav">',
+            'context' => 'nav-primary',
+            'echo'    => false,
+        ) );
+        $nav_markup_open .= genesis_structural_wrap( 'menu-primary', 'open', 0 );
+
+        $nav_markup_close  = genesis_structural_wrap( 'menu-primary', 'close', 0 );
+        $nav_markup_close .= genesis_html5() ? '</nav>' : '</div>';
+
+        $nav_output = $nav_markup_open . $nav . $nav_markup_close;
+
+        echo apply_filters( 'genesis_do_nav', $nav_output, $nav, $args );
+
+    }
+
+}
 
 /*** SIDEBARS ***/
 function msdlab_add_extra_theme_sidebars(){
