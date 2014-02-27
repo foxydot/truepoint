@@ -53,6 +53,9 @@ function msdlab_do_post_tabs() {
         jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseleave(function(){
             grayscale($(this));
         });*/
+       
+          var hash = window.location.hash;
+          hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
         console.log(filter);
         $('.about-you-widget-area .widget').show();  

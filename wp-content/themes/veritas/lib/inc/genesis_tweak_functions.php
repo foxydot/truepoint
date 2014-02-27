@@ -66,6 +66,18 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 
 
 /*** SIDEBARS ***/
+function msdlab_add_extra_theme_sidebars(){
+    genesis_register_sidebar(array(
+    'name' => 'Blog Sidebar',
+    'description' => 'Widgets on the Blog Pages',
+    'id' => 'blog'
+            ));
+    genesis_register_sidebar(array(
+    'name' => 'Team Sidebar',
+    'description' => 'Widgets on the Team Pages',
+    'id' => 'team'
+            ));
+}
 /**
  * Reversed out style SCS
  * This ensures that the primary sidebar is always to the left.
