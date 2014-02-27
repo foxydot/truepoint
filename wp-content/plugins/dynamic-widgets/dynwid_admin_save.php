@@ -2,7 +2,7 @@
 /**
  * dynwid_admin_save.php - Saving options to the database
  *
- * @version $Id: dynwid_admin_save.php 689417 2013-03-31 09:16:14Z qurl $
+ * @version $Id: dynwid_admin_save.php 863974 2014-02-24 10:43:41Z qurl $
  * @copyright 2011 Jacco Drabbe
  */
 
@@ -127,6 +127,9 @@
 
   // Browser
 	DWModule::save('browser', 'complex');
+	
+	// Mobile
+	DWModule::save('mobile');
 
 	// Template
 	DWModule::save('tpl', 'complex');

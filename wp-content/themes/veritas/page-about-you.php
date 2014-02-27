@@ -53,6 +53,10 @@ function msdlab_do_post_tabs() {
         jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseleave(function(){
             grayscale($(this));
         });*/
+        var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
+        console.log(filter);
+        $('.about-you-widget-area .widget').show();  
+        $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
         jQuery('.nav-tabs li').on('show.bs.tab',function(e){
             console.log(e.target);
             grayscale.reset(jQuery(e.target).find('.grayscale'));
@@ -60,7 +64,7 @@ function msdlab_do_post_tabs() {
             var filter = $(e.target).attr('href').replace('#','');  
             console.log(filter);
             $('.about-you-widget-area .widget').show();  
-            $('.about-you-widget-area .widget:not(.' + filter + ')').hide();  
+            $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
         });
         
     });

@@ -2,7 +2,7 @@
 /**
  * Pages Module
  *
- * @version $Id: pages_module.php 689417 2013-03-31 09:16:14Z qurl $
+ * @version $Id: pages_module.php 863947 2014-02-24 09:53:16Z qurl $
  * @copyright 2011 Jacco Drabbe
  */
 
@@ -143,17 +143,17 @@
 			$this->post_page = get_option('page_for_posts');
 		}
 
-		function start_lvl(&$output, $depth) {
+		function start_lvl(&$output, $depth = 0, $args = array()) {
 			$indent = str_repeat("\t", $depth);
 			$output .= "\n" . $indent . '<div style="position:relative;left:15px;width:95%;">' . "\n";
 		}
 
-		function end_lvl(&$output, $depth) {
+		function end_lvl(&$output, $depth = 0, $args = array()) {
 			$indent = str_repeat("\t", $depth);
 			$output .= $indent . '</div>' . "\n";
 		}
 
-		function start_el(&$output, $page, $depth, $args, $current_page) {
+		function start_el(&$output, $page, $depth = 0, $args = array(), $current_object_id = 0) {
 			extract($args, EXTR_SKIP);
 
 			if ( $depth ) {
@@ -174,7 +174,7 @@
 			}
 		}
 
-		function end_el(&$output, $page, $depth) {
+		function end_el(&$output, $page, $depth = 0, $args = array()) {
 			// Just an empty function, making sure parent::end_el() does not fire
 			return;
 		}

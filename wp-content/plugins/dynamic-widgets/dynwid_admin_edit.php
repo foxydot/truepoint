@@ -2,7 +2,7 @@
 /**
  * dynwid_admin_edit.php - Options settings
  *
- * @version $Id: dynwid_admin_edit.php 689417 2013-03-31 09:16:14Z qurl $
+ * @version $Id: dynwid_admin_edit.php 864301 2014-02-24 20:50:40Z qurl $
  * @copyright 2011 Jacco Drabbe
  */
 
@@ -39,6 +39,7 @@ label {
   border-width : 1px;
   border-color : #E3E3E3;
   padding : 5px;
+  padding-right: 15px; /* for RTL? */
 }
 
 .infotext {
@@ -375,6 +376,11 @@ div.settingbox {
 		$DW_Browser = new DW_Browser();
 		$DW_Browser->admin();
 	}
+
+	if ( array_key_exists('mobile', $DW->dwoptions) ) {
+		$DW_Mobile = new DW_Mobile();
+		$DW_Mobile->admin();
+	}	
 
 	if ( array_key_exists('tpl', $DW->dwoptions) ) {
 		$DW_Tpl = new DW_Tpl();
