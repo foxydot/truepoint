@@ -43,6 +43,7 @@ jQuery(document).ready(function($) {
     $('li.Disclosures>a>i').addClass('fa-align-left');
     $('li.Careers>a>i').addClass('fa-briefcase');
         
+    $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login');  
     
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
