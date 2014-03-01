@@ -12,8 +12,6 @@ add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the sera
 add_filter('genesis_search_button_text', 'msdlab_search_button'); //customize the search form to add fontawesome search button.
 add_filter('genesis_do_subnav','msdlab_subnav_right',10,2);
 /*** NAV ***/
-//remove_action('genesis_after_header','genesis_do_nav');
-//add_action( 'genesis_after_header', 'msdlab_do_nav' );
 
 //*** SIDEBARS ***/
 //add_action('genesis_before', 'msdlab_ro_layout_logic'); //This ensures that the primary sidebar is always to the left.
@@ -34,9 +32,14 @@ remove_action( 'genesis_after_post_content', 'genesis_post_meta' ); //remove the
 add_action( 'genesis_entry_header', 'msdlab_do_post_subtitle' );
 
 add_action( 'genesis_before_post', 'msdlab_post_image', 8 ); //add feature image across top of content on *pages*.
-add_action('template_redirect','msdlab_blog_grid');
+//add_action('template_redirect','msdlab_blog_grid');
+add_action('template_redirect','msdlab_blog_index');
 
 remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
+
+add_filter( 'genesis_next_link_text', 'msdlab_older_link_text', 20);
+add_filter( 'genesis_prev_link_text', 'msdlab_newer_link_text', 20);
+
  
 /*** FOOTER ***/
 //add_theme_support( 'genesis-footer-widgets', 1 ); //adds automatic footer widgets
@@ -53,11 +56,3 @@ add_action('after_setup_theme','msdlab_add_homepage_callout_sidebars'); //create
 /*** Blog Header ***/
 //add_action('genesis_before_loop','msd_add_blog_header');
 add_action('wp_head', 'msdlab_custom_hooks_management');
-
-/*** Bootstrappin **/
-
-add_filter( 'genesis_attr_site-inner', 'msdlab_bootstrap_site_inner', 10);
-add_filter( 'genesis_attr_breadcrumb', 'msdlab_bootstrap_breadcrumb', 10);
-add_filter( 'genesis_attr_content-sidebar-wrap', 'msdlab_bootstrap_content_sidebar_wrap', 10);
-add_filter( 'genesis_attr_content', 'msdlab_bootstrap_content', 10);
-add_filter( 'genesis_attr_sidebar-primary', 'msdlab_bootstrap_sidebar', 10);

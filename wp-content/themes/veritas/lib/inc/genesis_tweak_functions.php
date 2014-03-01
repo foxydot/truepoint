@@ -63,95 +63,6 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 }
 
 /*** NAV ***/
-class msdlab_walker_nav_menu extends Walker_Nav_Menu {
-    
-// create submenu based on tabs?
- function start_el( &$output, $item, $depth, $args ) {
-    global $wp_query;
-    // build html
-    $output .= $indent . '<li id="nav-menu-item-'. $item->ID . '" class="' . $depth_class_names . ' ' . $class_names . '">';
-  
-    // link attributes
-    $attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-    $attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-    $attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
-    $attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-    $attributes .= ' class="menu-link ' . ( $depth > 0 ? 'sub-menu-link' : 'main-menu-link' ) . '"';
-  
-    $item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
-        $args->before,
-        $attributes,
-        $args->link_before,
-        apply_filters( 'the_title', $item->title, $item->ID ),
-        $args->link_after,
-        $args->after
-    );
-  
-    // build html
-    $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-}
-}
-/**
- * Echo the "Primary Navigation" menu.
- *
- * The preferred option for creating menus is the Custom Menus feature in WordPress. There is also a fallback to using
- * the Genesis wrapper functions for creating a menu of Pages, or a menu of Categories (maintained only for backwards
- * compatibility).
- *
- * Either output can be filtered via `genesis_do_nav`.
- *
- * @since 1.0.0
- *
- * @uses genesis_nav_menu_supported() Checks for support of specific nav menu.
- * @uses genesis_markup()             Contextual markup.
- * @uses genesis_html5()              Check for HTML5 support.
- * @uses genesis_structural_wrap()    Adds optional internal wrap divs.
- */
-function msdlab_do_nav() {
-
-    //* Do nothing if menu not supported
-    if ( ! genesis_nav_menu_supported( 'primary' ) )
-        return;
-
-    //* If menu is assigned to theme location, output
-    if ( has_nav_menu( 'primary' ) ) {
-
-        $class = 'menu genesis-nav-menu menu-primary';
-        if ( genesis_superfish_enabled() )
-            $class .= ' js-superfish';
-
-        $args = array(
-            'theme_location' => 'primary',
-            'container'      => '',
-            'menu_class'     => $class,
-            'echo'           => 0,
-            'walker' => new msdlab_walker_nav_menu
-        );
-
-        $nav = wp_nav_menu( $args );
-
-        //* Do nothing if there is nothing to show
-        if ( ! $nav )
-            return;
-
-        $nav_markup_open = genesis_markup( array(
-            'html5'   => '<nav %s>',
-            'xhtml'   => '<div id="nav">',
-            'context' => 'nav-primary',
-            'echo'    => false,
-        ) );
-        $nav_markup_open .= genesis_structural_wrap( 'menu-primary', 'open', 0 );
-
-        $nav_markup_close  = genesis_structural_wrap( 'menu-primary', 'close', 0 );
-        $nav_markup_close .= genesis_html5() ? '</nav>' : '</div>';
-
-        $nav_output = $nav_markup_open . $nav . $nav_markup_close;
-
-        echo apply_filters( 'genesis_do_nav', $nav_output, $nav, $args );
-
-    }
-
-}
 
 /*** SIDEBARS ***/
 function msdlab_add_extra_theme_sidebars(){
@@ -205,7 +116,8 @@ function msdlab_breadcrumb_args($args) {
     return $args;
 }
 function sp_post_info_filter($post_info) {
-    $post_info = '[post_date]';
+    $post_info = 'Contributed by [post_author_posts_link]<br />
+    [post_date]';
     return $post_info;
 }
 /**
@@ -220,6 +132,24 @@ function msdlab_blog_grid(){
         remove_action( 'genesis_after_post_content', 'genesis_post_meta' );
         add_filter('genesis_grid_loop_post_class', 'msdlab_grid_add_bootstrap');
     }
+}
+function msdlab_blog_index(){
+    global $wp_query;
+    if(is_home()){
+        add_action('genesis_before_loop','msdlab_add_page_content_to_blog_home');
+    }
+    if(is_home() || is_archive()){        
+        remove_action('genesis_entry_content','genesis_do_post_image');
+        remove_action('genesis_entry_content','genesis_do_post_content');
+        add_action('genesis_entry_content','msdlab_do_post_permalink');
+    }
+}
+function msdlab_add_page_content_to_blog_home(){
+    global $wp_query;
+    $page_title = $wp_query->queried_object->post_title;
+    $page_content = $wp_query->queried_object->post_content;
+    print '<h1 class="entry-title" itemprop="headline">'.$page_title.'</h1>';
+    print '<header class="index-header">'.$page_content.'</header>';
 }
 function msdlab_grid_loop_helper() {
     if ( function_exists( 'genesis_grid_loop' ) ) {
@@ -292,7 +222,26 @@ function msdlab_grid_divider() {
      }
      return $classes;
  }
+function msdlab_do_post_permalink() {
 
+    //* Don't show on singular views
+    if ( is_singular() )
+        return;
+
+    $permalink = get_permalink();
+
+    echo apply_filters( 'genesis_post_permalink', sprintf( '<p class="entry-permalink"><a href="%s" title="%s" rel="bookmark">%s</a></p>', esc_url( $permalink ), __( 'Permalink', 'genesis' ), 'Read More >' ) );
+
+}
+function msdlab_older_link_text() {
+        $olderlink = 'Older Posts &raquo;';
+        return $olderlink;
+}
+
+function msdlab_newer_link_text() {
+        $newerlink = '&laquo; Newer Posts';
+        return $newerlink;
+}
 
 /*** FOOTER ***/
 
@@ -373,57 +322,4 @@ function msd_add_blog_header(){
         </div>';
     }
     print $header;
-}
-
-/*** Bootstrappin **/
-
-function msdlab_bootstrap_site_inner( $attributes ){
-    $attributes['class'] .= ' container';
-    return $attributes;
-}
-
-function msdlab_bootstrap_breadcrumb( $attributes ){
-    $attributes['class'] .= ' row';
-    return $attributes;
-}
-
-function msdlab_bootstrap_content_sidebar_wrap( $attributes ){
-    $attributes['class'] .= ' row';
-    return $attributes;
-}
-
-function msdlab_bootstrap_content( $attributes ){
-    $layout = genesis_site_layout();
-    switch($layout){
-        case 'content-sidebar':
-        case 'sidebar-content':
-            $attributes['class'] .= ' col-md-9 col-sm-12';
-            break;
-        case 'content-sidebar-sidebar':
-        case 'sidebar-sidebar-content':
-        case 'sidebar-content-sidebar':
-            break;
-        case 'full-width-content':
-            $attributes['class'] .= ' col-md-12';
-            break;
-    }
-    return $attributes;
-}
-
-function msdlab_bootstrap_sidebar( $attributes ){
-    $layout = genesis_site_layout();
-    switch($layout){
-        case 'content-sidebar':
-        case 'sidebar-content':
-            $attributes['class'] .= ' col-md-3 hidden-sm hidden-xs';
-            break;
-        case 'content-sidebar-sidebar':
-        case 'sidebar-sidebar-content':
-        case 'sidebar-content-sidebar':
-            break;
-        case 'full-width-content':
-            $attributes['class'] .= ' hidden';
-            break;
-    }
-    return $attributes;
 }
