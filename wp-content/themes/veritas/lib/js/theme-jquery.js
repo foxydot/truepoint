@@ -15,10 +15,6 @@ jQuery(document).ready(function($) {
     $('div:last-child').addClass('last-child');
     $('div:nth-child(even)').addClass('even');
     $('div:nth-child(odd)').addClass('odd');
-    $('article:first-child').addClass('first-child');
-    $('article:last-child').addClass('last-child');
-    $('article:nth-child(even)').addClass('even');
-    $('article:nth-child(odd)').addClass('odd');
     $('section:first-child').addClass('first-child');
     $('section:last-child').addClass('last-child');
     $('section:nth-child(even)').addClass('even');
