@@ -148,8 +148,8 @@ function msdlab_add_page_content_to_blog_home(){
     global $wp_query;
     $page_title = $wp_query->queried_object->post_title;
     $page_content = $wp_query->queried_object->post_content;
-    print '<h1 class="entry-title" itemprop="headline">'.$page_title.'</h1>';
-    print '<header class="index-header">'.$page_content.'</header>';
+    print '<h1 class="entry-title" itemprop="headline">'.apply_filters('the_title',$page_title).'</h1>';
+    print '<header class="index-header">'.apply_filters('the_content',$page_content).'</header>';
 }
 function msdlab_grid_loop_helper() {
     if ( function_exists( 'genesis_grid_loop' ) ) {
