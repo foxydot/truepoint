@@ -39,7 +39,7 @@ add_action('template_redirect','msdlab_blog_grid');
 remove_action( 'genesis_entry_footer', 'genesis_post_meta' );
  
 /*** FOOTER ***/
-add_theme_support( 'genesis-footer-widgets', 1 ); //adds automatic footer widgets
+//add_theme_support( 'genesis-footer-widgets', 1 ); //adds automatic footer widgets
 
 remove_action('genesis_before_footer','genesis_footer_widget_areas',10);
 add_action('genesis_after_footer','genesis_footer_widget_areas');
