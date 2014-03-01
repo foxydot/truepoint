@@ -48,8 +48,9 @@ function msdlab_add_aboutyou_sidebars(){
     genesis_register_sidebar(array(
     'name' => 'About Us Footer',
     'description' => 'Widgets about us index pages',
-    'id' => 'aboutyou'
-            ));genesis_register_sidebar(array(
+    'id' => 'aboutus'
+            ));
+            genesis_register_sidebar(array(
     'name' => 'About You Footer',
     'description' => 'Widgets in the tabbed pages',
     'id' => 'aboutyou'
