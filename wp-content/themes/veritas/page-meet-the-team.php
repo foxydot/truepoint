@@ -4,7 +4,7 @@ Template Name: Team Index
 */
 add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 function msdlab_team_filter(){
-   $terms = get_terms( 'practice_area' );
+   $terms = $msd_custom->display_class->get_all_practice_areas();
    $filters[] = '<a href="#" data-filter="*">All</a>';
    foreach($terms AS $term){
        $filters[] = '<a href="#" data-filter=".'.$term->slug.'">'.$term->name.'</a>';
