@@ -18,6 +18,19 @@
 }
 .nav-primary{
   ul.menu-primary{
+    >li.menu-item.current-menu-ancestor>.sub-menu{
+      display:block;
+      opacity: 1;
+      left: 0;
+      li.menu-item.current-menu-ancestor,
+      li.menu-item.current-menu-item{
+        background: @white;
+          border-bottom: 3px solid @orange;
+          a{
+            color: @blue;
+          }
+      }
+    }
     li.about-you{
       >.sub-menu{
         >li.menu-item{
@@ -30,6 +43,9 @@
     }
     li.about-us{
       >.sub-menu{
+      display:block;
+      opacity: 1;
+      left: 0;
         >li.menu-item{
           >a{
             padding: 0.6rem 2.055rem;

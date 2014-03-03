@@ -33,12 +33,13 @@ Site Navigation
 .genesis-nav-menu .sub-menu {
   left: -9999px;
   opacity: 0;
+  display: none;
   position: absolute;
-  -webkit-transition: opacity .4s ease-in-out;
-  -moz-transition:    opacity .4s ease-in-out;
-  -ms-transition:     opacity .4s ease-in-out;
-  -o-transition:      opacity .4s ease-in-out;
-  transition:         opacity .4s ease-in-out;
+  -webkit-transition: opacity .8s ease-in-out;
+  -moz-transition:    opacity .8s ease-in-out;
+  -ms-transition:     opacity .8s ease-in-out;
+  -o-transition:      opacity .8s ease-in-out;
+  transition:         opacity .8s ease-in-out;
   z-index: 99;
   a {
     background: @white;
@@ -58,6 +59,7 @@ Site Navigation
 
 .genesis-nav-menu .menu-item:hover > .sub-menu {
   left: 0;
+  display: block;
   opacity: 1;
 }
 
@@ -111,12 +113,15 @@ Site Navigation
 --------------------------------------------- */
 
 .nav-primary {
+  .wrap{
+    background: url('../img/bkg-nav.gif');
+    }
   ul.menu-primary{
     position: relative;
     li.menu-item{
       width: 50%;
       float: left;
-      background: @medgrey;
+      background: none;
       text-align: center;
       .border-radius(12,12,0,0);
       font-size: 26px;
@@ -185,28 +190,21 @@ Site Navigation
         }
       }
     }
-    li.menu-item:hover{
+    li.menu-item:hover,li.menu-item.current-menu-ancestor{
       background: @blue;
+      border: 0;
+      .box-shadow(0 1px 10px rgba(20,20,20,0.5));
       a{
         text-decoration: none;
         color: @white;
       }
     }
-    >li.menu-item.current-menu-ancestor>.sub-menu{
-      display:block;
-      opacity: 1;
-      left: 0;
-      li.menu-item.current-menu-ancestor,
-      li.menu-item.current-menu-item{
-        background: @white;
-          border-bottom: 3px solid @orange;
-          a{
-            color: @blue;
-          }
+    li.menu-item:hover{
+      .sub-menu{
+        z-index: 900;
       }
     }
     >li.menu-item.first-child{
-      border-right: 1px solid @white;
       .sub-menu{
         text-align: left;
       }
