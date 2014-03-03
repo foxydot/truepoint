@@ -26,10 +26,15 @@ function msdlab_bootstrap_content_sidebar_wrap( $attributes ){
 
 function msdlab_bootstrap_content( $attributes ){
     $layout = genesis_site_layout();
+    $template = get_page_template();
     switch($layout){
         case 'content-sidebar':
         case 'sidebar-content':
-            $attributes['class'] .= ' col-md-9 col-sm-12';
+            if($template == get_stylesheet_directory().'/page-about-us.php'){
+                $attributes['class'] .= ' col-md-12';
+            } else {
+                $attributes['class'] .= ' col-md-9 col-sm-12';
+            }
             break;
         case 'content-sidebar-sidebar':
         case 'sidebar-sidebar-content':
@@ -44,10 +49,15 @@ function msdlab_bootstrap_content( $attributes ){
 
 function msdlab_bootstrap_sidebar( $attributes ){
     $layout = genesis_site_layout();
+    $template = get_page_template();
     switch($layout){
         case 'content-sidebar':
         case 'sidebar-content':
-            $attributes['class'] .= ' col-md-3 hidden-sm hidden-xs';
+            if($template == get_stylesheet_directory().'/page-about-us.php'){
+                $attributes['class'] .= ' col-md-12 horizontal-widgets';
+            } else {
+                $attributes['class'] .= ' col-md-3 hidden-sm hidden-xs';
+            }
             break;
         case 'content-sidebar-sidebar':
         case 'sidebar-sidebar-content':
