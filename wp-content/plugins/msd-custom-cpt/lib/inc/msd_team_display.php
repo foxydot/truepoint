@@ -120,7 +120,7 @@ if (!class_exists('MSDTeamDisplay')) {
         } 
         
         function get_all_practice_areas(){
-            return get_terms('practice_area');
+            return get_terms('practice_area',array('sort_by'=>'slug'));
         }
         
         function msd_add_team_member_headshot(){
