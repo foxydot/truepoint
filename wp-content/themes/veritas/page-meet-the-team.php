@@ -6,7 +6,7 @@ add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_c
 function msdlab_team_filter(){
    $msd_team_display = new MSDTeamDisplay;
    $terms = $msd_team_display->get_all_practice_areas();
-   $filters[] = '<a href="#" data-filter="*">All</a>';
+   $filters[] = '<a href="#" data-filter="*" class="active">All</a>';
    foreach($terms AS $term){
        $filters[] = '<a href="#" data-filter=".'.$term->slug.'">'.$term->name.'</a>';
    }
