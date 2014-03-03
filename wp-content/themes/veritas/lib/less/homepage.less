@@ -55,83 +55,32 @@
 }
 #homepage-widgets{
   .wrap{
-    .left{
-      padding: 0 5rem;
-      section.widget{
+    section.widget{
+      .widget-wrap{
+        background: 0;
         h4.widget-title{
-          margin: 0;
-          padding: 0;
+          background: 0;
+          margin: 0 0 1rem 0;
+          padding: 0 0 0.5rem 0;
           color: @blue;
-          text-transform: uppercase;
-          font-weight: 400;
-          font-size: 20px;
-          font-size: 2rem;
-          span{
-            font-size: 24px;
-            font-size: 2.4rem;
-            color: @orange;
-            margin-bottom: 1rem;
-          }
+          text-transform: none;
+          font-weight: 700;
+          font-size: 26px;
+          font-size: 2.6rem;
+          border-bottom: 1px solid @ltgrey;
         }
-        ul{
-          border-top: 1px dotted @medgrey;
-          li{
-            border-bottom: 1px dotted @medgrey;
-          }
-          li:before{
-            font-family: "FontAwesome";
-            content: "\f041";
-            color: @blue;
-            margin-right: 0.5rem;
-          }
+        .title-link{
+          font-weight: 700;
+          color: @blue;
         }
-        .readmore{
-          .button(@blue);
-          float: right;
-        }
-        .readmore:hover{
-          text-decoration: none;
-        }
-        a.msd-widget-text{
-          display: none;
-        }
-      }
-    }
-    .right{
-      padding: 0;
-      section.widget{
-        margin-bottom: 10px;
-        margin-bottom: 1rem;
-        .widget-icon{
-          border-right: 1px solid @white;
+        .read-more{
+          font-size: 0.8em;
+          font-weight: 700;
           color: @orange;
-          padding: 2rem 1rem;
-          text-align: center;
+          text-transform: uppercase;
         }
-        .widget-wrap{
-          padding: 1rem;
-          font-size: 1.3rem;
-          h4.widget-title{
-            margin: 0;
-            padding: 0;
-            color: @blue;
-            text-transform: uppercase;
-            font-weight: 400;
-            font-size: 20px;
-            font-size: 2rem;
-          }
-          .readmore span{
-            display: none;
-          }
-          .readmore:hover{
-            text-decoration: none;
-          }
-          i.fa-chevron-circle-right{
-            text-align: right;
-            display: block;
-            color: @blue;
-            font-size: 1.6rem;
-          }
+        .read-more:hover{
+          text-decoration: none;
         }
       }
     }
