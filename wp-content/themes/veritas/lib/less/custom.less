@@ -284,11 +284,11 @@
   }
 }
 
-.blog,.author{
+.blog,.author,.single-post{
   article{
     padding: 2rem 0;
     border-bottom: 1px solid @ltgrey;
-    h2.entry-title{
+    h1.entry-title, h2.entry-title{
       margin: 0;
     }
     p.entry-meta, p.entry-permalink{
@@ -304,6 +304,15 @@
   }
   .index-header{
     border-bottom: 1px solid @ltgrey;
+  }
+}
+.single-post{
+  header.entry-header{
+    border-bottom: 1px solid @ltgrey;
+    margin-bottom: 10px;
+  }
+  header.entry-header:after{
+    .clear;
   }
 }
 

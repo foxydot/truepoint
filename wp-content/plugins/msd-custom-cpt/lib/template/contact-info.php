@@ -9,6 +9,20 @@
 				id="<?php $mb->the_name(); ?>" name="<?php $mb->the_name(); ?>">
 		</div>
 	</li>
+    <?php $mb->the_field('_team_user_id'); ?>
+    <li class="gfield"
+        id="field_team_user_id"><label for="<?php $mb->the_name(); ?>" class="gfield_label">Blog User (for blog posts)
+    </label>
+    <div class="ginput_container">
+            <?php $blogusers = get_users(); ?>
+            <select id="<?php $mb->the_name(); ?>" name="<?php $mb->the_name(); ?>">
+                <option value=0>No Viewpoints</option>
+                <?php foreach($blogusers AS $bu){ ?>
+                    <option value="<?php print $bu->ID; ?>"<?php $mb->the_select_state($bu->ID); ?>><?php print $bu->display_name; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </li>
 	<?php $mb->the_field('_team_phone'); ?>
 	<li class="gfield gfield_contains_required even"
 		id="field_team_phone"><label for="<?php $mb->the_name(); ?>" class="gfield_label">Phone

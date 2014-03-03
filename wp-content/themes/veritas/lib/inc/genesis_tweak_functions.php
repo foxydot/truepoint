@@ -116,9 +116,72 @@ function msdlab_breadcrumb_args($args) {
     return $args;
 }
 function sp_post_info_filter($post_info) {
-    $post_info = 'Contributed by [post_author_posts_link]<br />
+    $post_info = 'Contributed by [post_author_bio]<br />
     [post_date]';
     return $post_info;
+}
+
+function msdlab_post_author_bio($atts){
+    $defaults = array(
+        'after'    => '',
+        'before'   => '',
+    );
+
+    $atts = shortcode_atts( $defaults, $atts, 'post_author_link' );
+
+    $url = get_the_author_meta( 'url' );
+    
+    
+    if ( ! $url ){
+        $args = array(
+            'post_type' => 'team_member',
+            'meta_key'  => '_team_member__team_user_id',
+            'meta_value'=> get_the_author_meta('ID')
+        );
+        $author_bio = array_pop(get_posts($args));
+        if($author_bio)
+            $url = get_post_permalink($author_bio->ID);
+    }
+
+    //* If no url, use post author shortcode function.
+    if ( ! $url )
+        return genesis_post_author_shortcode( $atts );
+
+    $author = get_the_author();
+
+    if ( genesis_html5() ) {
+        $output  = sprintf( '<span %s>', genesis_attr( 'entry-author' ) );
+        $output .= $atts['before'];
+        $output .= sprintf( '<a href="%s" %s>', $url, genesis_attr( 'entry-author-link' ) );
+        $output .= sprintf( '<span %s>', genesis_attr( 'entry-author-name' ) );
+        $output .= esc_html( $author );
+        $output .= '</span></a>' . $atts['after'] . '</span>';
+    } else {
+        $link = '<a href="' . esc_url( $url ) . '" title="' . esc_attr( sprintf( __( 'Visit %s&#x02019;s website', 'genesis' ), $author ) ) . '" rel="author external">' . esc_html( $author ) . '</a>';
+        $output = sprintf( '<span class="author vcard">%2$s<span class="fn">%1$s</span>%3$s</span>', $link, $atts['before'], $atts['after'] );
+    }
+
+    return apply_filters( 'genesis_post_author_link_shortcode', $output, $atts );
+}
+
+function msdlab_author_image(){
+    global $post;
+    if(!is_single() || !is_cpt('post')) return FALSE;
+    $args = array(
+            'post_type' => 'team_member',
+            'meta_key'  => '_team_member__team_user_id',
+            'meta_value'=> get_the_author_meta('ID')
+        );
+        $author_bio = array_pop(get_posts($args));
+        if($author_bio)
+            $author_attr = array(
+                'class' => "alignleft",
+                'alt'   => trim($author_bio->post_title),
+                'title' => trim($author_bio->post_title),
+            );
+            $thumb = get_the_post_thumbnail($author_bio->ID,'mini-thumbnail',$author_attr);
+        
+        print $thumb;
 }
 /**
  * Custom blog loop
