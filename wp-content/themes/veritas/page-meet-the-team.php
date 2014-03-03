@@ -34,6 +34,8 @@ function msdlab_team_header_scripts(){
             
             // filter items when filter link is clicked
             $("#filters a").click(function(){
+              $("#filters a").removeClass("active");
+              $(this).addClass("active");
               var selector = $(this).attr("data-filter");
               $("#team-members").isotope({
                   itemSelector : ".team-member",
