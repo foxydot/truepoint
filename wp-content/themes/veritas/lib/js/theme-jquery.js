@@ -45,6 +45,26 @@ jQuery(document).ready(function($) {
         
     $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login');  
     
+    $('#menu-primary-links .about-you').hover(function(){
+        if($('#menu-primary-links .about-us').hasClass('current-menu-ancestor')){
+            $('#menu-primary-links .about-us').removeClass('current-menu-ancestor').addClass('current-menu-ancestor-temp');
+        }
+    },function(){
+        if($('#menu-primary-links .about-us').hasClass('current-menu-ancestor-temp')){
+            $('#menu-primary-links .about-us').removeClass('current-menu-ancestor-temp').addClass('current-menu-ancestor');
+        }
+    });
+    
+    $('#menu-primary-links .about-us').hover(function(){
+        if($('#menu-primary-links .about-you').hasClass('current-menu-ancestor')){
+            $('#menu-primary-links .about-you').removeClass('current-menu-ancestor').addClass('current-menu-ancestor-temp');
+        }
+    },function(){
+        if($('#menu-primary-links .about-you').hasClass('current-menu-ancestor-temp')){
+            $('#menu-primary-links .about-you').removeClass('current-menu-ancestor-temp').addClass('current-menu-ancestor');
+        }
+    });
+    
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
     //jQuery('.menu').not('#footer .menu, #footer-widgets .menu').wrap('<div id="nav-response" class="nav-responsive">');

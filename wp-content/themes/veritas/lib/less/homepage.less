@@ -1,6 +1,19 @@
 @import 'lesshat';
 @import 'mixins';
-
+.nav-primary{
+  ul.menu-primary{
+    >li.menu-item{
+      background: @medgrey;
+    }
+    >li.first-child{
+      border-right: 1px solid @white;
+    }
+    >li.inactive{
+      background: none;
+      border: 0;
+    }
+  }
+}
 #hp-top{
   display: block;
   min-height: 300px;
