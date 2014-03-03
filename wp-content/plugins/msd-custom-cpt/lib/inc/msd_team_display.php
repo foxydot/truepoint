@@ -51,7 +51,8 @@ if (!class_exists('MSDTeamDisplay')) {
             $posts = get_posts($args);
             $i = 0;
             foreach($posts AS $post){
-                $posts[$i]->lastname = get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
+                $term = array_pop(get_the_terms($post->ID,'practice_area'));
+                $posts[$i]->lastname = $term->slug.'-'.get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
                 $i++;
             }
             usort($posts,array(&$this,'sort_by_lastname'));
@@ -120,7 +121,7 @@ if (!class_exists('MSDTeamDisplay')) {
         } 
         
         function get_all_practice_areas(){
-            return get_terms('practice_area',array('order_by'=>'slug','order'=>'ASC'));
+            return get_terms('practice_area',array('orderby'=>'slug','order'=>'ASC'));
         }
         
         function msd_add_team_member_headshot(){
