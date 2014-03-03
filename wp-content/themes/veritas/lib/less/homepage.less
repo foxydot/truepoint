@@ -4,6 +4,14 @@
   ul.menu-primary{
     >li.menu-item{
       background: @medgrey;
+      >.sub-menu{
+        display: none;
+      }
+    }
+    >li.menu-item:hover{
+      >.sub-menu{
+        display: block;
+      }
     }
     >li.first-child{
       border-right: 1px solid @white;
