@@ -190,13 +190,16 @@ Site Navigation
         }
       }
     }
-    li.menu-item:hover,li.menu-item.current-menu-ancestor{
+    >li.menu-item:hover,>li.menu-item.current-menu-ancestor{
       background: @blue;
       border: 0;
       .box-shadow(0 1px 10px rgba(20,20,20,0.5));
       a{
         text-decoration: none;
         color: @white;
+      }
+      .sub-menu{
+        z-index: 500;
       }
     }
     li.menu-item:hover{
