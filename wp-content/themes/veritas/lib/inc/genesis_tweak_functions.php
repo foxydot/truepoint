@@ -93,6 +93,12 @@ function msdlab_ro_layout_logic() {
     }
 }
 
+function msdlab_do_blog_sidebar(){
+    if(is_active_sidebar('blog')){
+        dynamic_sidebar('blog');
+    }
+}
+
 /*** CONTENT ***/
 
 /**
