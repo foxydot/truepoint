@@ -54,7 +54,7 @@ function msdlab_bootstrap_sidebar( $attributes ){
         case 'content-sidebar':
         case 'sidebar-content':
             if($template == get_stylesheet_directory().'/page-about-us.php'){
-                $attributes['class'] .= ' row';
+                $attributes['class'] = preg_replace('/sidebar-primary/i','row',$attributes['class']);
             } else {
                 $attributes['class'] .= ' col-md-3 hidden-sm hidden-xs';
             }
