@@ -17,4 +17,6 @@ jQuery(document).ready(function($) {
     },function(){
         $('#menu-primary-links .about-you').removeClass('inactive');
     });
+    
+    $('.in-the-news.widget ul').addClass('fa-ul');
 });
