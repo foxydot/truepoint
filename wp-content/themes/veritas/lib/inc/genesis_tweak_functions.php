@@ -231,6 +231,15 @@ function msdlab_add_page_content_to_blog_home(){
     print '<h1 class="entry-title" itemprop="headline">'.apply_filters('the_title',$page_title).'</h1>';
     print '<header class="index-header">'.apply_filters('the_content',$page_content).'</header>';
 }
+//add_action('genesis_before_loop','msdlab_add_page_content_to_archive');
+function msdlab_add_page_content_to_archive(){
+    global $wp_query;
+    //if(is_archive()){
+        //ts_data($wp_query->queried_object->rewrite['slug']);
+        //print '<h1 class="entry-title" itemprop="headline">'.apply_filters('the_title',$page_title).'</h1>';
+        //print '<header class="index-header">'.apply_filters('the_content',$page_content).'</header>';
+    //}
+}
 function msdlab_grid_loop_helper() {
     if ( function_exists( 'genesis_grid_loop' ) ) {
         genesis_grid_loop( array(
