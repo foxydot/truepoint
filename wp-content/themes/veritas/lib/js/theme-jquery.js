@@ -45,6 +45,10 @@ jQuery(document).ready(function($) {
         
     $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login');  
     
+    if(!$('body').hasClass('home') && !$('#menu-primary-links .about-you').hasClass('current-menu-ancestor')){
+        $('#menu-primary-links .about-us').addClass('current-menu-ancestor');
+    }
+    
     $('#menu-primary-links .about-you').hover(function(){
         if($('#menu-primary-links .about-us').hasClass('current-menu-ancestor')){
             $('#menu-primary-links .about-us').removeClass('current-menu-ancestor').addClass('current-menu-ancestor-temp');
