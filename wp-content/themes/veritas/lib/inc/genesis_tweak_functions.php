@@ -121,6 +121,12 @@ function msdlab_breadcrumb_args($args) {
     $args['sep'] = ' > ';
     return $args;
 }
+function msdlab_modify_breadcrumb_clickage($crumb){
+    if(strpos($crumb,'View About Us')!==FALSE){
+    $crumb = '<span>'.strip_tags($crumb).'</span>';
+    }
+    return $crumb;
+}
 function sp_post_info_filter($post_info) {
     $post_info = 'Contributed by [post_author_bio]<br />
     [post_date]';

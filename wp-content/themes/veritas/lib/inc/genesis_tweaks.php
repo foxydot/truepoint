@@ -25,6 +25,8 @@ add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
 /*** CONTENT ***/
 
 add_filter('genesis_home_crumb', '__return_false');
+add_filter('genesis_breadcrumb_link','msdlab_modify_breadcrumb_clickage');
+
 add_filter('genesis_breadcrumb_args', 'msdlab_breadcrumb_args'); //customize the breadcrumb output
 remove_action('genesis_before_loop', 'genesis_do_breadcrumbs'); //move the breadcrumbs 
 add_filter( 'genesis_post_info', 'sp_post_info_filter' );
