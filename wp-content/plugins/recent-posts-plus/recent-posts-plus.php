@@ -240,13 +240,12 @@ class RecentPostsPlus extends WP_Widget {
         
         $excerpt_length = ($excerpt_length === NULL) ? apply_filters('excerpt_length', 55) : $excerpt_length; 
         $excerpt_more = ($excerpt_more === NULL) ? apply_filters('excerpt_more', ' ' . '[...]') : $excerpt_more; 
-        
+       
         if($truncate_type == "word") {
             $text = $this->_truncate_words($text, $excerpt_length, $excerpt_more);
         } else {
             $text = $this->_truncate_chars($text, $excerpt_length, $excerpt_more);
         }
-        
         // Lets just apply the default filters but not the_content filter so plugins that have added to it don't modify the content
         $text = wptexturize($text);
         $text = convert_smilies($text);
@@ -268,12 +267,12 @@ class RecentPostsPlus extends WP_Widget {
     function _truncate_words($text, $limit, $ellipsis = '...') {
         if($limit) {
             $words = preg_split("/[\n\r\t ]+/", $text, $limit + 1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_OFFSET_CAPTURE);
-            if (count($words) > $limit) {
+            //if (count($words) > $limit) { //do it anyway.
                 end($words); //ignore last element since it contains the rest of the string after applying limit
                 $last_word = prev($words);
                 
                 $text =  substr($text, 0, $last_word[1] + strlen($last_word[0])) . $ellipsis;
-            }
+            //}
         }
         return $text;
     }
