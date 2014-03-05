@@ -48,4 +48,5 @@ function msdlab_team_header_scripts(){
     </script>';
 }
 add_action('wp_head','msdlab_team_header_scripts');
+add_action('wp_footer','msdlab_team_header_scripts');
 genesis();
