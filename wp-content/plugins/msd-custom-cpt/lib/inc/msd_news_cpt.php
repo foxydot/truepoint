@@ -258,6 +258,7 @@ if (!class_exists('MSDNewsCPT')) {
                     return msdlab_http_sanity_check($newsurl);
                 }
             }
+            return $url;
         } 
         function do_news_url_display(){
             global $newsurl_metabox, $post;$newsurl_metabox->the_meta();
