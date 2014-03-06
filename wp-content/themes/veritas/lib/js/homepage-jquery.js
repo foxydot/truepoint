@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
     $('#homepage-widgets section.widget').addClass('col-sm-'+cols);
     $('#homepage-widgets section.widget').addClass('col-xs-12');
     $('#homepage-widgets section.widget .widget-wrap').equalHeightColumns();    
-        
+     
     $('#menu-primary-links .about-you').hover(function(){
         $('#menu-primary-links .about-us').addClass('inactive');
     },function(){
