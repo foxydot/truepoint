@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     var internal_urls = Array('truepoint.oc','72.52.131.35','truepointwealth.com','truepointinc.com');
     $('a').attr('target',function(){
         var url = $(this).attr('href');
-        if(url == '#'){
+        if(url == '#' || strripos(url,'http',0)===false){
             return '_self';
         } else {
             var i=0;
