@@ -21,6 +21,7 @@ if (!class_exists('MSDNewsCPT')) {
             //Actions
             add_action( 'init', array(&$this,'register_taxonomy_news_category') );
             add_action( 'init', array(&$this,'register_cpt_news') );
+            add_action( 'init', array(&$this,'add_custom_metaboxes') );
             add_action('admin_head', array(&$this,'plugin_header'));
             add_action('wp_enqueue_scripts', array(&$this,'add_front_scripts') );
             add_action('admin_enqueue_scripts', array(&$this,'add_admin_scripts') );
@@ -195,7 +196,7 @@ if (!class_exists('MSDNewsCPT')) {
             global $current_screen;
             if($current_screen->post_type == $this->cpt){
                 ?><script type="text/javascript">
-                        jQuery('#postdivrich').before(jQuery('#_contact_info_metabox'));
+                        jQuery('#postdivrich').before(jQuery('#_newsurl_metabox'));
                     </script><?php
             }
         }
@@ -229,6 +230,43 @@ if (!class_exists('MSDNewsCPT')) {
                     $query->set('posts_per_page', 30);
                 }
             }
-        }           
+        }     
+        function add_custom_metaboxes(){
+            global $newsurl_metabox;
+            $newsurl_metabox = new WPAlchemy_MetaBox(array
+            (
+                'id' => '_newsurl',
+                'title' => 'URL to news item',
+                'types' => array($this->cpt),
+                'context' => 'normal', // same as above, defaults to "normal"
+                'priority' => 'high', // same as above, defaults to "high"
+                'template' => WP_PLUGIN_DIR.'/'.plugin_dir_path('msd-custom-cpt/msd-custom-cpt.php') . '/lib/template/newsurl-meta.php',
+                'autosave' => TRUE,
+                'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
+                'prefix' => '_msdlab_' // defaults to NULL
+            ));
+        } 
+        function do_news_url($url) {
+            global $post;
+            if($post->post_type == 'news'){
+                global $newsurl_metabox;
+                $newsurl_metabox->the_meta($post->ID);
+                $newsurl = $newsurl_metabox->get_the_value('newsurl');
+                if ( strlen( $newsurl ) == 0 ){
+                    return $url;
+                } else {
+                    return msdlab_http_sanity_check($newsurl);
+                }
+            }
+        } 
+        function do_news_url_display(){
+            global $newsurl_metabox, $post;$newsurl_metabox->the_meta();
+            $newsurl = $newsurl_metabox->get_the_value('newsurl');
+            if ( strlen( $newsurl ) == 0 )
+                return;
+        
+            $newsurl = sprintf( '<a class="entry-newsurl" href="%s">View Article</a>', msdlab_http_sanity_check($newsurl) );
+            echo $newsurl . "\n";
+        }    
   } //End Class
 } //End if class exists statement
