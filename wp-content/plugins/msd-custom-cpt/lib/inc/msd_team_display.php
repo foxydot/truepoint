@@ -49,12 +49,12 @@ if (!class_exists('MSDTeamDisplay')) {
             'post_type'        => $this->cpt,
             );
             $posts = get_posts($args);
-            $i = 0;
+            /*$i = 0;
             foreach($posts AS $post){
                 $posts[$i]->lastname = get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
                 $i++;
             }
-            usort($posts,array(&$this,'sort_by_lastname'));
+            usort($posts,array(&$this,'sort_by_lastname'));*/
             return $posts;
         }     
         
