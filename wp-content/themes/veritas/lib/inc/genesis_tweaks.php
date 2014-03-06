@@ -39,7 +39,8 @@ add_action('genesis_entry_header','msdlab_author_image', 1);
 remove_action( 'genesis_before_post_content', 'genesis_post_info' ); //remove the info (date, posted by,etc.)
 remove_action( 'genesis_after_post_content', 'genesis_post_meta' ); //remove the meta (filed under, tags, etc.)
 add_action( 'genesis_entry_header', 'msdlab_do_post_subtitle' );
-
+add_action('genesis_entry_content',array('MSDNewsCPT','do_news_url_display'), 4);
+add_filter('post_type_link',array('MSDNewsCPT','do_news_url'));
 add_action( 'genesis_before_post', 'msdlab_post_image', 8 ); //add feature image across top of content on *pages*.
 //add_action('template_redirect','msdlab_blog_grid');
 add_action('template_redirect','msdlab_blog_index');
