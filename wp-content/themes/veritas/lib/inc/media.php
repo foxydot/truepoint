@@ -4,7 +4,7 @@
  */
 add_image_size('home-banner', 1170, 415, TRUE);
 add_image_size('headshot-lg', 375, 300, TRUE);
-add_image_size('headshot-md', 270, 220, TRUE);
+add_image_size('headshot-md', 240, 195, TRUE);
 add_image_size('tab', 170, 170, TRUE);
 add_image_size('mini-thumbnail', 115, 115, TRUE);
 add_image_size('medlg', 500, 500, FALSE);
