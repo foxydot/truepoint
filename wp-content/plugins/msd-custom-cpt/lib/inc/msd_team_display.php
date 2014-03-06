@@ -51,8 +51,7 @@ if (!class_exists('MSDTeamDisplay')) {
             $posts = get_posts($args);
             $i = 0;
             foreach($posts AS $post){
-                $term = array_pop(get_the_terms($post->ID,'practice_area'));
-                $posts[$i]->lastname = $term->slug.'-'.get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
+                $posts[$i]->lastname = get_post_meta($post->ID,'_team_member__team_last_name',TRUE);
                 $i++;
             }
             usort($posts,array(&$this,'sort_by_lastname'));
