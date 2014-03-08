@@ -263,7 +263,7 @@ if (!class_exists('MSDNewsCPT')) {
         function do_news_url_display(){
             global $newsurl_metabox, $post;$newsurl_metabox->the_meta();
             $newsurl = $newsurl_metabox->get_the_value('newsurl');
-            if ( strlen( $newsurl ) == 0 )
+            if ( strlen( $newsurl ) == 0 || !is_single())
                 return;
         
             $newsurl = sprintf( '<a class="entry-newsurl" href="%s">View Article</a>', msdlab_http_sanity_check($newsurl) );

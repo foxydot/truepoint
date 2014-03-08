@@ -261,8 +261,13 @@ function msdlab_do_post_permalink() {
         return;
 
     $permalink = get_permalink();
+    
+    $link_text = __('Read More&nbsp;>','veritas');
+    if(is_cpt('news')){
+        $link_text = __('Read Article&nbsp;>','veritas');
+    }
 
-    echo apply_filters( 'genesis_post_permalink', sprintf( '<p class="entry-permalink"><a href="%s" title="%s" rel="bookmark">%s</a></p>', esc_url( $permalink ), __( 'Permalink', 'genesis' ), 'Read More >' ) );
+    echo apply_filters( 'genesis_post_permalink', sprintf( '<p class="entry-permalink"><a href="%s" title="%s" rel="bookmark">%s</a></p>', esc_url( $permalink ), __( 'Permalink', 'genesis' ),$link_text  ) );
 
 }
 function msdlab_older_link_text() {
