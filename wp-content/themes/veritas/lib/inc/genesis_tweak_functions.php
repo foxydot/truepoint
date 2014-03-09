@@ -184,14 +184,22 @@ function msdlab_author_image(){
             'meta_key'  => '_team_member__team_user_id',
             'meta_value'=> get_the_author_meta('ID')
         );
+        $size = 'mini-thumbnail';
         $author_bio = array_pop(get_posts($args));
-        if($author_bio)
+        if($author_bio){
             $author_attr = array(
                 'class' => "alignleft",
                 'alt'   => trim($author_bio->post_title),
                 'title' => trim($author_bio->post_title),
             );
-            $thumb = get_the_post_thumbnail($author_bio->ID,'mini-thumbnail',$author_attr);
+            $thumb = get_the_post_thumbnail($author_bio->ID,$size,$author_attr);
+        } else {
+            $attr = array(
+                'class' => "alignleft",
+            );
+            $attachment_id = get_option('msdsocial_default_avatar');
+            $thumb = wp_get_attachment_image( $attachment_id, $size, 0, $attr );
+        }
         
         print $thumb;
 }
