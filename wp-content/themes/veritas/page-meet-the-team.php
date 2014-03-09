@@ -47,6 +47,7 @@ function msdlab_team_footer_scripts(){
             $( window ).scroll(function() {
                 $("#team-members").isotope();
             });
+            $("#team-members").isotope();
         } );
     </script>';
 }
