@@ -88,7 +88,7 @@ if (!class_exists('MSDProjectCPT')) {
             add_action('wp_ajax_nopriv_my_frontend_action', array($this, 'frontend_ajax_handler'));
             
             //Filters
-            add_filter( 'pre_get_posts', array(&$this,'custom_query') );
+            //add_filter( 'pre_get_posts', array(&$this,'custom_query') );
             add_filter( 'enter_title_here', array(&$this,'change_default_title') );
             
             // hook add_query_vars function into query_vars
@@ -837,7 +837,7 @@ function msd_get_usa_imagemap(){
                         $query->set('meta_value',$searchterm);
                         $query->set('meta_compare','LIKE');
                     };
-                    //$query->set( 'post_type', array('post','page',$this->cpt) );
+                    $query->set( 'post_type', array('post','page',$this->cpt) );
                 }
                 elseif( $query->is_main_query() && $query->is_archive && $is_project ) {
                     $meta_query = array(
