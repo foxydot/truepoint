@@ -44,8 +44,12 @@ function msdlab_team_footer_scripts(){
                 }); 
               return false;
             });   
+            $( window ).scroll(function() {
+                $("#team-members").isotope();
+            });
         } );
     </script>';
 }
+add_action('wp_header','msdlab_team_footer_scripts');
 add_action('wp_footer','msdlab_team_footer_scripts');
 genesis();
