@@ -2,8 +2,8 @@
 /**
  * Add new image sizes
  */
-add_image_size('home-banner', 1170, 415, TRUE);
-add_image_size('headshot-lg', 375, 300, TRUE);
+add_image_size('home-banner', 1080, 380, TRUE);
+add_image_size('headshot-lg', 330, 264, TRUE);
 add_image_size('headshot-md', 240, 195, TRUE);
 add_image_size('tab', 170, 170, TRUE);
 add_image_size('mini-thumbnail', 115, 115, TRUE);
