@@ -33,7 +33,8 @@ function msdsocial_theme_page ()
 		'landing_link',
 		'sharethis_link',
 		'contact_link',
-		'show_feed');
+		'show_feed',
+		'default_avatar');
 		
 		foreach ( $options as $opt )
 		{
@@ -275,6 +276,18 @@ $states = array('ALABAMA'=>"AL",
 				<input name="icon_size" type="checkbox" id="icon_size" value="32" <?php print get_option('msdsocial_icon_size')==32?'CHECKED':''; ?>> 32
 			</td>
 		</tr>
+        </table>
+        </fieldset>
+        <fieldset style="border:1px solid #ddd; padding-bottom:20px; margin-top:20px;">
+    <legend style="margin-left:5px; padding:0 5px; color:#2481C6;text-transform:uppercase;"><strong>Defaults</strong></legend>
+        <table class="form-table">
+
+        <tr valign="top">
+            <th scope="row"><label for="default_avatar">Default Avatar Attachment ID</label></th>
+            <td>
+                <input name="default_avatar" type="text" id="default_avatar" value="<?php echo get_option('msdsocial_default_avatar'); ?>" class="regular-text" />
+            </td>
+        </tr>
         </table>
         </fieldset>
 		<p class="submit">
