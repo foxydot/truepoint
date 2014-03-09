@@ -41,6 +41,8 @@ function msdlab_add_scripts() {
         wp_enqueue_script('isotope',get_stylesheet_directory_uri().'/lib/js/jquery.isotope.min.js',array('jquery'));
         if($is_IE){
             wp_enqueue_script('columnizr',get_stylesheet_directory_uri().'/lib/js/jquery.columnizer.js',array('jquery'));
+            wp_enqueue_script('background-size',get_stylesheet_directory_uri().'/lib/js/jquery.backgroundSize.js',array('jquery'));
+            wp_enqueue_script('media-queries',get_stylesheet_directory_uri().'/lib/js/respond.min.js',array('jquery'));
             wp_enqueue_script('ie-fixes',get_stylesheet_directory_uri().'/lib/js/ie-jquery.js',array('jquery'));
         }
         if(is_front_page()){
