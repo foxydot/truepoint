@@ -31,7 +31,7 @@ if (!class_exists('MSDNewsCPT')) {
             add_action('admin_print_footer_scripts',array(&$this,'admin_print_footer_scripts'),99);
             
             //Filters
-            add_filter( 'pre_get_posts', array(&$this,'custom_query') );
+            //add_filter( 'pre_get_posts', array(&$this,'custom_query') );
             add_filter( 'enter_title_here', array(&$this,'change_default_title') );
             
         }
@@ -214,7 +214,7 @@ if (!class_exists('MSDNewsCPT')) {
                         $query->set('meta_value',$searchterm);
                         $query->set('meta_compare','LIKE');
                     };
-                    //$query->set( 'post_type', array('post','page',$this->cpt) );
+                    $query->set( 'post_type', array('post','page',$this->cpt) );
                 }
                 elseif( $query->is_main_query() && $query->is_archive && $is_news ) {
                     $meta_query = array(
