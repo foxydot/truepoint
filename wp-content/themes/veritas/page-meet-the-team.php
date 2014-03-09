@@ -24,13 +24,13 @@ function msdlab_team(){
     print '</div>';
 }
 add_action('genesis_entry_content','msdlab_team');
-function msdlab_team_header_scripts(){
+function msdlab_team_footer_scripts(){
     print '<script>
         jQuery(document).ready(function($) {
             $("#team-members").isotope({
               itemSelector : ".team-member",
-              layoutMode : "fitRows"
-            }); 
+              layoutMode: "fitRows",
+            }).css("min-height","2056px"); 
             
             // filter items when filter link is clicked
             $("#filters a").click(function(){
@@ -47,6 +47,5 @@ function msdlab_team_header_scripts(){
         } );
     </script>';
 }
-add_action('wp_head','msdlab_team_header_scripts');
-add_action('wp_footer','msdlab_team_header_scripts');
+add_action('wp_footer','msdlab_team_footer_scripts');
 genesis();
