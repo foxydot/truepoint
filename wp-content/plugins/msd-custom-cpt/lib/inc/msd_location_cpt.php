@@ -152,7 +152,7 @@ if (!class_exists('MSDLocationCPT')) {
 						$query->set('meta_value',$searchterm);
 						$query->set('meta_compare','LIKE');
 					};
-					$query->set( 'post_type', array('post','page',$this->cpt) );
+					//$query->set( 'post_type', array('post','page',$this->cpt) );
 				}
 				elseif( $query->is_main_query() && $query->is_archive ) {
 					$query->set( 'post_type', array('post','page',$this->cpt) );

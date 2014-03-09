@@ -184,7 +184,7 @@ if (!class_exists('MSDTeamCPT')) {
                         $post_types[] = 'page';
                     }
                     $post_types[] = $this->cpt;
-                    $query->set( 'post_type', $post_types );
+                    //$query->set( 'post_type', $post_types );
                 }
                 elseif( $query->is_main_query() && $query->is_archive && $is_team_member) {
                     $query->set( 'post_type', $this->cpt );
