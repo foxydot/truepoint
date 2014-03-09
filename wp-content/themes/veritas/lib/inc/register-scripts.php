@@ -18,14 +18,14 @@ function msdlab_add_styles() {
             $queue[] = 'font-awesome-style';
         wp_enqueue_style('msd-style',get_stylesheet_directory_uri().'/lib/css/style.css',$queue);
         $queue[] = 'msd-style';
-        if($is_IE){
-            wp_enqueue_script('ie-style',get_stylesheet_directory_uri().'/lib/css/ie.css');
-            $queue[] = 'ie-style';
-        }
         if(is_front_page()){
             wp_enqueue_style('msd-homepage-style',get_stylesheet_directory_uri().'/lib/css/homepage.css',$queue);
             $queue[] = 'msd-homepage-style';
-        }        
+        }    
+        if($is_IE){
+            wp_enqueue_script('ie-style',get_stylesheet_directory_uri().'/lib/css/ie.css',$queue);
+            $queue[] = 'ie-style';
+        }    
     }
 }
 

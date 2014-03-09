@@ -1,1 +1,6 @@
-.about-you-tabs .nav-tabs li a img{border:0}.about-you-tabs .nav-tabs li a::after{margin-left:50%}
+.about-you-tabs .nav-tabs li a img {
+  border: 0;
+}
+.about-you-tabs .nav-tabs li a:after {
+  margin-left: 50%;
+}
