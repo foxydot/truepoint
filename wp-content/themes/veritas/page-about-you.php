@@ -54,7 +54,7 @@ function msdlab_do_post_tabs() {
             grayscale($(this));
         });*/
        
-        var hash = window.location.hash;
+        var hash = window.location.hash.replace('tab-', '');
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
         console.log(filter);
