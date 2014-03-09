@@ -215,7 +215,6 @@ if (!class_exists('MSDNewsCPT')) {
                         $query->set('meta_compare','LIKE');
                     };
                     $query->set( 'post_type', array('post','page',$this->cpt) );
-                    ts_data($query);
                 }
                 elseif( $query->is_main_query() && $query->is_archive && $is_news ) {
                     $meta_query = array(
