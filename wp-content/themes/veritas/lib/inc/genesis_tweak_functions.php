@@ -339,6 +339,7 @@ function msdlab_sitemap(){
                     $col2 .= '<li><a href="'.get_permalink().'">'.get_the_title().'</a></li>';
                 }
               }
+            wp_reset_query();
             
               $col2 .= '</ul>';
             }
