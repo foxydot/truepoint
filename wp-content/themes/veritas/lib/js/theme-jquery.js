@@ -51,13 +51,14 @@ jQuery(document).ready(function($) {
     var internal_urls = Array('truepoint.oc','72.52.131.35','truepointwealth.com','truepointinc.com');
     $('a').attr('target',function(){
         var url = $(this).attr('href');
+        var target = $(this).attr('target');
         if(url == '#' || strripos(url,'http',0)===false){
             return '_self';
         } else {
             var i=0;
             while (internal_urls[i]){
                 if(strripos(url, internal_urls[i], 0)){
-                    return '_self';
+                    return target;
                 }
                 i++;
             }
