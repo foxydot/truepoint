@@ -458,3 +458,9 @@
        -o-transition-property:      -o-transform, opacity;
           transition-property:         transform, opacity;
 }
+
+@media print {
+  a[href]:after {
+    content: none;
+  }
+}
