@@ -47,6 +47,8 @@ jQuery(document).ready(function($) {
         }
     });
     
+    $('ul').prev('p').css('margin-bottom','0px');
+    
     // add target="_blank" to all *external* 
     var internal_urls = Array('truepoint.oc','72.52.131.35','truepointwealth.com','truepointinc.com');
     $('a').attr('target',function(){
