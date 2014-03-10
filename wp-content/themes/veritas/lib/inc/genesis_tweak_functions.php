@@ -3,6 +3,17 @@
 /**
  * Add pre-header with social and search
  */
+function msdlab_add_apple_touch_icons(){
+    $ret = '
+    <link href="'.get_stylesheet_directory_uri().'/lib/inc/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/inc/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/inc/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/inc/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/inc/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/inc/favicon.ico" type="image/x-icon">
+    ';
+    print $ret;
+}
 function msdlab_pre_header(){
     print '<div class="pre-header">
         <div class="wrap">';
@@ -184,7 +195,7 @@ function msdlab_author_image(){
             'meta_key'  => '_team_member__team_user_id',
             'meta_value'=> get_the_author_meta('ID')
         );
-        $size = 'mini-thumbnail';
+        $size = 'headshot-sm';
         $author_bio = array_pop(get_posts($args));
         if($author_bio){
             $author_attr = array(
