@@ -8,6 +8,7 @@ add_theme_support( 'genesis-responsive-viewport' );//* Add viewport meta tag for
 add_theme_support( 'custom-background' );//* Add support for custom background
 
 /*** HEADER ***/
+add_action('wp_head','msdlab_add_apple_touch_icons');
 add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the serach bar placeholder
 add_filter('genesis_search_button_text', 'msdlab_search_button'); //customize the search form to add fontawesome search button.
 add_filter('genesis_do_subnav','msdlab_subnav_right',10,2);
