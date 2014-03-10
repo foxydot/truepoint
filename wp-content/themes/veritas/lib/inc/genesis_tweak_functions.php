@@ -138,6 +138,28 @@ function msdlab_modify_breadcrumb_clickage($crumb){
     }
     return $crumb;
 }
+
+function msdlab_jank_the_cpt_breadcrumb($crumb){
+   //ts_data($crumb);
+    if(is_cpt('post') && is_single()){
+        $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-us/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+    } else {
+        $pattern = array(
+            '/Team Members/i',
+            '/Archives for News/i',
+        );
+        $replacement = array(
+            '<span>About Us</span>
+    &gt;
+    <a title="View Truepoint Team" href="'.site_url( '/about-us/team/' ).'">Truepoint Team</a>
+    &gt; <a title="View Meet the Team" href="'.site_url( '/about-us/team/meet-the-team/' ).'">Meet the Team</a>',
+            '<span>About Us</span> &gt; News',
+        );
+        $crumb = preg_replace($pattern, $replacement, $crumb);
+    }
+    return $crumb;
+}
+
 function sp_post_info_filter($post_info) {
     $post_info = 'Contributed by [post_author_bio]<br />
     [post_date]';
