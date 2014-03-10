@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
     $('li.Disclosures>a>i').addClass('fa-align-left');
     $('li.Careers>a>i').addClass('fa-briefcase');
         
-    //$('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login');  
+    $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login-message');  
     
     if(!$('body').hasClass('home') && !$('#menu-primary-links .about-you').hasClass('current-menu-ancestor')){
         $('#menu-primary-links .about-us').addClass('current-menu-ancestor');
