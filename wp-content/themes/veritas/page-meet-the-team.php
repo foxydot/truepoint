@@ -26,31 +26,29 @@ function msdlab_team(){
 add_action('genesis_entry_content','msdlab_team');
 function msdlab_team_footer_scripts(){
     print '<script>
-        jQuery(document).ready(function($) {
-            $("#team-members").isotope({
+        jQuery(window).load(function() {
+            jQuery("#team-members").isotope({
               itemSelector : ".team-member",
               layoutMode: "fitRows",
             }).css("min-height","2056px"); 
             
             // filter items when filter link is clicked
-            $("#filters a").click(function(){
-              $("#filters a").removeClass("active");
-              $(this).addClass("active");
-              var selector = $(this).attr("data-filter");
-              $("#team-members").isotope({
+            jQuery("#filters a").click(function(){
+              jQuery("#filters a").removeClass("active");
+              jQuery(this).addClass("active");
+              var selector = jQuery(this).attr("data-filter");
+              jQuery("#team-members").isotope({
                   itemSelector : ".team-member",
                   layoutMode : "fitRows",
                   filter: selector
                 }); 
               return false;
             });   
-            $( window ).scroll(function() {
-                $("#team-members").isotope();
+            jQuery( window ).scroll(function() {
+                jQuery("#team-members").isotope();
             });
-            $("#team-members").isotope();
         } );
     </script>';
 }
-add_action('wp_header','msdlab_team_footer_scripts');
 add_action('wp_footer','msdlab_team_footer_scripts');
 genesis();
