@@ -339,8 +339,8 @@ img {
       width: 100%;
       position: relative;
       text-indent: 20px;
-      .quickgradient(lighten(@medgrey,10%));
-      min-height: 33px;
+      background: @blue;
+      min-height: 46px;
       padding-top: 14px;
       position: relative;
       > strong {
@@ -351,23 +351,26 @@ img {
       }
       ul#mobile_menu {
         margin-top: 14px;
+        
+            border-top: 1px solid @ltgrey;
         li{
           display: block;
           list-style: none;
           padding: 0;
           a{
-            .quickgradient(lighten(@medgrey,10%));
+            background: @blue;
             color: @white;
             display: block;
             width: 100%;
             padding: 0.5em;
+            border-bottom: 1px solid @ltgrey;
           }
           a:hover{
-            .quickgradient(lighten(@dkgrey,10%));
+            background: @medgrey;
           }
           ul.sub-menu {
             margin-top: 0;
-            display: block;
+            display: none;
             position: relative;
             top: 0;
             left: 0;
@@ -404,12 +407,12 @@ img {
     font-family: 'FontAwesome';
     font-size: 2rem;
     text-indent: 0;
-    color: @white;
+    color: @blue;
     text-align: center;
     width: 30px;
     height: 30px;
     .border-radius(4px);
-    background: @blue;
+    background: @white;
     display: inline-block;
     position: absolute;
     right: 15px;
