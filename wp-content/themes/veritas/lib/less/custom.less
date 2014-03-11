@@ -441,15 +441,15 @@ main.content{
 
 .tablepress{
   tbody{
-    tr{
+    tr.odd, tr.even{
       background-color: none;
-      td{
+      td.odd, td.even{
         background-color: none;
       }
     }
-    tr.first-child{
+    tr.first-child.odd{
       background-color: @ltgrey;
-      td{
+      td.odd, td.even{
         background-color: none;
       }
     }
