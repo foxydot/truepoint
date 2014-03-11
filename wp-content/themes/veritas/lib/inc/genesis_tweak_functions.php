@@ -147,6 +147,7 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
         $pattern = array(
             '/Team Members/i',
             '/Archives for News/i',
+            '/news-info/i',
         );
         $replacement = array(
             '<span>About Us</span>
@@ -154,6 +155,7 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
     <a title="View Truepoint Team" href="'.site_url( '/about-us/team/' ).'">Truepoint Team</a>
     &gt; <a title="View Meet the Team" href="'.site_url( '/about-us/team/meet-the-team/' ).'">Meet the Team</a>',
             '<span>About Us</span> &gt; News',
+            'news',
         );
         $crumb = preg_replace($pattern, $replacement, $crumb);
     }
