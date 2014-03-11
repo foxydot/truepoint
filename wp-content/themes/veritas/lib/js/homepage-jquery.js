@@ -19,4 +19,5 @@ jQuery(document).ready(function($) {
     });
     
     $('.in-the-news.widget ul').addClass('fa-ul');
+    $('.truepoint-viewpoint.widget ul').addClass('fa-ul');
 });
