@@ -5,9 +5,12 @@
  */
 function msdlab_add_apple_touch_icons(){
     $ret = '
-    <link href="'.get_stylesheet_directory_uri().'/lib/inc/apple-touch-icon-152x152.png" rel="apple-touch-icon" />
-    <link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/inc/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/inc/favicon.ico" type="image/x-icon">
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
     ';
     print $ret;
 }
