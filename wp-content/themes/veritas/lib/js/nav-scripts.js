@@ -43,10 +43,10 @@ jQuery(document).ready(function(){
             jQuery(this).parent('li').removeClass( 'opened' ).addClass( 'closed' );
             jQuery(this).parent('li').find('.sub-menu').slideUp( 500 );
         } else {
-            jQuery(this).parent('li').removeClass( 'closed' ).addClass( 'opened' );
-            jQuery(this).parent('li').find('.sub-menu').slideDown( 500 );
             jQuery(this).parent('li').find('.sub-menu>li').addClass('closed');
             jQuery(this).parent('li').find('.sub-menu>li>.sub-menu').slideUp(0);
+            jQuery(this).parent('li').removeClass( 'closed' ).addClass( 'opened' );
+            jQuery(this).parent('li').find('.sub-menu').slideDown( 500 );
         }
         return false;
     } );
