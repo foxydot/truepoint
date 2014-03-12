@@ -255,6 +255,14 @@ main.content{
        color: @orange; /* or whatever color you prefer */
        margin-right: 0.5em;
     }
+    li{
+      ul{
+        li:before{
+          content: "-";
+          font-weight: 700;
+        }
+      }
+    }
   }
 }
 }
