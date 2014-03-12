@@ -13,7 +13,7 @@ function msdlab_do_post_tabs() {
         $attachment_id = get_attachment_id_from_src($aboutyou_metabox->get_the_value('image'));
         $image = wp_get_attachment_image_src( $attachment_id, 'tab' );
         $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" data-toggle="tab" data-option-value=".'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><img class="img-circle grayscale" src="'.$image[0].'" /><img class="img-circle logo-mark" src="'.get_stylesheet_directory_uri().'/lib/img/logo_mark.svg" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
-        $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><h3 class="content-title">'.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'</h3>'.$aboutyou_metabox->get_the_value('content').'</div>';
+        $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><h3 class="content-title">'.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'</h3>'.apply_filters('the_content',$aboutyou_metabox->get_the_value('content')).'</div>';
         $i++;
     endwhile; //end loop
     print '<div class="about-you-tabs">
