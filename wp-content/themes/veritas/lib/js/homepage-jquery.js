@@ -4,8 +4,10 @@ jQuery(document).ready(function($) {
     var cols = 12/numwidgets;
     $('#homepage-widgets section.widget').addClass('col-sm-'+cols);
     $('#homepage-widgets section.widget').addClass('col-xs-12');
-    $('#homepage-widgets section.widget .widget-wrap').equalHeightColumns();    
-     
+    if(window.innerWidth > 500){
+        $('#homepage-widgets section.widget .widget-wrap').equalHeightColumns();    
+    }
+    
     $('#menu-primary-links .about-you').hover(function(){
         $('#menu-primary-links .about-us').addClass('inactive');
     },function(){
