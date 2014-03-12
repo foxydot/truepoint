@@ -458,3 +458,8 @@ function msd_add_blog_header(){
     }
     print $header;
 }
+
+function my_embed_oembed_html( $html ) {
+    return preg_replace( '@src="https?:@', 'src="', $html );
+}
+add_filter( 'embed_oembed_html', 'my_embed_oembed_html' );
