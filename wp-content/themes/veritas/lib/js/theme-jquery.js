@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
     $('li.Careers>a>i').addClass('fa-briefcase');
     $('li.Sitemap>a>i').addClass('fa-sitemap');
         
-    $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login-message');  
+    //$('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login-message');  
     
     if(!$('body').hasClass('home') && !$('#menu-primary-links .about-you').hasClass('current-menu-ancestor')){
         $('#menu-primary-links .about-us').addClass('current-menu-ancestor');
