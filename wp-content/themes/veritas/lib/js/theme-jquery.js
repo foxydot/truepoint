@@ -20,6 +20,7 @@ jQuery(document).ready(function($) {
     $('li.Contact-Us>a>i').addClass('fa-comments');
     $('li.Disclosures>a>i').addClass('fa-align-left');
     $('li.Careers>a>i').addClass('fa-briefcase');
+    $('li.Sitemap>a>i').addClass('fa-sitemap');
         
     $('.Client-Login.menu-item>a').attr('data-toggle','modal').attr('data-target','#client-login-message');  
     
