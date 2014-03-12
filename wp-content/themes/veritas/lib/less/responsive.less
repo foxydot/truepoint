@@ -282,6 +282,9 @@ img {
 
 
 @media only screen and (max-width : 500px) {  
+  html{
+    font-size: 45%;
+  }
     .archive-page,
     .content-sidebar #content,
     .sidebar-content #content,
@@ -441,7 +444,22 @@ img {
 
      
     #sidebar,#sidebar-alt{display:none;}
-    
+
+  .about-you-tabs{
+    .nav-tabs{
+      li{
+        h4.tab-title{
+          min-height: 45px;
+        }
+        img{
+          display: none;
+        }
+      }
+      li:after{
+        content: "";
+      }
+    }
+  }
 } 
 
 @media only screen and (max-width : 320px) {  
