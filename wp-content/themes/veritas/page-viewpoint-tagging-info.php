@@ -1,10 +1,8 @@
 <?php
+error_reporting(E_ALL);
 function get_all_content_info_into_table(){
-	global $wp_query;
-    $args = array(
-        'post_type' => 'post',
-        'posts_per_page' => -1,
-    );
+    $args['post_type'] = 'post';
+    $args['posts_per_page'] = -1;
     $viewpoints = new WP_Query($args);
     if ( $viewpoints->have_posts() ) {
             echo '
