@@ -1,9 +1,9 @@
 <?php
 function get_all_content_info_into_table(){
-    print "hello";
+	global $wp_query;
     $args = array(
         'post_type' => 'post',
-        'posts_per_page' => -1
+        'posts_per_page' => -1,
     );
     $viewpoints = new WP_Query($args);
     if ( $viewpoints->have_posts() ) {
