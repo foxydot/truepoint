@@ -1,6 +1,6 @@
 <?php
+error_reporting(E_ALL);
 function get_all_content_info_into_table(){
-    print "hello";
     $args = array(
         'post_type' => 'post',
         'posts_per_page' => -1
