@@ -48,7 +48,17 @@ jQuery(document).ready(function($) {
         }
     });
     
-    $('ul').prev('p').css('margin-bottom','0px');
+    $('ul').prev('p').css('margin-bottom','1rem');
+    
+    $('.tablepress tbody tr.first-child').addClass(function(){
+       var text;
+       $(this).find('td').each(function(){
+           text = text + $(this).text();
+       });
+       if(text == 'undefined'){
+           return 'hidden';
+       }
+    });
     
     // add target="_blank" to all *external* 
     var internal_urls = Array('truepoint.oc','72.52.131.35','truepointwealth.com','truepointinc.com');
