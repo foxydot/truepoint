@@ -52,13 +52,14 @@ add_shortcode('mailto','msdlab_mailto_function');
 function msdlab_mailto_function($atts, $content){
     extract( shortcode_atts( array(
     'email' => '',
+    'querystring' => '',
     ), $atts ) );
     $content = trim($content);
     if($email == '' && preg_match('|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}|i', $content, $matches)){
         $email = $matches[0];
     }
     $email = antispambot($email);
-    return '<a href="mailto:'.$email.'">'.$content.'</a>';
+    return '<a href="mailto:'.$email.'?'.$querystring.'">'.$content.'</a>';
 }
 add_shortcode('columns','column_shortcode');
 
