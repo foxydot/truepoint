@@ -65,7 +65,9 @@ jQuery(document).ready(function($) {
     $('a').attr('target',function(){
         var url = $(this).attr('href');
         var target = $(this).attr('target');
-        if(url == '#' || strripos(url,'http',0)===false){
+        if(strripos(url,'mailto',0)===0){
+            return '_blank';
+        }else if(url == '#' || strripos(url,'http',0)===false){
             return '_self';
         } else {
             var i=0;
