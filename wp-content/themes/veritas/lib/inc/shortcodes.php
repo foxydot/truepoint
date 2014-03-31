@@ -60,7 +60,8 @@ function msdlab_mailto_function($atts, $content){
     }
     $email = antispambot($email);
     $content = antispambot($content);
-    return '<a href="mailto:'.$email.'?'.$querystring.'">'.$content.'</a>';
+    $querystring = $querystring!=''?'?'.$querystring:'';
+    return '<a href="mailto:'.$email.$querystring.'">'.$content.'</a>';
 }
 add_shortcode('columns','column_shortcode');
 
