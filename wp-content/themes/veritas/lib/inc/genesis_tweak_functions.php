@@ -22,7 +22,8 @@
  function msdlab_add_open_graph_meta(){
      $ret = '';
      if(is_cpt('post') && is_single()){
-         global $post;
+         global $post, $wpseo;
+         remove_action('wpseo_opengraph',array($GLOBALS['wpseo_og'],'image'),30);
          if(wpseo_get_value( 'opengraph-image' )){ //yoast defined
             $attachment_id = get_attachment_id_from_src(wpseo_get_value( 'opengraph-image' ));
          } elseif(has_post_thumbnail($post->ID)){ //featured image
