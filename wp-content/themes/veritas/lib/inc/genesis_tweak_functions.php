@@ -1,19 +1,62 @@
 <?php
 /*** HEADER ***/
+
 /**
- * Add pre-header with social and search
+ * Add various size icons for touch devices
  */
-function msdlab_add_apple_touch_icons(){
+ function msdlab_add_apple_touch_icons(){
     $ret = '
-    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon.png" rel="apple-touch-icon" />
-    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
-    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
-    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
-    <link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon.png" rel="apple-touch-icon" />
+<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+<link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
     ';
     print $ret;
 }
+
+/**
+ * Add open graph data, if it's not already being added by another plugin.
+ */
+ function msdlab_add_open_graph_meta(){
+     $ret = '';
+     if(is_cpt('post') && is_single()){
+         global $post;
+         if(wpseo_get_value( 'opengraph-image' )){ //yoast defined
+            $attachment_id = get_attachment_id_from_src(wpseo_get_value( 'opengraph-image' ));
+         } elseif(has_post_thumbnail($post->ID)){ //featured image
+             $attachment_id = get_post_thumbnail_id($post->ID);
+         } else {
+            $args = array(
+                'post_type' => 'team_member',
+                'meta_key'  => '_team_member__team_user_id',
+                'meta_value'=> get_the_author_meta('ID')
+            );
+            $author_bio = array_pop(get_posts($args));
+            if($author_bio){
+                $attachment_id = get_post_thumbnail_id($author_bio->ID);
+            } else {
+                $attachment_id = get_option('msdsocial_default_avatar');
+            }
+         }
+         if($attachment_id){
+             $sizes = array('facebook','linkedin');
+             foreach($sizes AS $size){
+                 $image = wp_get_attachment_image_src($attachment_id,$size);
+                 $ret .= '
+<meta property="og:image" content="'.$image[0].'" /> <!-- '.$image[1].'x'.$image[2].' Image for '.$size.' -->
+<meta property="og:image:width" content="'.$image[1].'" />
+<meta property="og:image:height" content="'.$image[2].'" />';
+             }
+         }
+     }
+     print $ret;
+ }
+
+/**
+ * Add pre-header with social and search
+ */
 function msdlab_pre_header(){
     print '<div class="pre-header">
         <div class="wrap">';
