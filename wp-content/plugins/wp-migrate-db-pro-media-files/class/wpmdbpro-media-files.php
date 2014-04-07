@@ -27,6 +27,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 	function get_local_attachments() {
 		global $wpdb;
 		$prefix = $wpdb->prefix;
+		$temp_prefix = stripslashes( $_POST['temp_prefix'] );
 
 		/*
 		* We determine which media files need migrating BEFORE the database migration is finalized.
@@ -39,8 +40,6 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 			( true == $this->responding_to_get_remote_media_listing && $_POST['intent'] == 'push' ) ||
 			( false == $this->responding_to_get_remote_media_listing && $_POST['intent'] == 'pull' )
 		) {
-
-			$temp_prefix = stripslashes( $_POST['temp_prefix'] );
 
 			$local_tables = array_flip( $this->get_tables() );
 
@@ -222,8 +221,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 	function process_push_request() {
 		$files_to_migrate = $_POST['file_chunk'];
 
-		$upload_dir = wp_upload_dir();
-		$upload_dir = trailingslashit( $upload_dir['basedir'] );
+		$upload_dir = $this->uploads_dir();
 
 		$body = '';
 		foreach( $files_to_migrate as $file_to_migrate ) {
@@ -269,8 +267,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 			exit;
 		}
 
-		$upload_dir = wp_upload_dir();
-		$upload_dir = trailingslashit( $upload_dir['basedir'] );
+		$upload_dir = $this->uploads_dir();
 
 		$files = $this->diverse_array( $_FILES['media'] );
 		$file_paths = unserialize( $filtered_post['files'] );
@@ -393,6 +390,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 		// remove local media if it doesn't exist on the remote site
 		$temp_local_media = array_keys( $local_media );
 		$allowed_mime_types = array_flip( get_allowed_mime_types() );
+		$upload_dir = $this->uploads_dir();
 		foreach( $temp_local_media as $local_media_file ) {
 			// don't remove folders
 			if( false === is_file( $upload_dir . $local_media_file ) ) continue;
