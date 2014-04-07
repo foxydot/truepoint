@@ -255,7 +255,7 @@ function msdlab_post_author_bio($atts){
     return apply_filters( 'genesis_post_author_link_shortcode', $output, $atts );
 }
 
-function msdlab_author_image(){
+function msdlab_author_image($return = FALSE){
     global $post;
     if(!is_cpt('post')) return FALSE;
     $args = array(
@@ -279,7 +279,9 @@ function msdlab_author_image(){
             $attachment_id = get_option('msdsocial_default_avatar');
             $thumb = wp_get_attachment_image( $attachment_id, $size, 0, $attr );
         }
-        
+        if($return){
+            return $thumb;
+        }
         print $thumb;
 }
 
