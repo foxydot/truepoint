@@ -42,7 +42,7 @@
             }
          }
          if($attachment_id){
-             $sizes = array('facebook','linkedin');
+             $sizes = array('linkedin','facebook');
              foreach($sizes AS $size){
                  $image = wp_get_attachment_image_src($attachment_id,$size);
                  $ret .= '
