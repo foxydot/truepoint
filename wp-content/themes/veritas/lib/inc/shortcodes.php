@@ -81,10 +81,14 @@ function msdlab_recent_viewpoints_by_category($atts){
     extract( shortcode_atts( array(
     'category' => FALSE,
     'cat' => FALSE,
-    'title' => 'Latest Truepoint Viewpoints',
+    'title' => '',
     ), $atts ) );
     if($category || $cat){
         $category = $cat?$cat:$category;
+    }
+    if($title == ''){
+        $category_info = get_category_by_slug($category);
+        $title = 'Truepoint Viewpoints on '.$category_info->name;
     }
     $args = array(
             'post_type' => 'post',
@@ -104,7 +108,7 @@ function msdlab_recent_viewpoints_by_category($atts){
                 <h2 class="entry-title" itemprop="headline">
                     <a href="'.get_permalink().'" title="'.get_the_title().'" rel="bookmark">'.get_the_title().'</a>
                 </h2> 
-                <p class="entry-meta">Contributed by '.msdlab_post_author_bio().'
+                <p class="entry-meta">By '.msdlab_post_author_bio().'
                     <br>
                     <time class="entry-time" itemprop="datePublished" datetime="'.get_the_time('c').'">'.get_the_date().'</time>
                </p>
