@@ -170,6 +170,44 @@ function msdlab_do_title_area(){
 /**
  * Customize Breadcrumb output
  */
+ /**
+ * Display Breadcrumbs above the Loop. Concedes priority to popular breadcrumb
+ * plugins.
+ *
+ * @since 0.1.6
+ *
+ * @return null Return null if a popular breadcrumb plugin is active
+ */
+function msdlab_do_breadcrumbs() {
+
+    if (
+        ( ( 'posts' === get_option( 'show_on_front' ) && is_home() ) && ! genesis_get_option( 'breadcrumb_home' ) ) ||
+        ( ( 'page' === get_option( 'show_on_front' ) && is_front_page() ) && ! genesis_get_option( 'breadcrumb_front_page' ) ) ||
+        ( ( 'page' === get_option( 'show_on_front' ) && is_home() ) && ! genesis_get_option( 'breadcrumb_posts_page' ) ) ||
+        ( is_single() && ! genesis_get_option( 'breadcrumb_single' ) ) ||
+        ( is_page() && ! genesis_get_option( 'breadcrumb_page' ) ) ||
+        ( ( is_archive() || is_search() ) && ! genesis_get_option( 'breadcrumb_archive' ) ) ||
+        ( is_404() && ! genesis_get_option( 'breadcrumb_404' ) ) ||
+        ( is_attachment() && ! genesis_get_option( 'breadcrumb_attachment' ) )
+    )
+        return;
+
+    if ( function_exists( 'bcn_display' ) ) {
+        echo '<div class="breadcrumb" itemprop="breadcrumb">';
+        bcn_display();
+        echo '</div>';
+    }
+    elseif ( function_exists( 'breadcrumbs' ) ) {
+        breadcrumbs();
+    }
+    elseif ( function_exists( 'crumbs' ) ) {
+        crumbs();
+    }
+    else {
+        genesis_breadcrumb();
+    }
+
+}
 
 function msdlab_breadcrumb_args($args) {
     $args['labels']['prefix'] = ''; //marks the spot
