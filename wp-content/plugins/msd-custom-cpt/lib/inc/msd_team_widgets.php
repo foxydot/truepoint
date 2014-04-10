@@ -14,6 +14,7 @@ class MSD_Widget_Team_Viewpoints extends WP_Widget {
         $team_member_id = $team_member->ID;
         $contact_info->the_meta($team_member_id);
         $team_member_author_id = $contact_info->get_the_value('_team_user_id');
+        if($team_member_author_id){
         extract($args);
         $query_args = array(
         'post_type' => 'post',
@@ -42,6 +43,7 @@ class MSD_Widget_Team_Viewpoints extends WP_Widget {
         
         print $url?'<a href="'.$url.'"'.$target.' class="msd-widget-text"></a>':'';
         echo $after_widget;
+        }
         }
     }
 
