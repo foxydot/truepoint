@@ -179,7 +179,6 @@ function msdlab_do_title_area(){
  * @return null Return null if a popular breadcrumb plugin is active
  */
 function msdlab_do_breadcrumbs() {
-
     if (
         ( ( 'posts' === get_option( 'show_on_front' ) && is_home() ) && ! genesis_get_option( 'breadcrumb_home' ) ) ||
         ( ( 'page' === get_option( 'show_on_front' ) && is_front_page() ) && ! genesis_get_option( 'breadcrumb_front_page' ) ) ||
