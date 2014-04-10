@@ -32,7 +32,7 @@
             $args = array(
                 'post_type' => 'team_member',
                 'meta_key'  => '_team_member__team_user_id',
-                'meta_value'=> get_the_author_meta('ID')
+                'meta_value'=> $post->post_author,
             );
             $author_bio = array_pop(get_posts($args));
             if($author_bio){
