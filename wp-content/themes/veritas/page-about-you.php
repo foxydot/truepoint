@@ -77,5 +77,5 @@ function msdlab_do_post_tabs() {
 add_action('genesis_after_loop','msdlab_do_post_tabs');
 
 
-remove_action('genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs'); //to outside of the loop area
+remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 genesis();
