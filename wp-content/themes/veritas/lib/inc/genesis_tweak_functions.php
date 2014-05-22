@@ -372,7 +372,9 @@ function msdlab_add_page_content_to_archive(){
                 $page_query->the_post();
                 
                 print '<h1 class="entry-title" itemprop="headline">'.get_the_title().'</h1>';
-                print '<header class="index-header">'.apply_filters('the_content',get_the_content()).'</header>';
+                print '<header class="index-header">';
+                the_content();
+                print '</header>';
             }
         }
         
