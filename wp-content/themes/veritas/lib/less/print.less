@@ -1,0 +1,44 @@
+@media print {
+  a[href]:after {
+    content: none;
+  }
+  header.site-header{
+    border-bottom: 1px solid @ltgrey;
+    .title-area{
+      text-align: center;
+      margin: 0 auto;
+      float: none;
+      .site-title{
+        a{
+          text-indent: 0;
+          background: none;
+          font-size: 0.1px;
+          color: @white;
+        }
+        a:after{
+          content: url("../img/logo.svg");
+          width: 100%;
+          height: 100px;
+          overflow: visible;
+        }
+      }
+    }
+    aside{
+      display: none;
+    }
+  }
+  nav.nav-primary, #hp-top {
+    display: none !important;
+  }
+  #homepage-widgets{
+    .widget{
+      width: 100%;
+      float: none;
+    }
+  }
+  body:not(.home){
+    .widget-area,.about-you-widget-area{
+      display: none;
+    }
+  }
+}
