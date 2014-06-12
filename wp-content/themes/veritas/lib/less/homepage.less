@@ -165,6 +165,13 @@
 
 /* Smaller screens */
 
+@media only screen and (max-width: 1080px) {
+  #homepage-widgets{
+    div.row{
+      margin: 0;
+    }
+  }
+}
 @media only screen and (max-width: 1023px) {
   /* Enter Your Custom Styles Here */ 
   #hp-top{
@@ -200,14 +207,7 @@
 @media only screen and (max-width : 479px) {  
   /* Enter Your Custom Styles Here */ 
   #hp-top{
-    min-height: 100px;
-    margin-top: 0;
-    .wrap{
-    min-height: 100px;
-    .carousel .item {
-      height: 100px;
-    }
-  }
+    display: none;
   }
 } 
 
