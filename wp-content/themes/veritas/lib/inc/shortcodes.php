@@ -118,7 +118,7 @@ function msdlab_recent_viewpoints_by_category($atts){
                     <a href="'.get_permalink().'" title="Permalink" rel="bookmark">Read More&nbsp;&gt;</a>
                 </p>
            </div>
-           <footer class="entry-footer"></footer>
+           <footer class="entry-footer clearfix"></footer>
         </section>';
         }
         $ret = '<div class="recent-viewpoints"><h3 class="col-md-12">'.$title.'</h3><div class="row">'.$ret.'</div></div>';
