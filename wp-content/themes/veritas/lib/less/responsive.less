@@ -401,9 +401,19 @@ img {
             width: 100%;
             padding: 0.5em;
             border-bottom: 1px solid @ltgrey;
+            .toggle-switch{
+              right: 15px;
+              i{
+              }
+            }
           }
           a:hover{
             background: @medgrey;
+          }
+          .toggle-switch{
+            margin-right: 12px;
+            i{
+            }
           }
           ul.sub-menu {
             margin-top: 0;
@@ -432,6 +442,11 @@ img {
             }
           }
         }
+        li.current-menu-item{
+          a{
+          background: lighten(@blue, 15%);
+          }
+        }
       }
     }
     a#pull:hover {
@@ -442,7 +457,7 @@ img {
   .nav-responsive a#pull:after {
     content:"\f03A";
     font-family: 'FontAwesome';
-    font-size: 2rem;
+    font-size: 2.8rem;
     text-indent: 0;
     color: @blue;
     text-align: center;

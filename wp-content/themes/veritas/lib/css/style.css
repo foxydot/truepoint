@@ -8109,8 +8109,14 @@ img {
     padding: 0.5em;
     border-bottom: 1px solid #dadfe1;
   }
+  .nav-responsive a#pull ul#mobile_menu li a .toggle-switch {
+    right: 15px;
+  }
   .nav-responsive a#pull ul#mobile_menu li a:hover {
     background: #7d868d;
+  }
+  .nav-responsive a#pull ul#mobile_menu li .toggle-switch {
+    margin-right: 12px;
   }
   .nav-responsive a#pull ul#mobile_menu li ul.sub-menu {
     margin-top: 0;
@@ -8137,13 +8143,16 @@ img {
   .nav-responsive a#pull ul#mobile_menu li ul.sub-menu li ul li ul li a {
     text-indent: 80px;
   }
+  .nav-responsive a#pull ul#mobile_menu li.current-menu-item a {
+    background: #2b33a6;
+  }
   .nav-responsive a#pull:hover {
     text-decoration: none;
   }
   .nav-responsive a#pull:after {
     content: "\f03A";
     font-family: 'FontAwesome';
-    font-size: 2rem;
+    font-size: 2.8rem;
     text-indent: 0;
     color: #1b2069;
     text-align: center;
