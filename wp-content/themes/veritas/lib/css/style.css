@@ -7212,10 +7212,12 @@ Site Footer
 .breadcrumb span {
   color: #7d868d;
 }
-main.content .entry-content a {
+main.content .entry-content a,
+main.content .index-header a {
   color: #de641f;
 }
-main.content .entry-content a:hover {
+main.content .entry-content a:hover,
+main.content .index-header a:hover {
   color: #de641f;
 }
 .bwWrapper {
