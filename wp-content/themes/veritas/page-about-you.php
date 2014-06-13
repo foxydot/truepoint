@@ -12,17 +12,25 @@ function msdlab_do_post_tabs() {
     while($aboutyou_metabox->have_fields('tabs')):
         $attachment_id = get_attachment_id_from_src($aboutyou_metabox->get_the_value('image'));
         $image = wp_get_attachment_image_src( $attachment_id, 'tab' );
+        if($i==0){$buttontext = wp_strip_all_tags($aboutyou_metabox->get_the_value('title'));}
         $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" id="tab-'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" data-toggle="tab" data-option-value=".'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" onclick="_gaq.push([\'_trackEvent\',\'tab\',\'click\',\''.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'\',1]);"><img class="img-circle grayscale" src="'.$image[0].'" /><img class="img-circle logo-mark" src="'.get_stylesheet_directory_uri().'/lib/img/logo_mark.svg" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
         $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><h3 class="content-title">'.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'</h3>'.apply_filters('the_content',$aboutyou_metabox->get_the_value('content')).'</div>';
         $i++;
     endwhile; //end loop
     print '<div class="about-you-tabs">
+            <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle mobile-only" data-toggle="dropdown"><strong>'.$buttontext.'</strong>
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+            </button>
     ';
     print '<!-- Nav tabs -->
-        <ul class="nav nav-tabs tabs-'.count($nav_tabs).'">
+        <ul class="nav nav-tabs tabs-'.count($nav_tabs).'" role="menu">
         '.implode("\n", $nav_tabs).'
         </ul>
         ';
+    print '</div>
+    ';
     print '<!-- Tab panes -->
         <div class="tab-content">
         '.implode("\n", $tab_content).'
@@ -56,7 +64,9 @@ function msdlab_do_post_tabs() {
        
         var hash = window.location.hash.replace('tab-', '');
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-        var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
+        if($('.nav-tabs').length > 0){
+            var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
+        }
         console.log(filter);
         $('.about-you-widget-area .widget').show();  
         $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
@@ -75,7 +85,18 @@ function msdlab_do_post_tabs() {
     <?php
 }
 add_action('genesis_after_loop','msdlab_do_post_tabs');
-
+function msdlab_landingpage_tabs_js(){
+    print "
+    <script>
+jQuery(document).ready(function($) {
+    $('.dropdown-menu li').click(function(){
+        $(this).siblings().removeClass('active');
+        $(this).parents('.btn-group').find('.btn.first-child strong').html($(this).find('h4.tab-title').html().replace( /<.*?>/g, '' ));
+    })
+});
+</script>";
+}
+add_action('wp_footer','msdlab_landingpage_tabs_js');
 
 remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 genesis();

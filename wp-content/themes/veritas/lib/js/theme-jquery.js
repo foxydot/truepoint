@@ -83,7 +83,21 @@ jQuery(document).ready(function($) {
             return '_blank';
         }
     });
+    tabToDropdown($('div.about-you-tabs'));
+    $(window).resize(function(){
+        tabToDropdown($('div.about-you-tabs'));
+    });
 });
+
+function tabToDropdown(parent){
+    var w = jQuery( window ).width();
+    var ele = parent.find('ul.nav');
+    if(w>800){
+        ele.removeClass('dropdown-menu').addClass('nav-tabs');
+    } else {
+        ele.addClass('dropdown-menu').removeClass('nav-tabs');
+    }
+}
 
 function strripos(haystack, needle, offset) {
   //  discuss at: http://phpjs.org/functions/strripos/

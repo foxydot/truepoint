@@ -7222,6 +7222,9 @@ main.content .entry-content a:hover {
   position: relative;
   display: block;
 }
+.about-you-tabs .btn-group {
+  width: 100%;
+}
 .about-you-tabs h3,
 .about-you-tabs h4 {
   font-weight: normal;
@@ -7704,7 +7707,8 @@ main.content .entry-content a:hover {
   -webkit-box-sizing: border-box;
 }
 .nav-responsive a#pull,
-.subnav-responsive a#subpull {
+.subnav-responsive a#subpull,
+.mobile-only {
   display: none;
 }
 /* Responsive Design
@@ -7972,11 +7976,26 @@ img {
   .nav-primary ul.menu-primary li.menu-item .sub-menu li.menu-item a {
     font-size: 1.4rem;
   }
-  .about-you-tabs .nav-tabs li h4.tab-title {
-    min-height: 45px;
+  .about-you-tabs .dropdown-menu li {
+    width: 100%;
+    float: none;
+    text-align: left;
+    border-top: 1px solid #dadfe1;
   }
-  .about-you-tabs .nav-tabs li img {
+  .about-you-tabs .dropdown-menu li h4.tab-title {
+    min-height: 0;
+  }
+  .about-you-tabs .dropdown-menu li h4.tab-title br {
     display: none;
+  }
+  .about-you-tabs .dropdown-menu li img {
+    display: none;
+  }
+  .about-you-tabs .dropdown-menu li a:after {
+    content: "";
+  }
+  .mobile-only {
+    display: block;
   }
 }
 @media only screen and (max-width: 767px) {
@@ -8208,31 +8227,6 @@ img {
   #sidebar,
   #sidebar-alt {
     display: none;
-  }
-}
-@media only screen and (max-width: 479px) {
-  .about-you-tabs .nav-tabs li,
-  .about-you-tabs .nav-tabs.tabs-4 li,
-  .about-you-tabs .nav-tabs.tabs-6 li {
-    width: 100%;
-    float: none;
-    text-align: left;
-    border-top: 1px solid #dadfe1;
-  }
-  .about-you-tabs .nav-tabs li h4.tab-title,
-  .about-you-tabs .nav-tabs.tabs-4 li h4.tab-title,
-  .about-you-tabs .nav-tabs.tabs-6 li h4.tab-title {
-    min-height: 0;
-  }
-  .about-you-tabs .nav-tabs li h4.tab-title br,
-  .about-you-tabs .nav-tabs.tabs-4 li h4.tab-title br,
-  .about-you-tabs .nav-tabs.tabs-6 li h4.tab-title br {
-    display: none;
-  }
-  .about-you-tabs .nav-tabs li a:after,
-  .about-you-tabs .nav-tabs.tabs-4 li a:after,
-  .about-you-tabs .nav-tabs.tabs-6 li a:after {
-    content: "";
   }
 }
 @media only screen and (max-width: 320px) {
