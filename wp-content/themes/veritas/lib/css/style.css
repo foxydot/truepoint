@@ -8306,16 +8306,18 @@ img {
     margin: 0 auto;
     float: none;
   }
+  header.site-header .title-area .site-title {
+    display: none;
+  }
   header.site-header .title-area .site-title a {
     text-indent: 0;
     background: none;
     font-size: 0.1px;
     color: #ffffff;
   }
-  header.site-header .title-area .site-title a:after {
-    content: url("../img/logo.svg");
+  header.site-header .title-area .print-logo {
     width: 100%;
-    height: 100px;
+    height: 60px;
     overflow: visible;
   }
   header.site-header aside {
