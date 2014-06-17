@@ -253,7 +253,7 @@ function sp_post_info_filter($post_info) {
     return $post_info;
 }
 
-function msdlab_post_author_bio($atts){
+function msdlab_post_author_bio($atts = array()){
     $defaults = array(
         'after'    => '',
         'before'   => '',
