@@ -27,6 +27,8 @@ class MSDVideoCPT {
         add_action( 'init', array(&$this,'register_thumbnail') );
         //add_action('admin_head', array(&$this,'plugin_header'));
         
+        add_action('widgets_init',array('MSD_Widget_Video_Remix','init'),10);
+        
         add_action('admin_print_scripts', array(&$this,'add_admin_scripts') );
         add_action('admin_print_styles', array(&$this,'add_admin_styles') );
         
@@ -184,6 +186,27 @@ class MSDVideoCPT {
             return get_posts($args);
         }
 
+
+        function get_random_video($tags){
+            $args = array( 
+                'post_type' => 'msd_video', 
+                'numberposts' => 1,
+                'order' => 'ASC',
+                'orderby' => 'rand',
+            );
+            if(count($tags)>0){
+                $args['tax_query'] =  array(
+                        array(
+                                'taxonomy' => 'msd_video_tag',
+                                'field' => 'slug',
+                                'terms' => $tags
+                        )
+                );
+            }
+            $array_of_video = get_posts($args);
+            return $array_of_video[0];
+        }
+
         function get_video_items_for_team_member($team_id){
             global $video;
             $args = array( 
@@ -203,7 +226,7 @@ class MSDVideoCPT {
             $i=0;
             foreach($the_videos AS $vid){
                 $video->the_meta($vid->ID);
-                $the_videos[$i]->youtube_url = $video->get_the_value('youtube');
+                $the_videos[$i]->video_url = $video->get_the_value('video_url');
                 $i++;
             }
             return($the_videos);
@@ -212,13 +235,13 @@ class MSDVideoCPT {
         function get_video_grid_image($item){
             global $video,$post;
             $video->the_meta($item->ID);
-            $youtube = $video->get_the_value('youtube');
-            if($youtube!=''){
+            $video_url = $video->get_the_value('video_url');
+            if($video_url!=''){
                 if (class_exists('MultiPostThumbnails') && $post_thumbnail_id = MultiPostThumbnails::get_post_thumbnail_id('msd_video', 'grid-image',$item->ID)) {
                     $featured_image = wp_get_attachment_image_src( $post_thumbnail_id, 'video', false, $attr );
                     $featured_image = $featured_image[0];
                 } else {
-                    preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$youtube,$matches);
+                    preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches);
                     $videoid = $matches[2];
                     $featured_image = 'http://img.youtube.com/vi/'.$videoid.'/0.jpg';
                 }
@@ -237,11 +260,11 @@ class MSDVideoCPT {
         function get_video_content($item){
             global $video,$post;
             $video->the_meta($item->ID);
-            $youtube = $video->get_the_value('youtube');
-            if($youtube!=''){
-                $youtube = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $youtube);
-                $norelated = strrpos($youtube,'?')>1?'&rel=0':'?rel=0';
-                $content = $youtube.$norelated;
+            $video_url = $video->get_the_value('video_url');
+            if($video_url!=''){
+                $video_url = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $video_url);
+                $norelated = strrpos($video_url,'?')>1?'&rel=0':'?rel=0';
+                $content = $video_url.$norelated;
                 if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
             } else {
                 $large_image = wp_get_attachment_image_src( get_post_thumbnail_id($item->ID),'large' );
@@ -291,7 +314,7 @@ class MSDVideoCPT {
             $i = 1;
             foreach($items AS $item){
                 $video->the_meta($item->ID);
-                $youtube = $video->get_the_value('youtube');
+                $video_url = $video->get_the_value('video_url');
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
         
@@ -337,7 +360,7 @@ class MSDVideoCPT {
             $i = 1;
             foreach($items AS $item){
                 $video->the_meta($item->ID);
-                $youtube = $video->get_the_value('youtube');
+                $video_url = $video->get_the_value('video_url');
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
                 
@@ -380,7 +403,7 @@ class MSDVideoCPT {
             foreach($items AS $item){
                 $active = $i==1?' active':'';
                 $video->the_meta($item->ID);
-                $youtube = $video->get_the_value('youtube');
+                $video_url = $video->get_the_value('video_url');
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
                 $j = 0;
@@ -421,7 +444,7 @@ class MSDVideoCPT {
             foreach($items AS $item){
                 $active = $i==1?' active':'';
                 $video->the_meta($item->ID);
-                $youtube = $video->get_the_value('youtube');
+                $video_url = $video->get_the_value('video_url');
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);             
                 $menu .= '<li class="tab-'.$item->post_name.'" title="'.$item->post_title.'" style="background:url('.$featured_image.') no-repeat center center;background-size:cover;"><a href="#'.$ID.'" title="'.$item->post_name.'" data-toggle="modal">'.$item->post_title.'</a></li>'."\n";
@@ -485,7 +508,7 @@ class MSDVideoCPT {
             $i = 1;
             foreach($items AS $item){
                 $video->the_meta($item->ID);
-                $youtube = $video->get_the_value('youtube');
+                $video_url = $video->get_the_value('video_url');
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
         
@@ -526,3 +549,44 @@ function change_default_title( $title ){
     }
 }
 $video_cpt = new MSDVideoCPT();
+
+class MSD_Widget_Video_Remix extends WP_Widget {
+    function __construct() {
+        $widget_ops = array('classname' => 'widget_video_remix', 'description' => __('Selects and displays random video on page load.'));
+        parent::__construct('video_remix', __('Video Remix'), $widget_ops, $control_ops);
+    }
+    function widget( $args, $instance ) {
+        global $video;
+        $video_cpt = new MSDVideoCPT();
+        extract($args);
+        echo $before_widget; 
+        $post = $video_cpt->get_random_video($instace['tags']);
+        $video->the_meta($post->ID);
+        $video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
+        $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
+        print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
+        print '<div class="wrap">
+        <br />
+        <iframe src="'.$video_url.'" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <div class="clearfix"><br /></div>
+        </div>';
+        echo $after_widget;
+    }
+    function update( $new_instance, $old_instance ) {
+        $instance = $old_instance;
+        $instance['tags'] = $new_instance['tags'];
+        return $instance;
+    }
+    function form( $instance ) {
+        $instance = wp_parse_args( (array) $instance, array( 'tags' => '' ) );
+        $ret = '<p><label for="'.$this->get_field_id('tags').'">'._e('Tags').'</label>
+        <input class="widefat" id="'.$this->get_field_id('tags').'" name="'.$this->get_field_id('tags').'" type="text" value="'.esc_attr($instance['tags']).'" />
+        </p>';
+        print $ret;
+    }
+    function init() {
+        if ( !is_blog_installed() )
+            return;
+        register_widget('MSD_Widget_Video_Remix');
+    }  
+}
