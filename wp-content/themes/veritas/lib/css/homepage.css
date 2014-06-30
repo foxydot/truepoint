@@ -124,6 +124,7 @@
 }
 #homepage-widgets .wrap section.widget .widget-wrap {
   background: 0;
+  padding: 1rem 0;
 }
 #homepage-widgets .wrap section.widget .widget-wrap h4.widget-title {
   background: 0;
