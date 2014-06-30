@@ -6752,6 +6752,9 @@ Content Area
 main a {
   color: #de641f;
 }
+main a.entry-author-link {
+  color: #1b2069 !important;
+}
 article.entry {
   padding: 24px 15px 24px;
   padding: 0;
