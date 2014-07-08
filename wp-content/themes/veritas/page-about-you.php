@@ -67,7 +67,16 @@ function msdlab_do_post_tabs() {
         if($('.nav-tabs').length > 0){
             var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
         }
-        console.log(filter);
+        
+        
+        $('ul.dropdown-menu li').removeClass(function(){
+            if($(this).find('a').attr('href')==hash){
+               $(this).parents('.btn-group').find('.btn.first-child strong').html($(this).find('h4.tab-title').html().replace( /<.*?>/g, '' ));
+                return false;
+            } else {
+                return 'active';
+            }
+        }); 
         $('.about-you-widget-area .widget').show();  
         $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
         jQuery('.nav-tabs li').on('show.bs.tab',function(e){
