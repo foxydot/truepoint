@@ -13,7 +13,7 @@ function msdlab_do_post_tabs() {
         $attachment_id = get_attachment_id_from_src($aboutyou_metabox->get_the_value('image'));
         $image = wp_get_attachment_image_src( $attachment_id, 'tab' );
         if($i==0){$buttontext = wp_strip_all_tags($aboutyou_metabox->get_the_value('title'));}
-        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" id="tab-'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" data-toggle="tab" data-option-value=".'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" onclick="_gaq.push([\'_trackEvent\',\'tab\',\'click\',\''.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'\',1]);"><img class="img-circle grayscale" src="'.$image[0].'" /><img class="img-circle logo-mark" src="'.get_stylesheet_directory_uri().'/lib/img/logo_mark.svg" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
+        $nav_tabs[$i] = '<li'.($i==0?' class="active"':'').'><a href="#'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" id="tab-'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'" data-toggle="tab" data-option-value=".'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><img class="img-circle grayscale" src="'.$image[0].'" /><img class="img-circle logo-mark" src="'.get_stylesheet_directory_uri().'/lib/img/logo_mark.svg" /><h4 class="tab-title">'.$aboutyou_metabox->get_the_value('title').'</h4></a></li>';       
         $tab_content[$i] = '<div class="tab-pane fade'.($i==0?' in active':'').'" id="'.sanitize_title(wp_strip_all_tags($aboutyou_metabox->get_the_value('title'))).'"><h3 class="content-title">'.wp_strip_all_tags($aboutyou_metabox->get_the_value('title')).'</h3>'.apply_filters('the_content',$aboutyou_metabox->get_the_value('content')).'</div>';
         $i++;
     endwhile; //end loop
@@ -66,6 +66,7 @@ function msdlab_do_post_tabs() {
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         if($('.nav-tabs').length > 0){
             var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
+            ga('send', 'event', 'AboutYouNav', 'Nav', 'Tab: '+filter);
         }
         
         
@@ -84,7 +85,8 @@ function msdlab_do_post_tabs() {
             grayscale.reset(jQuery(e.target).find('.grayscale'));
             grayscale(jQuery(e.relatedTarget).find('.grayscale'));
             var filter = $(e.target).attr('href').replace('#','');  
-            console.log(filter);
+            ga('send', 'event', 'AboutYouTabs', 'Click', 'Tab: '+filter);
+            //console.log(filter);
             $('.about-you-widget-area .widget').show();  
             $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
         });
