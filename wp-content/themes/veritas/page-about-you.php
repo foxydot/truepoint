@@ -61,8 +61,8 @@ function msdlab_do_post_tabs() {
         jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseleave(function(){
             grayscale($(this));
         });*/
-       
-        var hash = window.location.hash.replace('tab-', '');
+       //alert(location.hash);
+        var hash = location.hash.replace('tab-', '');
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         if($('.nav-tabs').length > 0){
             var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
