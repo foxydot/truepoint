@@ -53,7 +53,6 @@ function msdlab_do_post_tabs() {
         graytabs();
     });
     jQuery(document).ready(function($) {
-        
         //tab greys
         /*jQuery('.nav-tabs li .grayscale').not('.nav-tabs li.active .grayscale').mouseenter(function(){
             grayscale.reset($(this));
@@ -62,7 +61,13 @@ function msdlab_do_post_tabs() {
             grayscale($(this));
         });*/
        //alert(location.hash);
-        var hash = location.hash.replace('tab-', '');
+       var browsers = "<?php print implode(' ', browser_body_class(array())); ?>";
+       if(browsers.indexOf('safari')>-1){
+           var hash = location.hash.replace('tab-', '');
+       } else {
+           var hash = window.location.hash.replace('tab-', '');
+       }
+       
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
         if($('.nav-tabs').length > 0){
             var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
@@ -80,15 +85,21 @@ function msdlab_do_post_tabs() {
         }); 
         $('.about-you-widget-area .widget').show();  
         $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
-        jQuery('.nav-tabs li').on('show.bs.tab',function(e){
+        $('.nav-tabs li').on('show.bs.tab',function(e){
             console.log(e.target);
-            grayscale.reset(jQuery(e.target).find('.grayscale'));
-            grayscale(jQuery(e.relatedTarget).find('.grayscale'));
+            grayscale.reset($(e.target).find('.grayscale'));
+            grayscale($(e.relatedTarget).find('.grayscale'));
             var filter = $(e.target).attr('href').replace('#','');  
             ga('send', 'event', 'AboutYouTabs', 'Click', 'Tab: '+filter);
             //console.log(filter);
             $('.about-you-widget-area .widget').show();  
             $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
+        });
+        
+        $('li.about-you li a').click(function(){
+            var hashes = $(this).attr('href').split('#tab-');
+            var hash = '#'+hashes[1];
+            $('ul.nav a[href="' + hash + '"]').tab('show');
         });
         
     });

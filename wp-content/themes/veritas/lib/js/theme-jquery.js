@@ -60,10 +60,10 @@ jQuery(document).ready(function($) {
        }
     });
     
-    $('.event.menu-item>a').click(function(){
+    /*$('.event.menu-item>a').click(function(){
         var eventTitle = $(this).html();
         _gaq.push(['_trackEvent','tab','click',eventTitle,1]);
-    });
+    });*/
     
     // add target="_blank" to all *external* 
     var internal_urls = Array('truepoint.oc','72.52.131.35','truepointwealth.com','truepointinc.com','truepoint.msdlab.com');
