@@ -100,6 +100,14 @@ function msdlab_do_post_tabs() {
             var hashes = $(this).attr('href').split('#tab-');
             var hash = '#'+hashes[1];
             $('ul.nav a[href="' + hash + '"]').tab('show');
+            $('ul.dropdown-menu li').removeClass(function(){
+            if($(this).find('a').attr('href')==hash){
+               $(this).parents('.btn-group').find('.btn.first-child strong').html($(this).find('h4.tab-title').html().replace( /<.*?>/g, '' ));
+                return false;
+            } else {
+                return 'active';
+            }
+        }); 
         });
         
     });
