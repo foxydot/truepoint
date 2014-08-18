@@ -64,9 +64,7 @@ article.entry {
   margin-left: 4rem;
 }
 
-.entry-content ol li {
-  list-style-type: decimal;
-}
+
 
 .entry-content ul li {
   list-style-type: disc;
@@ -78,17 +76,39 @@ article.entry {
 }
 
 .entry-content{
-  ol,ul{
+  ul{
+    overflow: hidden;
+    zoom: 1;
     list-style: none outside none;
     li{
       list-style: none outside none;
       margin-bottom: 1rem;
       text-indent: -1em;
+      padding-left: 1em;
     }
     li:before {
        content: "•";
        color: @orange; 
        margin-right: 0.5em;
+    }
+  }
+  ol{
+    overflow: hidden;
+    zoom: 1;
+    list-style: none outside none;
+    list-style-type: decimal !ie;
+    counter-reset: li-counter;
+    li{
+      margin-bottom: 1rem;
+      text-indent: -1em;
+      padding-left: 1em;
+    }
+    li:before{
+      content: counter(li-counter);
+      counter-increment: li-counter;
+       color: @orange; 
+       margin-right: 0.5em;
+       font-weight: 600;
     }
   }
 }
