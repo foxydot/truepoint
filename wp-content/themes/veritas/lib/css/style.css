@@ -6831,15 +6831,14 @@ article.entry {
 }
 .entry-content ol li {
   margin-bottom: 1rem;
-  text-indent: -1em;
-  padding-left: 1em;
+  text-indent: -1.2em;
+  padding-left: 1.2em;
 }
 .entry-content ol li:before {
-  content: counter(li-counter);
+  content: counter(li-counter) '.';
   counter-increment: li-counter;
   color: #de641f;
   margin-right: 0.5em;
-  font-weight: 600;
 }
 .entry-content .search-form {
   width: 50%;
