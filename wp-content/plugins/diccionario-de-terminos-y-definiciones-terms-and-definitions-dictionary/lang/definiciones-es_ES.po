@@ -1,0 +1,449 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Definiciones 1.0\n"
+"POT-Creation-Date: 2012-12-21 10:33+0100\n"
+"PO-Revision-Date: 2012-12-21 10:34+0100\n"
+"Last-Translator: Juan Viñas <juan@codigonexo.com>\n"
+"Language-Team: Codigonexo <juan@codigonexo.com>\n"
+"Language: Español\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e;_x\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../definiciones.php:65
+msgid "Definitions"
+msgstr "Definiciones"
+
+#: ../definiciones.php:66
+msgid "Definition"
+msgstr "Definición"
+
+#: ../definiciones.php:67
+msgid "Add New"
+msgstr "Añadir Nueva"
+
+#: ../definiciones.php:68
+msgid "Add New Definition"
+msgstr "Añadir Nueva Definición"
+
+#: ../definiciones.php:69
+msgid "Edit Definition"
+msgstr "Editar Definición"
+
+#: ../definiciones.php:70
+msgid "New Definition"
+msgstr "Nueva Definición"
+
+#: ../definiciones.php:71
+msgid "View Definition"
+msgstr "Ver Definición"
+
+#: ../definiciones.php:72
+msgid "Search Definition"
+msgstr "Buscar Definición"
+
+#: ../definiciones.php:73
+msgid "No definitions found"
+msgstr "No se encontraron definiciones"
+
+#: ../definiciones.php:74
+msgid "No definitions found in trash"
+msgstr "No se encontraron definiciones en la papelera"
+
+#: ../definiciones.php:94
+msgid "definiciones"
+msgstr "definiciones"
+
+#: ../definiciones.php:102
+msgid "Families"
+msgstr "Familias"
+
+#: ../definiciones.php:103
+msgid "Family"
+msgstr "Familia"
+
+#: ../definiciones.php:104
+msgid "Search Families"
+msgstr "Buscar Familias"
+
+#: ../definiciones.php:105
+msgid "Popular Families"
+msgstr "Familias Populares"
+
+#: ../definiciones.php:106
+msgid "All Families"
+msgstr "Todas las Familias"
+
+#: ../definiciones.php:107
+msgid "Parent Family"
+msgstr "Familia Superior"
+
+#: ../definiciones.php:108
+msgid "Parent Family:"
+msgstr "Familia Superior:"
+
+#: ../definiciones.php:109
+msgid "Edit Family"
+msgstr "Editar Familia"
+
+#: ../definiciones.php:110
+msgid "Update Family"
+msgstr "Actualizar Familia"
+
+#: ../definiciones.php:111
+msgid "Add New Family"
+msgstr "Añadir Nueva Familia"
+
+#: ../definiciones.php:112
+msgid "New Family Name"
+msgstr "Nuevo nombre para la Familia"
+
+#: ../definiciones.php:113
+msgid "Separate Families with commas"
+msgstr "Separar Familias con comas"
+
+#: ../definiciones.php:114
+msgid "Add or remove Families"
+msgstr "Añadir o eliminar Familias"
+
+#: ../definiciones.php:115
+msgid "Choose from the most used Families"
+msgstr "Elegir entre las Familias más utilizadas"
+
+#: ../definiciones.php:121
+msgid "family"
+msgstr "familia"
+
+#: ../definiciones.php:275
+msgid "Dictionary > Options"
+msgstr "Diccionario > Opciones"
+
+#: ../definiciones.php:275
+msgid "Options"
+msgstr "Opciones"
+
+#: ../definiciones.php:276 ../includes/optionsform.php:330
+msgid "About"
+msgstr "Acerca de"
+
+#: ../definiciones.php:300 ../includes/widget.php:5
+msgid "Terms and Definitions Diccionary"
+msgstr "Diccionario de Términos y Definiciones"
+
+#: ../definiciones.php:305
+msgid "Options saved."
+msgstr "Opciones guardadas."
+
+#: ../definiciones.php:309
+msgid "There was a problem when saving the options."
+msgstr ""
+"Hubo un problema guardando las opciones. No se han guardado todas las "
+"opciones."
+
+#: ../includes/optionsform.php:33
+msgid "Plugin options"
+msgstr "Opciones del plugin"
+
+#: ../includes/optionsform.php:38
+msgid "Content type"
+msgstr "Tipo de Contenido"
+
+#: ../includes/optionsform.php:43
+msgid "Autodetect Terms"
+msgstr "Autodetectar Términos"
+
+#: ../includes/optionsform.php:47
+msgid "No"
+msgstr "No"
+
+#: ../includes/optionsform.php:48
+msgid "Yes"
+msgstr "Sí"
+
+#: ../includes/optionsform.php:49
+msgid "Yes, when there is no other definitions"
+msgstr "Sí, cuando no haya otras definiciones establecidas"
+
+#: ../includes/optionsform.php:55
+msgid "Term Recognition"
+msgstr "Reconocimiento del Término"
+
+#: ../includes/optionsform.php:59
+msgid "By Post Title"
+msgstr "Por Título"
+
+#: ../includes/optionsform.php:60
+msgid "By Post Slug"
+msgstr "Por Slug"
+
+#: ../includes/optionsform.php:61
+msgid "By Post ID"
+msgstr "Por ID"
+
+#: ../includes/optionsform.php:63
+msgid ""
+"You can introduce the terms into your post as: [def]Term[/def], where Term "
+"can be Definition Title, Definition Slug or Definition ID. If Title is "
+"selected, you have to take care of do not have two Definitions with the same "
+"title. If Slug is selected, you should know the slug of the Definition (you "
+"can found it editing the Definition, below the Content editor; if you could "
+"not find it, in the header of the site press the Options button and select "
+"Slug). If ID is selected, you can find the Definition ID in the URL: \"/post."
+"php?post=X\", being X the ID (always a number). Choosing Slug or ID solves "
+"the problem of having two definitions with same title, but is not "
+"recommended in order to avoid confusions."
+msgstr ""
+"Los términos a definir se introducen en el post así: [def]<Término>[/def], "
+"donde <Término> debe coincidir con el título de una definición, con su slug "
+"o con su ID. Si elige \"Por título\", tenga en cuenta que nunca debe tener "
+"dos Definiciones con el mismo título, pues habria un problema entre ambos. "
+"Si elige por Slug, debe conocer el slug de la definición introducida. Podrá "
+"encontrar esta información editando la definición, en uno de los campos (si "
+"no la ve, pulse arriba en \"Opciones de pantalla\" y marque la casilla \"Slug"
+"\"). Si elige \"Por ID\", debe saber reconocer el ID de la definición, el "
+"cual suele estar en la URL cuando está en la pantalla de edición de la "
+"misma: \"/post.php?post=X\", siendo X la ID del post (siempre es un número). "
+"Por Slug o Por ID evitan el problema de no poder repetir nombres en las "
+"definiciones (podrá tener mas de una definición con el mismo título, aunque "
+"no es recomendable para evitar confusiones)."
+
+#: ../includes/optionsform.php:67
+msgid "Type"
+msgstr "Tipo"
+
+#: ../includes/optionsform.php:71
+msgid "HTML \"title\" Attribute"
+msgstr "Atributo 'title'"
+
+#: ../includes/optionsform.php:72
+msgid "Effects Globe (jQuery)"
+msgstr "Globo con efectos (jQuery)"
+
+#: ../includes/optionsform.php:78
+msgid ""
+"<i><b>Attention:</b> if effects doesn´t work in the visitor´s browser, type "
+"will be \"HTML title Attribute\"</i>"
+msgstr ""
+"<i><b>Nota:</b> en caso de no funcionar los efectos o no ser compatible el "
+"navegador, el tipo se establecerá automáticamente en \"Atributo 'title'\"</i>"
+
+#: ../includes/optionsform.php:85
+msgid "Style & CSS"
+msgstr "Estilo y CSS"
+
+#: ../includes/optionsform.php:90
+msgid "Term text"
+msgstr "Texto del Término"
+
+#: ../includes/optionsform.php:95
+msgid "Term text color"
+msgstr "Color del texto del Término"
+
+#: ../includes/optionsform.php:99 ../includes/optionsform.php:101
+#: ../includes/optionsform.php:150 ../includes/optionsform.php:152
+#: ../includes/optionsform.php:162 ../includes/optionsform.php:164
+#: ../includes/optionsform.php:187
+msgid "Hexadecimal values (#000000) or HTML format (red, blue...)"
+msgstr "Introduzca un valor en hexadecimal (#000000) o en formato HTML/CSS"
+
+#: ../includes/optionsform.php:107
+msgid "Term text underlined"
+msgstr "Subrayado del Término"
+
+#: ../includes/optionsform.php:111 ../includes/optionsform.php:174
+msgid "Solid line"
+msgstr "Línea Sólida"
+
+#: ../includes/optionsform.php:112 ../includes/optionsform.php:175
+msgid "Dashed line"
+msgstr "Línea Discontinua"
+
+#: ../includes/optionsform.php:113 ../includes/optionsform.php:176
+msgid "Dotted line"
+msgstr "Línea de Puntos"
+
+#: ../includes/optionsform.php:114 ../includes/optionsform.php:177
+msgid "None"
+msgstr "Sin Subrayado"
+
+#: ../includes/optionsform.php:125
+msgid "Tooltip"
+msgstr "Tooltip"
+
+#: ../includes/optionsform.php:130
+msgid "Width"
+msgstr "Ancho"
+
+#: ../includes/optionsform.php:133 ../includes/optionsform.php:141
+#: ../includes/optionsform.php:198 ../includes/optionsform.php:214
+msgid "Insert the value followed of unit (px, %, em...)"
+msgstr "Introduzca el valor seguido de la unidad (px, %, em, etc.)"
+
+#: ../includes/optionsform.php:138
+msgid "Height"
+msgstr "Alto"
+
+#: ../includes/optionsform.php:146
+msgid "Tooltip Background Color"
+msgstr "Color de Fondo del Tooltip"
+
+#: ../includes/optionsform.php:158
+msgid "Tooltip Text Color"
+msgstr "Color del texto del Tooltip"
+
+#: ../includes/optionsform.php:170
+msgid "Tooltip Border Type"
+msgstr "Tipo de Borde del Tooltip"
+
+#: ../includes/optionsform.php:183
+msgid "Tooltip Border Color"
+msgstr "Color de Borde del Tooltip"
+
+#: ../includes/optionsform.php:195
+msgid "Tooltip Border Weight"
+msgstr "Ancho de Borde del Tooltip"
+
+#: ../includes/optionsform.php:203
+msgid "Tooltip Border Radius"
+msgstr "Radio del Borde del Tooltip"
+
+#: ../includes/optionsform.php:206
+msgid "Only for compatible browsers"
+msgstr "Sólo navegadores compatibles"
+
+#: ../includes/optionsform.php:211
+msgid "Space between border and text (padding)"
+msgstr "Espacio entre el borde y el texto (padding)"
+
+#: ../includes/optionsform.php:219
+msgid ""
+"Specify your own Tooltip CSS (only attributes and values).<br><b>Note</b>: "
+"If you use this, the above fields will be ignored."
+msgstr ""
+"Especificar CSS propio para el Tooltip (sólo atributos y valores)."
+"<br><b>Nota</b>: Si se usa esto, se ignorarán los campos anteriores."
+
+#: ../includes/optionsform.php:235
+msgid "Effects"
+msgstr "Efectos"
+
+#: ../includes/optionsform.php:240
+msgid "Effect Event Trigger"
+msgstr "Disparador del Efecto"
+
+#: ../includes/optionsform.php:244
+msgid "Mouse Hover to show (Mouse Out to hide)"
+msgstr "Pasar el ratón por encima (Quitarlo para ocultar)"
+
+#: ../includes/optionsform.php:245
+msgid "Clicking on Term (Click on tooltip to hide)"
+msgstr "Pulsar en el Término (Pulsar en el Tooltip para cerrar)"
+
+#: ../includes/optionsform.php:251
+msgid "Effect Type"
+msgstr "Tipo de Efecto"
+
+#: ../includes/optionsform.php:255
+msgid "Toggle"
+msgstr "Aparecer/Desaparecer (simple)"
+
+#: ../includes/optionsform.php:256
+msgid "Fade"
+msgstr "Aparecer/Desparecer (con efecto)"
+
+#: ../includes/optionsform.php:257
+msgid "Slide"
+msgstr "Deslizar"
+
+#: ../includes/optionsform.php:263
+msgid "Effect Direction"
+msgstr "Dirección del efecto \"Deslizar\""
+
+#: ../includes/optionsform.php:267
+msgid "Up"
+msgstr "Arriba"
+
+#: ../includes/optionsform.php:268
+msgid "Down"
+msgstr "Abajo"
+
+#: ../includes/optionsform.php:269
+msgid "Left"
+msgstr "Izquierda"
+
+#: ../includes/optionsform.php:270
+msgid "Right"
+msgstr "Derecha"
+
+#: ../includes/optionsform.php:276
+msgid "Opacity"
+msgstr "Opacidad"
+
+#: ../includes/optionsform.php:280
+msgid "Introduce a value between 0.0 and 1.0 (0.1, 0.2...)"
+msgstr "Introduzca un valor entre 0.0 y 1.0 (0.1, 0.2 … 1.0)"
+
+#: ../includes/optionsform.php:285
+msgid "Position"
+msgstr "Posición"
+
+#: ../includes/optionsform.php:291
+msgid "Top Left"
+msgstr "Arriba Izquierda"
+
+#: ../includes/optionsform.php:294
+msgid "Top Center"
+msgstr "Arriba Centro"
+
+#: ../includes/optionsform.php:297
+msgid "Top Right"
+msgstr "Arriba Derecha"
+
+#: ../includes/optionsform.php:302
+msgid "Center Left"
+msgstr "Centro Izquierda"
+
+#: ../includes/optionsform.php:305
+msgid "Term"
+msgstr "Término"
+
+#: ../includes/optionsform.php:308
+msgid "Center Right"
+msgstr "Centro Derecha"
+
+#: ../includes/optionsform.php:313
+msgid "Bottom Left"
+msgstr "Abajo Izquierda"
+
+#: ../includes/optionsform.php:316
+msgid "Bottom Center"
+msgstr "Abajo Centro"
+
+#: ../includes/optionsform.php:319
+msgid "Bottom Right"
+msgstr "Abajo Derecha"
+
+#: ../includes/optionsform.php:327
+msgid "Save all changes"
+msgstr "Guardar todos los cambios"
+
+#: ../includes/optionsform.php:330
+msgid "Developed by"
+msgstr "Desarrollado por"
+
+#: ../includes/widget.php:16
+msgid "Dictionary"
+msgstr "Diccionario"
+
+#: ../includes/widget.php:79
+msgid "Widget Title"
+msgstr "Título"
+
+#: ../includes/widget.php:83
+msgid "List Depth"
+msgstr "Profundidad"
