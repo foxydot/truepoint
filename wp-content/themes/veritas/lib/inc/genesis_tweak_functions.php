@@ -454,15 +454,17 @@ function msdlab_sitemap(){
             ';
 
             foreach( get_post_types( array('public' => true) ) as $post_type ) {
-              if ( in_array( $post_type, array('post','page','attachment') ) )
+              if ( in_array( $post_type, array('post','page','attachment','definiciones') ) )
                 continue;
             
               $pt = get_post_type_object( $post_type );
+              query_posts('post_type='.$post_type.'&posts_per_page=-1');
+              if( have_posts() ){
             
               $col2 .= '<h4>'.$pt->labels->name.'</h4>';
               $col2 .= '<ul>';
             
-              query_posts('post_type='.$post_type.'&posts_per_page=-1');
+              
               while( have_posts() ) {
                 the_post();
                 if($post_type=='news'){
@@ -471,6 +473,7 @@ function msdlab_sitemap(){
                     $col2 .= '<li><a href="'.get_permalink().'">'.get_the_title().'</a></li>';
                 }
               }
+            }
             wp_reset_query();
             
               $col2 .= '</ul>';
