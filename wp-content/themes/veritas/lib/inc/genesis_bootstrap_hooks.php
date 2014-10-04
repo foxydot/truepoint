@@ -6,7 +6,7 @@ add_filter( 'genesis_attr_breadcrumb', 'msdlab_bootstrap_breadcrumb', 10);
 add_filter( 'genesis_attr_content-sidebar-wrap', 'msdlab_bootstrap_content_sidebar_wrap', 10);
 add_filter( 'genesis_attr_content', 'msdlab_bootstrap_content', 10);
 add_filter( 'genesis_attr_sidebar-primary', 'msdlab_bootstrap_sidebar', 10);
-add_filter( 'genesis_attr_sidebar-secondary', 'msdlab_bootstrap_sidebar_2', 10);
+add_filter( 'genesis_attr_sidebar-alt', 'msdlab_bootstrap_sidebar_2', 10);
 
  /*** Bootstrappin **/
 
