@@ -32,7 +32,7 @@ function msdlab_bootstrap_content_sidebar_wrap( $attributes ){
         case 'sidebar-sidebar-content':
         case 'sidebar-content-sidebar':
             if($template == get_stylesheet_directory().'/page-about-us.php'){
-                $attributes['class'] .= ' col-md-9 col-sm-12';
+                $attributes['class'] .= ' row col-md-9 col-sm-12';
             }
             break;
         case 'full-width-content':
@@ -69,6 +69,12 @@ function msdlab_bootstrap_sidebar( $attributes ){
     switch($layout){
         case 'content-sidebar':
         case 'sidebar-content':
+            if($template == get_stylesheet_directory().'/page-about-us.php'){
+                $attributes['class'] = preg_replace('/sidebar-primary/i','row',$attributes['class']);
+            } else {
+                $attributes['class'] .= ' col-md-3 hidden-sm hidden-xs';
+            }
+            break;
         case 'content-sidebar-sidebar':
         case 'sidebar-sidebar-content':
         case 'sidebar-content-sidebar':
