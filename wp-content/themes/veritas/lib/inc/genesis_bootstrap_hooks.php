@@ -11,12 +11,24 @@ add_filter( 'genesis_attr_sidebar-secondary', 'msdlab_bootstrap_sidebar_2', 10);
  /*** Bootstrappin **/
 
 function msdlab_bootstrap_site_inner( $attributes ){
-    $attributes['class'] .= ' container';
+    $layout = genesis_site_layout();
+    $template = get_page_template();
+    if($template == get_stylesheet_directory().'/page-about-us.php' && $layout == 'content-sidebar-sidebar'){
+        $attributes['class'] .= ' row';
+    } else {
+        $attributes['class'] .= ' container';
+    }
     return $attributes;
 }
 
 function msdlab_bootstrap_breadcrumb( $attributes ){
-    $attributes['class'] .= ' row';
+    $layout = genesis_site_layout();
+    $template = get_page_template();
+    if($template == get_stylesheet_directory().'/page-about-us.php' && $layout == 'content-sidebar-sidebar'){
+        $attributes['class'] .= '';
+    } else {
+        $attributes['class'] .= ' row';
+    }
     return $attributes;
 }
 
