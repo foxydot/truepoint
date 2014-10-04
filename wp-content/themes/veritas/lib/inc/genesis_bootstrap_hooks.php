@@ -109,7 +109,6 @@ function msdlab_bootstrap_sidebar2( $attributes ){
     switch($layout){
         case 'content-sidebar':
         case 'sidebar-content':
-            break;
         case 'content-sidebar-sidebar':
         case 'sidebar-sidebar-content':
         case 'sidebar-content-sidebar':
