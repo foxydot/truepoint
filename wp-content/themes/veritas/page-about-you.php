@@ -3,7 +3,7 @@
 Template Name: About You Section Template
 */
 wp_enqueue_script('grayscale',get_stylesheet_directory_uri().'/lib/js/grayscale.js',FALSE,FALSE,TRUE);
-add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
+add_filter( 'genesis_site_layout', '__genesis_return_full_width_content' );
 function msdlab_do_post_tabs() {
     global $aboutyou_metabox;
     $aboutyou_metabox->the_meta();

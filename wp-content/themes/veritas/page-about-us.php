@@ -11,5 +11,24 @@ function msdlab_do_about_us_sidebar(){
         print '</div>';
     }
 }
-add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_content_sidebar' );
+add_action('wp_head','msdlab_do_about_us_layout');
+
+function msdlab_do_about_us_layout(){
+    if($page_layout = genesis_get_custom_field( '_genesis_layout' )){
+        switch($page_layout){
+            case 'content-sidebar':
+            case 'content-sidebar-sidebar':
+                add_filter( 'genesis_site_layout', '__genesis_return_content_sidebar_sidebar' );
+                remove_action('genesis_sidebar_alt','genesis_do_sidebar_alt');
+                add_action('genesis_sidebar_alt','genesis_do_sidebar');
+                
+                break;
+            default:        
+                add_filter( 'genesis_site_layout', '__genesis_return_content_sidebar' );
+                break;
+        }
+    } else {
+        add_filter( 'genesis_site_layout', '__genesis_return_content_sidebar' );
+    }
+}
 genesis();
