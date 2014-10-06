@@ -560,7 +560,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         $video_cpt = new MSDVideoCPT();
         extract($args);
         echo $before_widget; 
-        $post = $video_cpt->get_random_video($instace['tags']);
+        $post = $video_cpt->get_random_video($instance['tags']);
         $video->the_meta($post->ID);
         $video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
         $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
@@ -580,7 +580,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
     function form( $instance ) {
         $instance = wp_parse_args( (array) $instance, array( 'tags' => '' ) );
         $ret = '<p><label for="'.$this->get_field_id('tags').'">'._e('Tags').'</label>
-        <input class="widefat" id="'.$this->get_field_id('tags').'" name="'.$this->get_field_id('tags').'" type="text" value="'.esc_attr($instance['tags']).'" />
+        <input class="widefat" id="'.$this->get_field_id('tags').'" name="'.$this->get_field_name('tags').'" type="text" value="'.esc_attr($instance['tags']).'" />
         </p>';
         print $ret;
     }
