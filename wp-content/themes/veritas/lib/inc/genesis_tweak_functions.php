@@ -440,11 +440,95 @@ register_nav_menus( array(
 ) );
 
 /*** SITEMAP ***/
+/**
+ * Retrieve or display list of pages in list (li) format.
+ *
+ * @since 1.5.0
+ *
+ * @param array|string $args Optional. Override default arguments.
+ * @return string HTML content, if not displaying.
+ */
+function msdlab_list_pages_for_sitemap($args = '') {
+    $defaults = array(
+        'depth' => 0, 'show_date' => '',
+        'date_format' => get_option('date_format'),
+        'child_of' => 0, 'exclude' => '',
+        'title_li' => __('Pages'), 'echo' => 1,
+        'authors' => '', 'sort_column' => 'menu_order, post_title',
+        'link_before' => '', 'link_after' => '', 'walker' => '',
+    );
+
+    $r = wp_parse_args( $args, $defaults );
+    extract( $r, EXTR_SKIP );
+
+    $output = '';
+    $current_page = 0;
+    
+    /*$r['meta_query'] = array(
+        array(
+            'key'     => '_yoast_wpseo_meta-robots-noindex',
+            'value'   => 1,
+            'compare' => '!=',
+        ),
+    );*/
+
+    // sanitize, mostly to keep spaces out
+    $r['exclude'] = preg_replace('/[^0-9,]/', '', $r['exclude']);
+
+    // Allow plugins to filter an array of excluded pages (but don't put a nullstring into the array)
+    $exclude_array = ( $r['exclude'] ) ? explode(',', $r['exclude']) : array();
+    $r['exclude'] = implode( ',', apply_filters('wp_list_pages_excludes', $exclude_array) );
+
+    // Query pages.
+    $r['hierarchical'] = 0;
+    $pages = get_pages($r);
+    if ( !empty($pages) ) {
+        if ( $r['title_li'] )
+            $output .= '<li class="pagenav">' . $r['title_li'] . '<ul>';
+
+        global $wp_query;
+        if ( is_page() || is_attachment() || $wp_query->is_posts_page )
+            $current_page = $wp_query->get_queried_object_id();
+        $output .= msdlab_walk_page_tree($pages, $r['depth'], $current_page, $r);
+
+        if ( $r['title_li'] )
+            $output .= '</ul></li>';
+    }
+
+    $output = apply_filters('wp_list_pages', $output, $r);
+
+    if ( $r['echo'] )
+        echo $output;
+    else
+        return $output;
+}
+
+function msdlab_walk_page_tree($pages, $depth, $current_page, $r) {
+    if ( empty($r['walker']) )
+        $walker = new Walker_Page;
+    else
+        $walker = $r['walker'];
+
+    foreach ( (array) $pages as $k=>$page ) {
+        if($x = get_metadata('post',$page->ID,'_yoast_wpseo_meta-robots-noindex')){
+            if($x = 1){
+                unset($pages[$k]);
+                continue;
+            }
+        }
+        if ( $page->post_parent )
+            $r['pages_with_children'][ $page->post_parent ] = true;
+    }
+
+    $args = array($pages, $depth, $r, $current_page);
+    return call_user_func_array(array($walker, 'walk'), $args);
+}
+
 function msdlab_sitemap(){
     $col1 = '
             <h4>'. __( 'Pages:', 'genesis' ) .'</h4>
             <ul>
-                '. wp_list_pages( 'echo=0&title_li=' ) .'
+                '. msdlab_list_pages_for_sitemap( 'echo=0&title_li=' ) .'
             </ul>
 
             <h4>'. __( 'Categories:', 'genesis' ) .'</h4>
