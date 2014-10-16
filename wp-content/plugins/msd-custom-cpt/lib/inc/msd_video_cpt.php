@@ -194,7 +194,7 @@ class MSDVideoCPT {
                 'order' => 'ASC',
                 'orderby' => 'rand',
             );
-            if(count($tags)>0){
+            if(strlen(trim($tags))>0){
                 $args['tax_query'] =  array(
                         array(
                                 'taxonomy' => 'msd_video_tag',
