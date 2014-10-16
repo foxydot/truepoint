@@ -195,13 +195,16 @@ class MSDVideoCPT {
                 'orderby' => 'rand',
             );
             if(strlen(trim($tags))>0){
-                $args['tax_query'] =  array(
+                $tag_array = explode(',', $tags);
+                $args['tax_query']['relation'] = "OR";
+                foreach($tag_array AS $tag){
+                    $args['tax_query'][] =  
                         array(
-                                'taxonomy' => 'msd_video_tag',
-                                'field' => 'slug',
-                                'terms' => $tags
-                        )
-                );
+                            'taxonomy' => 'msd_video_tag',
+                            'field' => 'slug',
+                            'terms' => $tag
+                    );
+                }
             }
             $array_of_video = get_posts($args);
             return $array_of_video[0];
