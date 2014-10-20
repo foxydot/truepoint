@@ -25,7 +25,7 @@ class ITSEC_Away_Mode {
 	 *
 	 * @return mixed true if locked out else false or times until next condition (negative until lockout, positive until release)
 	 */
-	public static function check_away( $input = NULL, $remaining = false, $override = false ) {
+	public static function check_away( $input = null, $remaining = false, $override = false ) {
 
 		global $itsec_globals;
 
@@ -36,7 +36,7 @@ class ITSEC_Away_Mode {
 		$status        = false; //assume they're not locked out to start
 
 		//Normal usage check
-		if ( $input === NULL ) { //if we didn't provide input to check we need to get it
+		if ( $input === null ) { //if we didn't provide input to check we need to get it
 
 			$form  = false;
 			$input = get_site_option( 'itsec_away_mode' );
@@ -113,6 +113,13 @@ class ITSEC_Away_Mode {
 				$status = - ( $test_start - $current_time );
 
 				if ( $status > 0 ) {
+
+					if ( $form === false && isset( $input['enabled'] ) && $input['enabled'] === true ) { //disable away mode if one-time is in the past
+
+						$input['enabled'] = false;
+						update_site_option( 'itsec_away_mode', $input );
+
+					}
 
 					$status = 0;
 

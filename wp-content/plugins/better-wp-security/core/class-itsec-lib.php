@@ -169,6 +169,8 @@ final class ITSEC_Lib {
 	/**
 	 * Gets location of wp-config.php
 	 *
+	 * @since 4.0
+	 *
 	 * Finds and returns path to wp-config.php
 	 *
 	 * @return string path to wp-config.php
@@ -186,6 +188,43 @@ final class ITSEC_Lib {
 
 		}
 
+	}
+
+	/**
+	 * Gets current url
+	 *
+	 * @since 4.3
+	 *
+	 * Finds and returns current url
+	 *
+	 * @return string current url
+	 *
+	 * */
+	public static function get_current_url() {
+
+		$page_url = 'http';
+
+		if ( isset( $_SERVER["HTTPS"] ) ) {
+
+			if ( $_SERVER["HTTPS"] == "on" ) {
+				$page_url .= "s";
+			}
+
+		}
+
+		$page_url .= "://";
+
+		if ( $_SERVER["SERVER_PORT"] != "80" ) {
+
+			$page_url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+
+		} else {
+
+			$page_url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+
+		}
+
+		return $page_url;
 	}
 
 	/**
@@ -257,6 +296,44 @@ final class ITSEC_Lib {
 	}
 
 	/**
+	 * Get the absolute filesystem path to the root of the WordPress installation
+	 *
+	 * @since 4.3
+	 *
+	 * @uses  get_option
+	 * @return string Full filesystem path to the root of the WordPress installation
+	 */
+	public static function get_home_path() {
+
+		$home    = set_url_scheme( get_option( 'home' ), 'http' );
+		$siteurl = set_url_scheme( get_option( 'siteurl' ), 'http' );
+
+		if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
+
+			$wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
+			$pos                 = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
+
+			if ( $pos === false ) {
+
+				$home_path = dirname( $_SERVER['SCRIPT_FILENAME'] );
+
+			} else {
+
+				$home_path = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
+
+			}
+
+		} else {
+
+			$home_path = ABSPATH;
+
+		}
+
+		return trailingslashit( str_replace( '\\', '/', $home_path ) );
+
+	}
+
+	/**
 	 * Returns the root of the WordPress install
 	 *
 	 * @since 4.0.6
@@ -266,7 +343,7 @@ final class ITSEC_Lib {
 	public static function get_home_root() {
 
 		//homeroot from wp_rewrite
-		$home_root = parse_url( home_url() );
+		$home_root = parse_url( site_url() );
 
 		if ( isset( $home_root['path'] ) ) {
 
@@ -300,7 +377,7 @@ final class ITSEC_Lib {
 
 		} else {
 
-			return ABSPATH . '.htaccess';
+			return ITSEC_Lib::get_home_path() . '.htaccess';
 
 		}
 
@@ -331,20 +408,20 @@ final class ITSEC_Lib {
 		}
 
 		//Get the forwarded IP if it exists
-		if ( array_key_exists( 'X-Forwarded-For', $headers ) && ( filter_var( $headers['X-Forwarded-For'],
-		                                                                      FILTER_VALIDATE_IP,
-		                                                                      FILTER_FLAG_IPV4 ) || filter_var( $headers['X-Forwarded-For'],
-		                                                                                                        FILTER_VALIDATE_IP,
-		                                                                                                        FILTER_FLAG_IPV6 ) )
+		if ( array_key_exists( 'X-Forwarded-For', $headers ) &&
+		     (
+			     filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ||
+			     filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 ) )
 		) {
 
 			$the_ip = $headers['X-Forwarded-For'];
 
-		} elseif ( array_key_exists( 'HTTP_X_FORWARDED_FOR',
-		                             $headers ) && ( filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP,
-		                                                         FILTER_FLAG_IPV4 ) || filter_var( $headers['HTTP_X_FORWARDED_FOR'],
-		                                                                                           FILTER_VALIDATE_IP,
-		                                                                                           FILTER_FLAG_IPV6 ) )
+		} elseif (
+			array_key_exists( 'HTTP_X_FORWARDED_FOR', $headers ) &&
+			(
+				filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ||
+				filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 )
+			)
 		) {
 
 			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
@@ -366,7 +443,8 @@ final class ITSEC_Lib {
 	 *
 	 * @return int php memory limit in megabytes
 	 */
-	public static function get_memory_limit() {
+	public
+	static function get_memory_limit() {
 
 		return (int) ini_get( 'memory_limit' );
 
@@ -377,7 +455,7 @@ final class ITSEC_Lib {
 	 *
 	 * @since 4.0
 	 *
-	 * @param string $file     the module file from which to derive the path
+	 * @param string $file the module file from which to derive the path
 	 *
 	 * @return string the path of the current module
 	 */
@@ -386,8 +464,9 @@ final class ITSEC_Lib {
 		global $itsec_globals;
 
 		$path = str_replace( $itsec_globals['plugin_dir'], '', dirname( $file ) );
+		$path = ltrim( str_replace( '\\', '/', $path ), '/' );
 
-		return trailingslashit( $itsec_globals['plugin_url'] . $path );
+		return trailingslashit( trailingslashit( $itsec_globals['plugin_url'] ) . $path );
 
 	}
 
@@ -597,7 +676,7 @@ final class ITSEC_Lib {
 		if ( $jquery_version !== false and version_compare( $jquery_version, '1.6.3', '>=' ) ) {
 			return true;
 		} elseif ( $jquery_version === false ) {
-			return NULL;
+			return null;
 		}
 
 		return false;
@@ -685,7 +764,7 @@ final class ITSEC_Lib {
 	 *
 	 * Checks to see if WordPress user with given id exists
 	 *
-	 * @param int $id user id of user to check
+	 * @param int $user_id user id of user to check
 	 *
 	 * @return bool true if user exists otherwise false
 	 *
@@ -700,10 +779,9 @@ final class ITSEC_Lib {
 		}
 
 		//queary the user table to see if the user is there
-		$userid = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM `" . $wpdb->users . "` WHERE ID='%s';",
-		                                          sanitize_text_field( $user_id ) ) );
+		$user_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM `" . $wpdb->users . "` WHERE ID='%s';", sanitize_text_field( $user_id ) ) );
 
-		if ( $userid == $user_id ) {
+		if ( $user_id == $user_id ) {
 			return true;
 		} else {
 			return false;
@@ -723,7 +801,7 @@ final class ITSEC_Lib {
 		//validate list
 		$ip             = trim( filter_var( $ip, FILTER_SANITIZE_STRING ) );
 		$ip_parts       = explode( '.', $ip );
-		$error_handler  = NULL;
+		$error_handler  = null;
 		$is_ip          = 0;
 		$part_count     = 1;
 		$good_ip        = true;
@@ -879,8 +957,18 @@ final class ITSEC_Lib {
 		$path = implode( DIRECTORY_SEPARATOR, $absolutes );
 
 		// resolve any symlinks
-		if ( file_exists( $path ) && linkinfo( $path ) > 0 ) {
-			$path = @readlink( $path );
+		if ( function_exists( 'linkinfo' ) ) { //linkinfo not available on Windows with PHP < 5.3.0
+
+			if ( file_exists( $path ) && linkinfo( $path ) > 0 ) {
+				$path = @readlink( $path );
+			}
+
+		} else {
+
+			if ( file_exists( $path ) && linkinfo( $path ) > 0 ) {
+				$path = @readlink( $path );
+			}
+
 		}
 
 		// put initial separator that could have been lost
@@ -890,6 +978,23 @@ final class ITSEC_Lib {
 		@unlink( $path . '/test.txt' );
 
 		return $test;
+
+	}
+
+	/**
+	 * Validates a URL
+	 *
+	 * @since 4.3
+	 *
+	 * @param string $url the url to validate
+	 *
+	 * @return bool true if valid url else false
+	 */
+	public static function validate_url( $url ) {
+
+		$pattern = "/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i";
+
+		return (bool) preg_match( $pattern, $url );
 
 	}
 

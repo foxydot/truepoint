@@ -75,7 +75,7 @@ class ITSEC_Away_Mode_Admin {
 
 			wp_enqueue_script( 'itsec_away_mode_js', $this->module_path . 'js/admin-away-mode.js', array( 'jquery' ), $itsec_globals['plugin_build'] );
 			wp_enqueue_script( 'jquery-ui-datepicker' );
-			wp_enqueue_style( 'jquery-datepicker-style', $this->module_path . 'css/smoothness/jquery-ui-1.10.4.custom.css' );
+			wp_enqueue_style( 'jquery-datepicker-style', $this->module_path . 'css/smoothness/jquery-ui-1.10.4.custom.css', array(), $itsec_globals['plugin_build'] );
 
 		}
 
@@ -399,9 +399,9 @@ class ITSEC_Away_Mode_Admin {
 			$currdate = date( 'g:i a \o\n l F jS, Y', current_time( 'timestamp' ) );
 		}
 
-		$content .= '<p>' . sprintf( __( 'Please note that according to your %sWordPress timezone settings%s your current time is:', 'it-l10n-better-wp-security' ), '<a href="options-general.php">', '</a>' );
+		$content .= '<p>' . sprintf( __( 'Please note that according to your %sWordPress timezone settings%s your current time is:', 'it-l10n-better-wp-security' ), '<a href="' . admin_url( 'options-general.php#timezone_string' ) . '">', '</a>' );
 		$content .= '<div class="current-time-date">' . $currdate . '</div>';
-		$content .= '<p>' . sprintf( __( 'If this is incorrect please correct it on the %sWordPress general settings page%s by setting the appropriate time zone. Failure to set the correct timezone may result in unintended lockouts.', 'it-l10n-better-wp-security' ), '<a href="options-general.php">', '</a>' ) . '</p>';
+		$content .= '<p>' . sprintf( __( 'If this is incorrect please correct it on the %sWordPress general settings page%s by setting the appropriate time zone. Failure to set the correct timezone may result in unintended lockouts.', 'it-l10n-better-wp-security' ), '<a href="' . admin_url( 'options-general.php#timezone_string' ) . '">', '</a>' ) . '</p>';
 
 		echo $content;
 

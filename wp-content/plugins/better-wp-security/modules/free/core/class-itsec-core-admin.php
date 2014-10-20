@@ -4,9 +4,8 @@ class ITSEC_Core_Admin {
 
 	function run() {
 
-		add_action( 'itsec_add_admin_meta_boxes', array(
-			$this, 'add_admin_meta_boxes'
-		) ); //add meta boxes to admin page
+		add_action( 'itsec_add_admin_meta_boxes', array( $this, 'add_admin_meta_boxes' ) ); //add meta boxes to admin page
+
 		add_filter( 'itsec_meta_links', array( $this, 'add_plugin_meta_links' ) );
 
 		//Process support plugin nag
@@ -31,20 +30,33 @@ class ITSEC_Core_Admin {
 		foreach ( $available_pages as $page ) {
 
 			add_meta_box(
-				'itsec_sync_integration',
-				__( 'Sync 10 Sites For Free', 'it-l10n-better-wp-security' ),
-				array( $this, 'metabox_sync_integration' ),
-				$page,
-				'priority_side',
-				'core'
-			);
-
-			add_meta_box(
 				'itsec_security_updates',
 				__( 'Download Our WordPress Security Pocket Guide', 'it-l10n-better-wp-security' ),
 				array( $this, 'metabox_security_updates' ),
 				$page,
 				'priority_side',
+				'core'
+			);
+
+			if ( ! class_exists( 'backupbuddy_api' ) ) {
+
+				add_meta_box(
+					'itsec_get_backup',
+					__( 'Complete Your Security Strategy With BackupBuddy', 'it-l10n-better-wp-security' ),
+					array( $this, 'metabox_get_backupbuddy' ),
+					$page,
+					'priority_side',
+					'core'
+				);
+
+			}
+
+			add_meta_box(
+				'itsec_sync_integration',
+				__( 'Manage Your Sites Remotely', 'it-l10n-better-wp-security' ),
+				array( $this, 'metabox_sync_integration' ),
+				$page,
+				'side',
 				'core'
 			);
 
@@ -56,17 +68,6 @@ class ITSEC_Core_Admin {
 				'side',
 				'core'
 			);
-
-			if ( ! class_exists( 'backupbuddy_api' ) ) {
-				add_meta_box(
-					'itsec_get_backup',
-					__( 'Complete Your Security Strategy With BackupBuddy', 'it-l10n-better-wp-security' ),
-					array( $this, 'metabox_get_backupbuddy' ),
-					$page,
-					'side',
-					'core'
-				);
-			}
 
 		}
 
@@ -189,10 +190,11 @@ class ITSEC_Core_Admin {
 				<label for="mce-EMAIL"
 				       style="display: block;margin-bottom: 3px;"><?php _e( 'Email Address', 'better-wp-security' ); ?></label>
 				<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL"
-				       placeholder="email@domain.com">
-				<br/><br/>
-				<input type="submit" value="<?php _e( 'Subscribe', 'better-wp-security' ); ?>" name="subscribe"
-				       id="mc-embedded-subscribe" class="button button-secondary">
+				       placeholder="email@domain.com"> <br/><br/> <input type="submit"
+				                                                         value="<?php _e( 'Subscribe', 'better-wp-security' ); ?>"
+				                                                         name="subscribe"
+				                                                         id="mc-embedded-subscribe"
+				                                                         class="button button-secondary">
 			</form>
 		</div>
 
@@ -212,8 +214,8 @@ class ITSEC_Core_Admin {
 
 		?>
 		<div style="text-align: center;">
-			<img src="<?php echo plugins_url( 'img/sync-logo.jpg', __FILE__ ) ?>" width="60"
-			     height="47" alt="Sync 10 Sites For Free">
+			<img src="<?php echo plugins_url( 'img/sync-logo.png', __FILE__ ) ?>" width="173"
+			     height="65" alt="Manage Your Sites Remotely">
 		</div>
 		<?php
 
@@ -326,7 +328,7 @@ class ITSEC_Core_Admin {
 					global $itsec_globals;
 
 					echo '<div class="updated" id="itsec_support_notice">
-						<span class="itsec_notice_text">' . __( 'It looks like you\'ve been enjoying', 'it-l10n-better-wp-security' ) . ' ' . $itsec_globals['plugin_name'] . ' ' . __( 'for at least 30 days. Would you consider a small donation to help support continued development of the plugin?', 'it-l10n-better-wp-security' ) . '</span><input type="button" class="itsec-notice-button" value="' . __( 'Support This Plugin', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_donate=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-button" value="' . __( 'Rate it 5★\'s', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_rate=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-button" value="' . __( 'Tell Your Followers', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_tweet=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-hide" value="&times;" onclick="document.location.href=\'?itsec_no_nag=off&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">
+						<span class="itsec_notice_text">' . __( 'It looks like you\'ve been enjoying', 'it-l10n-better-wp-security' ) . ' ' . $itsec_globals['plugin_name'] . ' ' . __( "for at least 30 days. It's time to take the next step.", 'it-l10n-better-wp-security' ) . '</span><input type="button" class="itsec-notice-button" value="' . __( 'Upgrade to Pro', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_donate=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-button" value="' . __( 'Rate it 5★\'s', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_rate=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-button" value="' . __( 'Tell Your Followers', 'it-l10n-better-wp-security' ) . '" onclick="document.location.href=\'?itsec_tweet=yes&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">  <input type="button" class="itsec-notice-hide" value="&times;" onclick="document.location.href=\'?itsec_no_nag=off&_wpnonce=' . wp_create_nonce( 'itsec-nag' ) . '\';">
 						</div>';
 
 				}
@@ -358,7 +360,7 @@ class ITSEC_Core_Admin {
 
 			//take the user to paypal if they've clicked donate
 			if ( isset( $_GET['itsec_donate'] ) ) {
-				wp_redirect( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=V647NGJSBC882', '302' );
+				wp_redirect( 'http://ithemes.com/security', '302' );
 				exit();
 			}
 
