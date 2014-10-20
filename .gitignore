@@ -15,6 +15,7 @@
 /*
 !.gitignore
 !assets/
+!wp-content/
 !fonts/
 
 # Ignore everything in the "assets" directory, except the "plugins"
@@ -22,17 +23,27 @@
 assets/*
 !assets/plugins/
 !assets/themes/
+!assets/wpalchemy/
+wp-content/*
+!wp-content/plugins/
+!wp-content/themes/
+!wp-content/wpalchemy/
 
 # Ignore everything in the "plugins" directory, except the plugins you
 # specify (see the commented-out examples for hints on how to do this.)
 assets/plugins/*
 !assets/plugins/msd*
 # !assets/plugins/my-directory-plugin/
+wp-content/plugins/*
+!wp-content/plugins/msd*
+# !wp-content/plugins/my-directory-plugin/
 
 # Ignore everything in the "themes" directory, except the themes you
 # specify (see the commented-out example for a hint on how to do this.)
 assets/themes/twenty*
 assets/themes/genesis
+wp-content/themes/twenty*
+wp-content/themes/genesis
 
 .DS_Store
 .AppleDouble
