@@ -243,10 +243,13 @@ class MSDVideoCPT {
                 if (class_exists('MultiPostThumbnails') && $post_thumbnail_id = MultiPostThumbnails::get_post_thumbnail_id('msd_video', 'grid-image',$item->ID)) {
                     $featured_image = wp_get_attachment_image_src( $post_thumbnail_id, 'video', false, $attr );
                     $featured_image = $featured_image[0];
-                } else {
-                    preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches);
+                } elseif(preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches)){
                     $videoid = $matches[2];
                     $featured_image = 'http://img.youtube.com/vi/'.$videoid.'/0.jpg';
+                } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
+                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $xml = simplexml_load_file($static_url);
+                    $featured_image = $xml->thumbnail_url;
                 }
             } else {
                 if (class_exists('MultiPostThumbnails') && $post_thumbnail_id = MultiPostThumbnails::get_post_thumbnail_id('msd_video', 'grid-image',$item->ID)) {
@@ -317,7 +320,8 @@ class MSDVideoCPT {
             $i = 1;
             foreach($items AS $item){
                 $video->the_meta($item->ID);
-                $video_url = $video->get_the_value('video_url');
+                //$video_url = $video->get_the_value('video_url');
+                $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
         
@@ -565,7 +569,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         echo $before_widget; 
         $post = $video_cpt->get_random_video($instance['tags']);
         $video->the_meta($post->ID);
-        $video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
+        //$video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
         $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
         print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
         print '<div class="wrap">
