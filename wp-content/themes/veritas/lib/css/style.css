@@ -7697,6 +7697,34 @@ main.content .index-header a:hover {
 .subscribe {
   text-align: center;
 }
+.page .entry-content .video-grid ul.grid {
+  list-style: none outside none;
+  margin: 0;
+}
+.page .entry-content .video-grid ul.grid li {
+  list-style: none outside none;
+  margin: 1rem 0;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .page .entry-content .video-grid ul.grid li {
+    float: left;
+    width: 50%;
+  }
+}
+.page .entry-content .video-grid ul.grid li a.thumb {
+  display: block;
+  height: 180px;
+  width: 100%;
+  text-indent: -9999px;
+}
+.page .entry-content .video-grid ul.grid li:before {
+  content: "";
+  margin-right: 0;
+}
 /**** Isotope filtering ****/
 .isotope-item {
   z-index: 2;
