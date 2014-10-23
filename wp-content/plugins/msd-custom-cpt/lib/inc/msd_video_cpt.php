@@ -268,10 +268,16 @@ class MSDVideoCPT {
             $video->the_meta($item->ID);
             $video_url = $video->get_the_value('video_url');
             if($video_url!=''){
-                $video_url = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $video_url);
-                $norelated = strrpos($video_url,'?')>1?'&rel=0':'?rel=0';
-                $content = $video_url.$norelated;
-                if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
+                if(preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches)){
+                    $video_url = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $video_url);
+                    $norelated = strrpos($video_url,'?')>1?'&rel=0':'?rel=0';
+                    $content = $video_url.$norelated;
+                    if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
+                } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
+                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $xml = simplexml_load_file($static_url);
+                    $content = $xml->html;
+                }
             } else {
                 $large_image = wp_get_attachment_image_src( get_post_thumbnail_id($item->ID),'large' );
                 $content = $large_image?'<img lazy-src="'.$large_image[0].'" class="dropshadow" />':FALSE;
