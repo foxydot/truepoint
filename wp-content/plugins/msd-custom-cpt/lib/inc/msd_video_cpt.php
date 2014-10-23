@@ -574,7 +574,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
         print '<div class="wrap">
         <br />
-        <iframe src="'.$video_url.'" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe src="'.$video_url.'title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         <div class="clearfix"><br /></div>
         </div>';
         echo $after_widget;
