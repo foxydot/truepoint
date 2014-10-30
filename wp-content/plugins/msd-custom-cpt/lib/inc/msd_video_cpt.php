@@ -105,7 +105,7 @@ class MSDVideoCPT {
             'labels' => $labels,
             'hierarchical' => true,
             'description' => 'Customer Videos',
-            'supports' => array( 'title', 'editor', 'author', 'thumbnail'),
+            'supports' => array( 'title', 'editor', 'author', 'thumbnail','page-attributes'),
             'taxonomies' => array('msd_video_tag'),
             'public' => true,
             'show_ui' => true,
@@ -243,10 +243,13 @@ class MSDVideoCPT {
                 if (class_exists('MultiPostThumbnails') && $post_thumbnail_id = MultiPostThumbnails::get_post_thumbnail_id('msd_video', 'grid-image',$item->ID)) {
                     $featured_image = wp_get_attachment_image_src( $post_thumbnail_id, 'video', false, $attr );
                     $featured_image = $featured_image[0];
-                } else {
-                    preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches);
+                } elseif(preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches)){
                     $videoid = $matches[2];
                     $featured_image = 'http://img.youtube.com/vi/'.$videoid.'/0.jpg';
+                } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
+                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $xml = simplexml_load_file($static_url);
+                    $featured_image = $xml->thumbnail_url;
                 }
             } else {
                 if (class_exists('MultiPostThumbnails') && $post_thumbnail_id = MultiPostThumbnails::get_post_thumbnail_id('msd_video', 'grid-image',$item->ID)) {
@@ -265,10 +268,16 @@ class MSDVideoCPT {
             $video->the_meta($item->ID);
             $video_url = $video->get_the_value('video_url');
             if($video_url!=''){
-                $video_url = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $video_url);
-                $norelated = strrpos($video_url,'?')>1?'&rel=0':'?rel=0';
-                $content = $video_url.$norelated;
-                if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
+                if(preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches)){
+                    $video_url = preg_replace('@http(s)?\:\/\/@i', 'httpv://', $video_url);
+                    $norelated = strrpos($video_url,'?')>1?'&rel=0':'?rel=0';
+                    $content = $video_url.$norelated;
+                    if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
+                } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
+                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $xml = simplexml_load_file($static_url);
+                    $content = $xml->html;
+                }
             } else {
                 $large_image = wp_get_attachment_image_src( get_post_thumbnail_id($item->ID),'large' );
                 $content = $large_image?'<img lazy-src="'.$large_image[0].'" class="dropshadow" />':FALSE;
@@ -317,32 +326,12 @@ class MSDVideoCPT {
             $i = 1;
             foreach($items AS $item){
                 $video->the_meta($item->ID);
-                $video_url = $video->get_the_value('video_url');
+                //$video_url = $video->get_the_value('video_url');
+                $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
         
-                $menu .= '<li class="tab-'.$item->post_name.'"><a href="#'.$item->post_name.'" data-target="#'.$item->post_name.'" title="'.$item->post_title.'" data-toggle="modal" class="thumb" style="background:url('.$featured_image.') no-repeat center center;background-size:cover;">'.$item->post_title.'</a><h4>'.$item->post_title.'</h4></li>'."\n";
-                $j = 0;
-                    foreach ($content AS $piece){
-                        if(!empty($piece['image'])){
-                            $key = $j==0?'':'-'.$j;
-                            $slides .=  '<div id="'.$item->post_name.'" class="modal fade div-'.$item->post_name.$key.'" role="dialog">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="video-piece">'.remove_wpautop(apply_filters('the_content', $piece['image'])).'</div>
-                                            <h3 class="video-piece-title">'.$piece['title'].'</h3>
-                                            <div class="entry-content">'.remove_wpautop(apply_filters('the_content', $piece['description'])).'</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>';
-                            $j++;
-                        }
-                    }
+                $menu .= '<li class="tab-'.$item->post_name.'"><iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe><h4>'.$item->post_title.'</h4></li>'."\n";
                 $i++;
             }
         
@@ -565,12 +554,12 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         echo $before_widget; 
         $post = $video_cpt->get_random_video($instance['tags']);
         $video->the_meta($post->ID);
-        $video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
+        //$video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
         $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
         print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
         print '<div class="wrap">
         <br />
-        <iframe src="'.$video_url.'" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
         <div class="clearfix"><br /></div>
         </div>';
         echo $after_widget;
