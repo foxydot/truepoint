@@ -1,5 +1,5 @@
 <?php 
-global $project_info,$location_info,$client_info,$additional_files,$contact_info,$additional_info,$primary_practice_area,$video;
+global $project_info,$location_info,$client_info,$additional_files,$contact_info,$additional_info,$primary_practice_area,$video,$coauthors;
 
 $project_info = new WPAlchemy_MetaBox(array
         (
@@ -98,4 +98,16 @@ $video = new WPAlchemy_MetaBox(array
         'autosave' => TRUE,
         'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
         'prefix' => '_video_' // defaults to NULL
+    ));
+$coauthors = new WPAlchemy_MetaBox(array
+    (
+        'id' => '_coauthor',
+        'title' => 'Co-Authors',
+        'types' => array('post'),
+        'context' => 'normal',
+        'priority' => 'high',
+        'template' => WP_PLUGIN_DIR.'/'.plugin_dir_path('msd-custom-cpt/msd-custom-cpt.php').'lib/template/coauthor-information.php',
+        'autosave' => TRUE,
+        'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
+        'prefix' => '_coauthor_' // defaults to NULL
     ));

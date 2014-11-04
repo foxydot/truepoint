@@ -248,6 +248,7 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
 }
 
 function sp_post_info_filter($post_info) {
+    //TODO: Get coauthor info and parse into byline
     $post_info = 'Contributed by [post_author_bio]<br />
     [post_date]';
     return $post_info;
