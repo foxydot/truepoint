@@ -331,7 +331,7 @@ class MSDVideoCPT {
                 $featured_image = $this->get_video_grid_image($item);
                 $content = $this->get_video_content($item);
         
-                $menu .= '<li class="tab-'.$item->post_name.'"><iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe><h4>'.$item->post_title.'</h4></li>'."\n";
+                $menu .= '<li class="tab-'.$item->post_name.'"><iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="650" height="280" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe><h4>'.$item->post_title.'</h4></li>'."\n";
                 $i++;
             }
         
