@@ -69,7 +69,7 @@ class MSD_Widget_Team_Viewpoints extends WP_Widget {
                     $coauthor_bio = array_pop(get_posts($args));
                     if($coauthor_bio)
                             if($i == $total_coauthors){
-                                print ', and ';
+                                print ' and ';
                             } else {
                                 print ', ';
                             }

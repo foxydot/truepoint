@@ -309,19 +309,19 @@ function msdlab_post_author_bio($atts = array()){
             $url = get_post_permalink($coauthor_bio->ID);
             if ( genesis_html5() ) {
                 if($i == $total_coauthors){
-                    $output .= ', and ';
+                    $output .= ' and ';
                 } else {
                     $output .= ', ';
                 }
-                $output .= sprintf( '<span %s>', genesis_attr( 'entry-coauthor' ) );
+                $output .= sprintf( '<span %s>', genesis_attr( 'entry-author' ) );
                 $output .= $atts['before'];
-                $output .= sprintf( '<a href="%s" %s>', $url, genesis_attr( 'entry-coauthor-link' ) );
-                $output .= sprintf( '<span %s>', genesis_attr( 'entry-coauthor-name' ) );
+                $output .= sprintf( '<a href="%s" %s>', $url, genesis_attr( 'entry-author-link' ) );
+                $output .= sprintf( '<span %s>', genesis_attr( 'entry-author-name' ) );
                 $output .= esc_html( $coauthor_bio->post_title );
                 $output .= '</span></a>' . $atts['after'] . '</span>';
             } else {
-                $link = '<a href="' . esc_url( $url ) . '" title="' . esc_attr( sprintf( __( 'Visit %s&#x02019;s website', 'genesis' ), $coauthor_bio->post_title ) ) . '" rel="coauthor external">' . esc_html( $coauthor ) . '</a>';
-                $output .= sprintf( '<span class="coauthor vcard">%2$s<span class="fn">%1$s</span>%3$s</span>', $link, $atts['before'], $atts['after'] );
+                $link = '<a href="' . esc_url( $url ) . '" title="' . esc_attr( sprintf( __( 'Visit %s&#x02019;s website', 'genesis' ), $coauthor_bio->post_title ) ) . '" rel="author external">' . esc_html( $coauthor ) . '</a>';
+                $output .= sprintf( '<span class="author vcard">%2$s<span class="fn">%1$s</span>%3$s</span>', $link, $atts['before'], $atts['after'] );
             }
         }
     }
