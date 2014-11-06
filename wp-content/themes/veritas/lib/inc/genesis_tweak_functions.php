@@ -263,7 +263,6 @@ function msdlab_post_author_bio($atts = array()){
 
     $url = get_the_author_meta( 'url' );
     
-    
     if ( ! $url ){
         $args = array(
             'post_type' => 'team_member',
@@ -291,6 +290,40 @@ function msdlab_post_author_bio($atts = array()){
     } else {
         $link = '<a href="' . esc_url( $url ) . '" title="' . esc_attr( sprintf( __( 'Visit %s&#x02019;s website', 'genesis' ), $author ) ) . '" rel="author external">' . esc_html( $author ) . '</a>';
         $output = sprintf( '<span class="author vcard">%2$s<span class="fn">%1$s</span>%3$s</span>', $link, $atts['before'], $atts['after'] );
+    }
+    global $post;
+    $coauthors = get_post_meta($post->ID,'_coauthor_team_members', TRUE);
+    if($coauthors){
+        $total_coauthors = count($coauthors);
+        $i = 0;
+        foreach($coauthors AS $coauthor){
+            $i++;
+            $coauthor_data = get_post_meta($coauthor);
+            $args = array(
+            'post_type' => 'team_member',
+            'meta_key'  => '_team_member__team_user_id',
+            'meta_value'=> $coauthor_data['_team_member__team_user_id'][0]
+        );
+        $coauthor_bio = array_pop(get_posts($args));
+        if($coauthor_bio)
+            $url = get_post_permalink($coauthor_bio->ID);
+            if ( genesis_html5() ) {
+                if($i == $total_coauthors){
+                    $output .= ' and ';
+                } else {
+                    $output .= ', ';
+                }
+                $output .= sprintf( '<span %s>', genesis_attr( 'entry-author' ) );
+                $output .= $atts['before'];
+                $output .= sprintf( '<a href="%s" %s>', $url, genesis_attr( 'entry-author-link' ) );
+                $output .= sprintf( '<span %s>', genesis_attr( 'entry-author-name' ) );
+                $output .= esc_html( $coauthor_bio->post_title );
+                $output .= '</span></a>' . $atts['after'] . '</span>';
+            } else {
+                $link = '<a href="' . esc_url( $url ) . '" title="' . esc_attr( sprintf( __( 'Visit %s&#x02019;s website', 'genesis' ), $coauthor_bio->post_title ) ) . '" rel="author external">' . esc_html( $coauthor ) . '</a>';
+                $output .= sprintf( '<span class="author vcard">%2$s<span class="fn">%1$s</span>%3$s</span>', $link, $atts['before'], $atts['after'] );
+            }
+        }
     }
 
     return apply_filters( 'genesis_post_author_link_shortcode', $output, $atts );
