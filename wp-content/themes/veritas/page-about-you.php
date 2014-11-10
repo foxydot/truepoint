@@ -69,11 +69,12 @@ function msdlab_do_post_tabs() {
        }
        
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-        if($('.nav-tabs').length > 0){
-            var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
-            ga('send', 'event', 'AboutYouNav', 'Nav', 'Tab: '+filter);
+        if(ga){
+            if($('.nav-tabs').length > 0){
+                var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
+                ga('send', 'event', 'AboutYouNav', 'Nav', 'Tab: '+filter);
+            }
         }
-        
         
         $('ul.dropdown-menu li').removeClass(function(){
             if($(this).find('a').attr('href')==hash){
