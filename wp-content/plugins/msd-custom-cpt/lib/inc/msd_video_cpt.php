@@ -321,7 +321,9 @@ class MSDVideoCPT {
             $ID = $tags[0];
                 
             $items = $this->get_video_items($tags);
-            $count = (floor(count($items)/$cols))*$cols;
+            //$count = (floor(count($items)/$cols))*$cols; //kill the orphans
+            $count = count($items);
+                        
             $items = array_slice($items, 0, $count);
             $i = 1;
             foreach($items AS $item){
