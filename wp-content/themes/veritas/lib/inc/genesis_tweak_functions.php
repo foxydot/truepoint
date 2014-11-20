@@ -341,18 +341,49 @@ function msdlab_author_image($return = FALSE){
         $author_bio = array_pop(get_posts($args));
         if($author_bio){
             $author_attr = array(
-                'class' => "alignleft",
+                'class' => "alignleft hidden-xs",
                 'alt'   => trim($author_bio->post_title),
                 'title' => trim($author_bio->post_title),
             );
             $thumb = get_the_post_thumbnail($author_bio->ID,$size,$author_attr);
         } else {
             $attr = array(
-                'class' => "alignleft",
+                'class' => "alignleft hidden-xs",
             );
             $attachment_id = get_option('msdsocial_default_avatar');
             $thumb = wp_get_attachment_image( $attachment_id, $size, 0, $attr );
         }
+        
+    global $post;
+    $coauthors = get_post_meta($post->ID,'_coauthor_team_members', TRUE);
+    if($coauthors){
+        $total_coauthors = count($coauthors);
+        $i = 0;
+        foreach($coauthors AS $coauthor){
+            $i++;
+            $coauthor_data = get_post_meta($coauthor);
+            $args = array(
+            'post_type' => 'team_member',
+            'meta_key'  => '_team_member__team_user_id',
+            'meta_value'=> $coauthor_data['_team_member__team_user_id'][0]
+        );
+        $coauthor_bio = array_pop(get_posts($args));
+            if($coauthor_bio){
+                $coauthor_attr = array(
+                    'class' => "alignleft hidden-xs",
+                    'alt'   => trim($coauthor_bio->post_title),
+                    'title' => trim($coauthor_bio->post_title),
+                );
+                $thumb .= get_the_post_thumbnail($coauthor_bio->ID,$size,$coauthor_attr);
+            } else {
+                $attr = array(
+                    'class' => "alignleft",
+                );
+                $attachment_id = get_option('msdsocial_default_avatar');
+                $thumb .= wp_get_attachment_image( $attachment_id, $size, 0, $attr );
+            }
+        }
+    }
         if($return){
             return $thumb;
         }
