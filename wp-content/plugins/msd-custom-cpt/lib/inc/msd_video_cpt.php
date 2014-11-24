@@ -561,7 +561,14 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
         print '<div class="wrap">
         <br />
-        <iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+        if($instance['more_url'] != ''){
+            print '<div class="link">
+                    <a class="readmore" target="_self" href="'.$instance['more_url'].'">More Videos ></a>
+                    <div class="clear"></div>
+                    </div>';
+        }
+        print '
         <div class="clearfix"><br /></div>
         </div>';
         echo $after_widget;
@@ -569,12 +576,16 @@ class MSD_Widget_Video_Remix extends WP_Widget {
     function update( $new_instance, $old_instance ) {
         $instance = $old_instance;
         $instance['tags'] = $new_instance['tags'];
+        $instance['more_url'] = $new_instance['more_url'];
         return $instance;
     }
     function form( $instance ) {
-        $instance = wp_parse_args( (array) $instance, array( 'tags' => '' ) );
-        $ret = '<p><label for="'.$this->get_field_id('tags').'">'._e('Tags').'</label>
+        $instance = wp_parse_args( (array) $instance, array( 'tags' => '', 'more_url' => '' ) );
+        $ret = '<p><label for="'.$this->get_field_id('tags').'">'.__('Tags').'</label>
         <input class="widefat" id="'.$this->get_field_id('tags').'" name="'.$this->get_field_name('tags').'" type="text" value="'.esc_attr($instance['tags']).'" />
+        </p>';
+        $ret .= '<p><label for="'.$this->get_field_id('more_url').'">'.__('URL for More Videos').'</label>
+        <input class="widefat" id="'.$this->get_field_id('more_url').'" name="'.$this->get_field_name('more_url').'" type="text" value="'.esc_attr($instance['more_url']).'" />
         </p>';
         print $ret;
     }
