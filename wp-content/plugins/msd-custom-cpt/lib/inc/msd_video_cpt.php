@@ -569,7 +569,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
                     </div>';
         }
         print '
-        <div class="clearfix"><br /></div>
+        <div class="clearfix"></div>
         </div>';
         echo $after_widget;
     }
