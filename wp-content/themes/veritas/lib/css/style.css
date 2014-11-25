@@ -7459,6 +7459,10 @@ main.content .index-header a:hover {
     width: 50%;
   }
 }
+.page .entry-content .recent-viewpoints section .thumb-wrapper {
+  width: 130px;
+  height: 100%;
+}
 .page .entry-content .recent-viewpoints section h2 {
   font-size: 1.8rem;
   margin-bottom: 0;
