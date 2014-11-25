@@ -384,6 +384,7 @@ function msdlab_author_image($return = FALSE){
             }
         }
     }
+        $thumb = '<div class="alignleft thumb-wrapper">'.$thumb.'</div>';
         if($return){
             return $thumb;
         }
