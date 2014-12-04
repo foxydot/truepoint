@@ -226,8 +226,12 @@ function msdlab_modify_breadcrumb_clickage($crumb){
 
 function msdlab_jank_the_cpt_breadcrumb($crumb){
    //ts_data($crumb);
-    if(is_cpt('post') && is_single()){
-        $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-us/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+    if(is_cpt('post')){
+        if(is_single()){
+            $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-us/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+        } else {
+            $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-us/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
+        }
     } else {
         $pattern = array(
             '/Team Members/i',
