@@ -6978,7 +6978,7 @@ li.comment {
 #content hr {
   background: #fff;
   border: 0;
-  border-top: 1px dotted #bbb;
+  border-top: 1px solid #dadfe1;
   color: #fff;
   clear: both;
   margin-bottom: 30px;
