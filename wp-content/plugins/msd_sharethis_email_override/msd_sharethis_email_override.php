@@ -15,9 +15,7 @@ class MSDSharethisEmailOverride{
     
     function display_button(){
         $display_string = '
-                
-        
-    <a href="mailto:?subject='.get_the_title().'&body=Here is something from Truepoint Wealth Counsel that might interest you:%0D%0A%0D%0A'.get_the_title().'%0D%0A'.get_the_permalink().'" target="_blank" st_title="'.get_the_title().'" st_url="'.get_the_permalink().'" class="msdlab_email">
+ <a href="mailto:?subject='.get_the_title().'&body=Here is something from Truepoint Wealth Counsel that might interest you:%0D%0A%0D%0A'.get_the_title().'%0D%0A'.get_permalink().'" target="_blank" st_title="'.get_the_title().'" st_url="'.get_permalink().'" class="msdlab_email">
         <span class="stButton" style="text-decoration: none; color: rgb(0, 0, 0); display: inline-block; cursor: pointer; padding-left: 0px; padding-right: 0px; width: 16px;top:3px;">
             <span class="chicklets email"></span>
         </span>
