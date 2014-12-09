@@ -6975,7 +6975,7 @@ li.comment {
 .genesis-grid-odd {
   margin: 0 0 20px;
 }
-#content hr {
+.entry-content hr {
   background: #fff;
   border: 0;
   border-top: 1px solid #dadfe1;
