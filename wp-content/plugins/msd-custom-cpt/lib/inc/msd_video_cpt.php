@@ -17,10 +17,11 @@ class MSDVideoCPT {
      * PHP 5 Constructor
      */
     function __construct(){
-        global $wpalchemy_media_access;
+        global $wpalchemy_media_access,$current_screen;
         
         $this->plugin_url = plugin_dir_url('msd-custom-cpt/msd-custom-cpt.php');
         $this->plugin_path = plugin_dir_path('msd-custom-cpt/msd-custom-cpt.php');
+        
         
         add_action( 'init', array(&$this,'register_cpt_video') );
         add_action( 'init', array(&$this,'register_taxonomy_video_tags') );
@@ -40,8 +41,7 @@ class MSDVideoCPT {
         add_filter( 'enter_title_here', array(&$this,'change_default_title') );
         wp_enqueue_script('lazy-bootstrap-carousel',$this->plugin_url.'lib/js/lazy-bootstrap-carousel.js',array('jquery','bootstrap-jquery'));
         wp_enqueue_script('msd-video-jquery',$this->plugin_url.'lib/js/msd-video.jquery.js',array('jquery','bootstrap-jquery'));
-        if($screen->post_type == 'msd_video')
-            add_action('admin_footer',array(&$this,'info_footer_hook') );
+        add_action('admin_footer',array(&$this,'info_footer_hook') );
 
         if(!class_exists('WPAlchemy_MediaAccess')){
             include_once (WP_CONTENT_DIR . '/wpalchemy/MediaAccess.php');
@@ -536,10 +536,13 @@ function change_default_title( $title ){
     
     function info_footer_hook()
     {
+      if($current_screen->post_type == $this->cpt){
+        
         ?><script type="text/javascript">
             jQuery('#titlediv').after(jQuery('#_video_metabox'));
             jQuery('#postdivrich').hide();
         </script><?php
+        }
     }
 }
 $video_cpt = new MSDVideoCPT();
@@ -562,7 +565,7 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         print '<div class="wrap">
         <br />
         <iframe src="'.$video_url.'?title=0&amp;byline=0&amp;portrait=0" width="321" height="190" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-        if($instance['more_url'] != ''){
+        if(isset($instance['more_url']) && $instance['more_url'] != ''){
             print '<div class="link">
                     <a class="readmore" target="_self" href="'.$instance['more_url'].'">More Videos ></a>
                     <div class="clear"></div>
