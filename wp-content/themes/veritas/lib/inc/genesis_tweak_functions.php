@@ -711,3 +711,17 @@ function my_embed_oembed_html( $html ) {
     return preg_replace( '@src="https?:@', 'src="', $html );
 }
 add_filter( 'embed_oembed_html', 'my_embed_oembed_html' );
+
+global $quarterly_insights;
+$quarterly_insights = new WPAlchemy_MetaBox(array
+(
+    'id' => '_qi',
+    'title' => 'Quarterly Insights',
+    'types' => array('page'),
+    'context' => 'normal', // same as above, defaults to "normal"
+    'priority' => 'high', // same as above, defaults to "high"
+    'template' => get_stylesheet_directory() . '/lib/template/quarterly-insights.php',
+    'autosave' => TRUE,
+    'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
+    'prefix' => '_qi_' // defaults to NULL
+));
