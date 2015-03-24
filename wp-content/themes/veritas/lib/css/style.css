@@ -1926,16 +1926,16 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #999999;
 }
 .form-control::-webkit-input-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control:-moz-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control::-moz-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control:-ms-input-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control {
   display: block;
@@ -7736,6 +7736,15 @@ main.content .index-header a:hover {
 .page .entry-content .video-grid ul.grid li:before {
   content: "";
   margin-right: 0;
+}
+.page-template-quarterly-insights-php .supplemental-anchors {
+  margin: 6rem 0;
+}
+.page-template-quarterly-insights-php .supplemental-anchors ul {
+  margin-left: 2rem;
+}
+.page-template-quarterly-insights-php .supplemental-article {
+  margin: 6rem 0;
 }
 /**** Isotope filtering ****/
 .isotope-item {

@@ -43,7 +43,7 @@ function msdlab_add_supplemental(){
             $thumb = wp_get_attachment_image( $attachment_id, $size, 0, $attr );
         }
         $links .= '<li><a href="#'.sanitize_title_with_dashes($sup['supplement-title']).'">'.$sup['supplement-title'].'</a></li>';
-        $content .= '<div class="row">'.$thumb.'
+        $content .= '<div class="row supplemental-article">'.$thumb.'
         <header class="entry-header">
         <h2 itemprop="headline" id="'.sanitize_title_with_dashes($sup['supplement-title']).'" class="entry-title">'.$sup['supplement-title'].'</h2>
         <p class="entry-meta">Contributed by <span itemtype="http://schema.org/Person" itemscope="itemscope" itemprop="author" class="entry-author"><a rel="author" itemprop="url" class="entry-author-link" href="'.get_the_permalink($author_bio->ID).'"><span itemprop="name" class="entry-author-name">'.trim($author_bio->post_title).'</span></a></span><br />
@@ -51,8 +51,8 @@ function msdlab_add_supplemental(){
         </header>
         '.apply_filters('the_content',$sup['supplement-content']).'</div>';
     }
-    print '<h2>More Quarterly Insights</h2>
-    <ul class="qi_links">'.$links.'</ul>';
+    print '<div class="supplemental-anchors"><h2 class="entry-subtitle">More Quarterly Insights</h2>
+    <ul class="qi_links">'.$links.'</ul></div>';
     print $content;
 }
 
