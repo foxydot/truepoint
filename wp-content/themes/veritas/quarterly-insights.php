@@ -7,13 +7,15 @@ global $quarterly_insights, $qi_meta;
 $qi_meta = $quarterly_insights->the_meta();
 
 remove_action( 'genesis_loop', 'genesis_do_loop' );
-add_action( 'genesis_before_content_sidebar_wrap', 'msdlab_do_qi_header' );
+add_action( 'genesis_before_loop', 'msdlab_do_qi_header' );
 //add_action( 'genesis_loop', 'msdlab_do_qi_loop' );
 add_action( 'genesis_after_loop', 'msdlab_add_supplemental');
-add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
+//add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
+//remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
+
 
 function msdlab_do_qi_header(){
-    $ret = '<div class="orange-banner row"><div class="wrap"><i class="fa fa-calendar-o"><span class="icon-fill">Q1</span></i> Quarterly Insights</div></div>';
+    $ret = '<div class="orange-banner"><div class="wrap"><i class="fa fa-calendar-o"><span class="icon-fill">Q1</span></i> Quarterly Insights</div></div>';
     print $ret;
 }
 
@@ -50,19 +52,18 @@ function msdlab_add_supplemental(){
             $thumb = wp_get_attachment_image( $attachment_id, $size, 0, $attr );
         }
         $links .= '<li><a href="#'.sanitize_title_with_dashes($sup['supplement-title']).'">'.$sup['supplement-title'].'</a></li>';
-        $content .= '<div class="supplemental-article col-md-6 col-sm-12">
-        <header class="entry-header">
-        <h4 itemprop="headline" id="'.sanitize_title_with_dashes($sup['supplement-title']).'" class="supplement-title">'.$sup['supplement-title'].'</h4>
+        $content .= '<div class="supplemental-article">
+        <header class="entry-header">'.$thumb.'
+        <h2 itemprop="headline" id="'.sanitize_title_with_dashes($sup['supplement-title']).'" class="entry-title">'.$sup['supplement-title'].'</h2>
         <p class="entry-meta">Contributed by <span itemtype="http://schema.org/Person" itemscope="itemscope" itemprop="author" class="entry-author"><a rel="author" itemprop="url" class="entry-author-link" href="'.get_the_permalink($author_bio->ID).'"><span itemprop="name" class="entry-author-name">'.trim($author_bio->post_title).'</span></a></span><br />
         <span class="job-title">'.$position.'</span>
-        </header>'.$thumb.'
+        </header>
         '.apply_filters('the_content',$sup['supplement-content']).'</div>';
     }
     //print '<div class="supplemental-anchors"><h2 class="entry-subtitle">More Quarterly Insights</h2>';
-    //print '<ul class="qi_links">'.$links.'</ul></div>';
+    print '<ul class="qi_links">'.$links.'</ul>';
     print $content;
 }
-remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 
 function msdlab_qi_footer_js(){
     print '<script type="text/javascript">
