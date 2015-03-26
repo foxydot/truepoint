@@ -65,7 +65,7 @@ function msdlab_add_supplemental(){
 remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 
 function msdlab_qi_footer_js(){
-    print '<script type="text/css">
+    print '<script type="text/javascript">
     jQuery(document).ready(function($) {
         $(".supplemental-article").equalHeightColumns();
     });
