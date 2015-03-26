@@ -10,6 +10,7 @@ remove_action( 'genesis_loop', 'genesis_do_loop' );
 add_action( 'genesis_before_content_sidebar_wrap', 'msdlab_do_qi_header' );
 //add_action( 'genesis_loop', 'msdlab_do_qi_loop' );
 add_action( 'genesis_after_loop', 'msdlab_add_supplemental');
+add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
 
 function msdlab_do_qi_header(){
     $ret = '<div class="orange-banner row"><div class="wrap"><i class="fa fa-calendar-o"><span class="icon-fill">Q1</span></i> Quarterly Insights</div></div>';
@@ -63,4 +64,11 @@ function msdlab_add_supplemental(){
 }
 remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 
+function msdlab_qi_footer_js(){
+    print '<script type="text/css">
+    jQuery(document).ready(function($) {
+        $(".supplemental-article").equalHeightColumns();
+    });
+    </script>';
+}
 genesis();
