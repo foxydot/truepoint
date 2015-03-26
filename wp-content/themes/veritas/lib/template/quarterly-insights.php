@@ -12,6 +12,7 @@ if (is_admin()){
 <div class="my_meta_control">
     <p id="warning" style="display: none;background:lightYellow;border:1px solid #E6DB55;padding:5px;">Order has changed. Please click Save or Update to preserve order.</p>
     <div class="table">
+        <?php /* ?>
     <div class="row">
         <div class="insight box">
             <div class="cell">
@@ -26,6 +27,7 @@ if (is_admin()){
         </div>
     </div>
     <div class="row"><hr></div>
+        <?php */ ?>
     <?php $i = 1; ?>
     <?php while($mb->have_fields_and_multi('supplements')): ?>
     <?php $mb->the_group_open(); ?>
