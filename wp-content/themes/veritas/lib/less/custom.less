@@ -610,18 +610,22 @@ main.content{
     }
   }*/
 }
-
-.qi-widget{
-  ul{
-    li{
-      &:before{
-        content: '•';
-        color: @orange;
+.sidebar{
+  .qi-widget{
+    .text-widget{
+      ul{
+        li{
+          text-indent: -2rem;
+          &:before{
+            content: '• ';
+            color: @orange;
+          }
+        }
+      }
+      .readmore{
+        .button(@orange);
       }
     }
-  }
-  .readmore{
-    .button(@orange);
   }
 }
 

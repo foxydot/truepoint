@@ -7796,11 +7796,14 @@ main.content .index-header a:hover {
   padding: 1rem;
   color: #ffffff;
 }
-.qi-widget ul li:before {
-  content: '•';
+.sidebar .qi-widget .text-widget ul li {
+  text-indent: -2rem;
+}
+.sidebar .qi-widget .text-widget ul li:before {
+  content: '• ';
   color: #de641f;
 }
-.qi-widget .readmore {
+.sidebar .qi-widget .text-widget .readmore {
   background-color: #de641f;
   -webkit-border-radius: 5px;
   -webkit-background-clip: padding-box;
