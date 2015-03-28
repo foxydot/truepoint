@@ -7796,6 +7796,32 @@ main.content .index-header a:hover {
   padding: 1rem;
   color: #ffffff;
 }
+.qi-widget ul li:before {
+  content: '•';
+  color: #de641f;
+}
+.qi-widget .readmore {
+  background-color: #de641f;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
+  border: 0.5px solid #843c13;
+  -webkit-filter: drop-shadow(0px 0px 2px 0.2px);
+  -moz-filter: drop-shadow(0px 0px 2px 0.2px);
+  -ms-filter: drop-shadow(0px 0px 2px 0.2px);
+  filter: drop-shadow(0px 0px 2px 0.2px);
+  padding: 6px 24px;
+  font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
+  color: #FFFFFF !important;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+}
 /**** Isotope filtering ****/
 .isotope-item {
   z-index: 2;
