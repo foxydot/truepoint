@@ -70,11 +70,19 @@ function msdlab_add_supplemental(){
 function msdlab_qi_footer_js(){
     print '<script type="text/javascript">
     jQuery(document).ready(function($) {
-        $(".supplemental-article").equalHeightColumns();
+        //$(".supplemental-article").equalHeightColumns();
         $(".back-to-top a").click(function(event){
             event.preventDefault();
             $("body,html").animate({
                 scrollTop: 0 ,
+                }, 500
+            );
+        });
+        $(".qi_links li a").click(function(event){
+            event.preventDefault();
+            var id = $(this).attr("href");
+            $("body,html").animate({
+                scrollTop: $(id).offset().top,
                 }, 500
             );
         });
