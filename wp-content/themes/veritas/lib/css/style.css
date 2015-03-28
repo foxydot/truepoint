@@ -7797,7 +7797,8 @@ main.content .index-header a:hover {
   color: #ffffff;
 }
 .sidebar .qi-widget .textwidget ul li {
-  text-indent: -2rem;
+  text-indent: -1.35rem;
+  margin-left: 1rem;
 }
 .sidebar .qi-widget .textwidget ul li:before {
   content: '• ';
