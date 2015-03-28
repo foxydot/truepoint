@@ -113,7 +113,7 @@ class quarterlyInsights{
     {
         ?><script type="text/javascript">
             jQuery('#_qi_metabox').after(jQuery('#postdivrich'));
-            jQuery('#postdivrich').hide();
+            //jQuery('#postdivrich').hide();
         </script><?php
     }
 }

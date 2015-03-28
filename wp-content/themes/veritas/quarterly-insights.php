@@ -10,7 +10,7 @@ remove_action( 'genesis_loop', 'genesis_do_loop' );
 add_action( 'genesis_before_loop', 'msdlab_do_qi_header' );
 //add_action( 'genesis_loop', 'msdlab_do_qi_loop' );
 add_action( 'genesis_after_loop', 'msdlab_add_supplemental');
-//add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
+add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
 //remove_action('genesis_before_content_sidebar_wrap', 'msdlab_do_breadcrumbs'); //to outside of the loop area
 
 
@@ -58,7 +58,9 @@ function msdlab_add_supplemental(){
         <p class="entry-meta">Contributed by <span itemtype="http://schema.org/Person" itemscope="itemscope" itemprop="author" class="entry-author"><a rel="author" itemprop="url" class="entry-author-link" href="'.get_the_permalink($author_bio->ID).'"><span itemprop="name" class="entry-author-name">'.trim($author_bio->post_title).'</span></a></span><br />
         <span class="job-title">'.$position.'</span>
         </header>
-        '.apply_filters('the_content',$sup['supplement-content']).'</div>';
+        '.apply_filters('the_content',$sup['supplement-content']).'
+        <div class="back-to-top"><a href="#">Back to Top <i class="fa fa-angle-up"></i></a></div>
+        </div>';
     }
     //print '<div class="supplemental-anchors"><h2 class="entry-subtitle">More Quarterly Insights</h2>';
     print '<ul class="qi_links">'.$links.'</ul>';
@@ -69,6 +71,13 @@ function msdlab_qi_footer_js(){
     print '<script type="text/javascript">
     jQuery(document).ready(function($) {
         $(".supplemental-article").equalHeightColumns();
+        $(".back-to-top a").click(function(event){
+            event.preventDefault();
+            $("body,html").animate({
+                scrollTop: 0 ,
+                }, 500
+            );
+        });
     });
     </script>';
 }

@@ -7749,15 +7749,12 @@ main.content .index-header a:hover {
 }
 .page-template-quarterly-insights-php .orange-banner {
   background: #de641f;
-  padding: 0.5em 1em;
+  padding: 1rem;
   margin-bottom: 2rem;
   font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
   font-weight: normal;
+  font-size: 2rem;
   color: #ffffff;
-  text-transform: uppercase;
-}
-.page-template-quarterly-insights-php .orange-banner i.fa {
-  font-size: 2em;
 }
 .page-template-quarterly-insights-php .orange-banner i.fa .icon-fill {
   font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
@@ -7767,6 +7764,7 @@ main.content .index-header a:hover {
   position: relative;
   left: -1.8em;
   top: -0.2em;
+  margin-right: -1rem;
 }
 .page-template-quarterly-insights-php .qi_links {
   margin: 6rem;
@@ -7785,6 +7783,18 @@ main.content .index-header a:hover {
 .page-template-quarterly-insights-php .supplemental-article img {
   float: left !important;
   margin-right: 1rem;
+}
+.page-template-quarterly-insights-php .supplemental-article header {
+  min-height: 120px;
+}
+.page-template-quarterly-insights-php .supplemental-article .back-to-top {
+  margin-bottom: 6rem;
+  text-align: right;
+}
+.page-template-quarterly-insights-php .supplemental-article .back-to-top a {
+  background: #de641f;
+  padding: 1rem;
+  color: #ffffff;
 }
 /**** Isotope filtering ****/
 .isotope-item {
