@@ -6,8 +6,8 @@ Template Name: Quarterly Insights
 global $quarterly_insights, $qi_meta;
 $qi_meta = $quarterly_insights->the_meta();
 
-remove_action( 'genesis_loop', 'genesis_do_loop' );
-add_action( 'genesis_before_loop', 'msdlab_do_qi_header' );
+//remove_action( 'genesis_loop', 'genesis_do_loop' );
+//add_action( 'genesis_before_loop', 'msdlab_do_qi_header' );
 //add_action( 'genesis_loop', 'msdlab_do_qi_loop' );
 add_action( 'genesis_after_loop', 'msdlab_add_supplemental');
 add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
@@ -15,7 +15,7 @@ add_action( 'print_footer_scripts', 'msdlab_qi_footer_js');
 
 
 function msdlab_do_qi_header(){
-    $ret = '<div class="orange-banner"><div class="wrap"><i class="fa fa-calendar-o"><span class="icon-fill">Q1</span></i> Quarterly Insights</div></div>';
+    $ret = '<div class="orange-banner"><div class="wrap">Quarterly Insights</div></div>';
     print $ret;
 }
 

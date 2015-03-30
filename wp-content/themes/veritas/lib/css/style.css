@@ -7747,16 +7747,18 @@ main.content .index-header a:hover {
     }
   }*/
 }
-.page-template-quarterly-insights-php .orange-banner {
+.page-template-quarterly-insights-php .orange-banner,
+.page-template-quarterly-insights-php article .entry-title {
   background: #de641f;
   padding: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
   font-weight: normal;
   font-size: 2rem;
   color: #ffffff;
 }
-.page-template-quarterly-insights-php .orange-banner i.fa .icon-fill {
+.page-template-quarterly-insights-php .orange-banner i.fa .icon-fill,
+.page-template-quarterly-insights-php article .entry-title i.fa .icon-fill {
   font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
   font-weight: normal;
   font-weight: bold;
@@ -7765,6 +7767,12 @@ main.content .index-header a:hover {
   left: -1.8em;
   top: -0.2em;
   margin-right: -1rem;
+}
+.page-template-quarterly-insights-php article .entry-subtitle {
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
 }
 .page-template-quarterly-insights-php .qi_links {
   margin: 6rem;
