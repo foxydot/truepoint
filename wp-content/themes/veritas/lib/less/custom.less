@@ -550,6 +550,94 @@ main.content{
   }
 }
 
+.page-template-quarterly-insights-php {
+  .orange-banner, article .entry-title{
+    background: @orange;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    .customsanserif;
+    font-size: 2rem;
+    color: @white;
+    i.fa{
+      .icon-fill{
+        .customsanserif;
+        font-weight: bold;
+        font-size: 0.4em;
+        position: relative;
+        left: -1.8em;
+        top: -0.2em;
+        margin-right: -1rem;
+      }
+    }
+  }
+  article .entry-subtitle{
+    font-weight: 400;
+    margin-bottom: 0;
+    font-size: 1.55rem;
+  }
+  article .entry-content p.last-child{
+    margin-bottom: 0;
+  }
+  .qi_links{
+    margin: 3rem;
+  }
+  .supplemental-article{
+    padding: 2rem 0;
+    /*border-bottom: 1px solid @ltgrey;
+    h4.supplement-title{
+      margin: 0;
+    }
+    .entry-meta{
+      margin: 0 0 1rem 0;
+      font-size: 0.8em;
+    }*/
+    img{
+      .pull-left;
+      margin-right: 1rem;
+    }
+    header{
+      min-height: 120px;
+    }
+    .back-to-top{
+      margin-bottom: 6rem;
+      text-align: right;
+      a{
+      background: @orange;
+      padding: 1rem;
+        color: @white;
+      }
+    }
+  }
+  
+  /*.supplemental-article.even{
+    border-left: 1px solid @ltgrey;
+    img{
+      .pull-right;
+      margin-right: 0;
+      margin-left: 1rem;
+    }
+  }*/
+}
+.sidebar{
+  .qi-widget{
+    .textwidget{
+      ul{
+        li{
+          text-indent: -1.35rem;
+          margin-left: 1rem;
+          &:before{
+            content: '• ';
+            color: @orange;
+          }
+        }
+      }
+      .readmore{
+        .button(@orange);
+      }
+    }
+  }
+}
+
 /**** Isotope filtering ****/
 
 .isotope-item {

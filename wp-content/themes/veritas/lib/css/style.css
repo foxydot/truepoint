@@ -1926,16 +1926,16 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #999999;
 }
 .form-control::-webkit-input-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control:-moz-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control::-moz-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control:-ms-input-placeholder {
-  color: #ff69b4;
+  color: hotpink;
 }
 .form-control {
   display: block;
@@ -7736,6 +7736,105 @@ main.content .index-header a:hover {
 .page .entry-content .video-grid ul.grid li:before {
   content: "";
   margin-right: 0;
+}
+.page-template-quarterly-insights-php {
+  /*.supplemental-article.even{
+    border-left: 1px solid @ltgrey;
+    img{
+      .pull-right;
+      margin-right: 0;
+      margin-left: 1rem;
+    }
+  }*/
+}
+.page-template-quarterly-insights-php .orange-banner,
+.page-template-quarterly-insights-php article .entry-title {
+  background: #de641f;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-weight: normal;
+  font-size: 2rem;
+  color: #ffffff;
+}
+.page-template-quarterly-insights-php .orange-banner i.fa .icon-fill,
+.page-template-quarterly-insights-php article .entry-title i.fa .icon-fill {
+  font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-weight: normal;
+  font-weight: bold;
+  font-size: 0.4em;
+  position: relative;
+  left: -1.8em;
+  top: -0.2em;
+  margin-right: -1rem;
+}
+.page-template-quarterly-insights-php article .entry-subtitle {
+  font-weight: 400;
+  margin-bottom: 0;
+  font-size: 1.55rem;
+}
+.page-template-quarterly-insights-php article .entry-content p.last-child {
+  margin-bottom: 0;
+}
+.page-template-quarterly-insights-php .qi_links {
+  margin: 3rem;
+}
+.page-template-quarterly-insights-php .supplemental-article {
+  padding: 2rem 0;
+  /*border-bottom: 1px solid @ltgrey;
+    h4.supplement-title{
+      margin: 0;
+    }
+    .entry-meta{
+      margin: 0 0 1rem 0;
+      font-size: 0.8em;
+    }*/
+}
+.page-template-quarterly-insights-php .supplemental-article img {
+  float: left !important;
+  margin-right: 1rem;
+}
+.page-template-quarterly-insights-php .supplemental-article header {
+  min-height: 120px;
+}
+.page-template-quarterly-insights-php .supplemental-article .back-to-top {
+  margin-bottom: 6rem;
+  text-align: right;
+}
+.page-template-quarterly-insights-php .supplemental-article .back-to-top a {
+  background: #de641f;
+  padding: 1rem;
+  color: #ffffff;
+}
+.sidebar .qi-widget .textwidget ul li {
+  text-indent: -1.35rem;
+  margin-left: 1rem;
+}
+.sidebar .qi-widget .textwidget ul li:before {
+  content: '• ';
+  color: #de641f;
+}
+.sidebar .qi-widget .textwidget .readmore {
+  background-color: #de641f;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
+  border: 0.5px solid #843c13;
+  -webkit-filter: drop-shadow(0px 0px 2px 0.2px);
+  -moz-filter: drop-shadow(0px 0px 2px 0.2px);
+  -ms-filter: drop-shadow(0px 0px 2px 0.2px);
+  filter: drop-shadow(0px 0px 2px 0.2px);
+  padding: 6px 24px;
+  font-family: 'Raleway', Helvetica, "Helvetica Neue", Arial, sans-serif;
+  color: #FFFFFF !important;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
 }
 /**** Isotope filtering ****/
 .isotope-item {
