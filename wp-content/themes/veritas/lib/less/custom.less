@@ -408,16 +408,55 @@ main.content{
   }
 }
 #filters{
-  padding: 1rem;
+  padding: 0 0 1rem 0;
   a{
     color: @orange;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
     .border-radius(12px);
+  }
+  a.first-child {
+    padding-left: 0;
+  }
+  a.last-child{
+    padding-right: 0;
   }
   a:hover,a.active{
     color: @blue;
-    font-weight: 700;
     text-decoration: none;
+  }
+}
+#filters.allbutton{
+  padding: 0;
+  margin-top: -1rem;
+  a{
+    border: 0.5px solid;
+    border-radius: 20px;
+    font-weight: 700;
+    opacity: 1;
+    padding: 0.3rem 1rem 0.3rem 0.3rem;
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -ms-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+    position: relative;
+    top: -1rem;
+    .logo-mark{
+      background: none repeat scroll 0 0 @orange;
+      height: 20px;
+      margin: 0 0.5em 0 0;
+      position: relative;
+      top: -2px;
+      width: 20px;
+    }
+    &:hover{
+    .logo-mark{
+      background: @blue;
+    }
+    }
+  }
+  a.active{
+    opacity: 0;
   }
 }
 .team-member{
