@@ -6,7 +6,7 @@ add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_c
 function msdlab_team_filter(){
    $msd_team_display = new MSDTeamDisplay;
    $terms = $msd_team_display->get_all_practice_areas();
-   $allbutton = '<div id="filters" class="allbutton"><a href="#" data-filter="*" class="active"><img class="img-circle logo-mark even" src="http://truepoint.oc/wp-content/themes/veritas/lib/img/logo_mark.svg">View All Team Members</a></div>';
+   $allbutton = '<div id="filters" class="allbutton"><a href="#" data-filter="*" class="active">View All Team Members</a></div>';
    foreach($terms AS $term){
        $filters[] = '<a href="#" data-filter=".'.$term->slug.'">'.$term->name.'</a>';
    }
