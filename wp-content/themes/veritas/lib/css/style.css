@@ -7580,7 +7580,7 @@ main.content .index-header a:hover {
   margin-top: -1rem;
 }
 #filters.allbutton a {
-  border: 0.5px solid;
+  border: 1px solid;
   border-radius: 20px;
   font-weight: 700;
   opacity: 1;
