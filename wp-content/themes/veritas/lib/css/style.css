@@ -7580,11 +7580,10 @@ main.content .index-header a:hover {
   margin-top: -1rem;
 }
 #filters.allbutton a {
-  border: 1px solid;
-  border-radius: 20px;
-  font-weight: 700;
+  border: 0px solid;
+  border-radius: 0;
   opacity: 1;
-  padding: 0.3rem 1rem;
+  padding: 0.3rem 0;
   -webkit-transition: opacity 1s ease-in-out;
   -moz-transition: opacity 1s ease-in-out;
   -ms-transition: opacity 1s ease-in-out;
