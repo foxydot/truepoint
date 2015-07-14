@@ -7556,7 +7556,7 @@ main.content .index-header a:hover {
 }
 #filters a {
   color: #de641f;
-  padding: 0 0.5rem;
+  padding: 0;
   -webkit-border-radius: 12px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 12px;
