@@ -7826,6 +7826,11 @@ main.content .index-header a:hover {
       font-size: 0.8em;
     }*/
 }
+.page-template-quarterly-insights-php .supplemental-article ol,
+.page-template-quarterly-insights-php .supplemental-article ul {
+  margin-left: 40px;
+  margin-left: 4rem;
+}
 .page-template-quarterly-insights-php .supplemental-article img {
   float: left !important;
   margin-right: 1rem;
