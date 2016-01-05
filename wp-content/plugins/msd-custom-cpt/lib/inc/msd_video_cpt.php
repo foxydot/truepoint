@@ -559,8 +559,8 @@ class MSD_Widget_Video_Remix extends WP_Widget {
         echo $before_widget; 
         $post = $video_cpt->get_random_video($instance['tags']);
         $video->the_meta($post->ID);
-        //$video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
-        $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video->get_the_value('video_url'));
+        $video_url = preg_replace('@https?:@i','',$video->get_the_value('video_url'));
+        $video_url = preg_replace('@//vimeo.com/@i','//player.vimeo.com/video/',$video_url);
         print '<h4 class="widget-title widgettitle">'.$post->post_title.'</h4>';
         print '<div class="wrap">
         <br />
