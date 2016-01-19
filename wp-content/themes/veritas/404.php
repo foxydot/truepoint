@@ -1,3 +1,4 @@
+<meta name="robots" content="noindex, follow">
 <?php
 
 //* Remove default loop
