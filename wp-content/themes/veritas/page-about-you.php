@@ -72,7 +72,7 @@ function msdlab_do_post_tabs() {
        }
        
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-        if(ga){
+        if(typeof ga !== 'undefined'){
             if($('.nav-tabs').length > 0){
                 var filter = $('.nav-tabs .active a').attr('href').replace('#','');  
                 ga('send', 'event', 'AboutYouNav', 'Nav', 'Tab: '+filter);
@@ -94,7 +94,9 @@ function msdlab_do_post_tabs() {
             grayscale.reset($(e.target).find('.grayscale'));
             grayscale($(e.relatedTarget).find('.grayscale'));
             var filter = $(e.target).attr('href').replace('#','');  
-            ga('send', 'event', 'AboutYouTabs', 'Click', 'Tab: '+filter);
+            if(typeof ga !== 'undefined'){
+                ga('send', 'event', 'AboutYouTabs', 'Click', 'Tab: '+filter);
+            }
             //console.log(filter);
             $('.about-you-widget-area .widget').show();  
             $('.about-you-widget-area .widget:not(.' + filter + ', .all)').hide();  
