@@ -125,3 +125,14 @@ function msdlab_recent_viewpoints_by_category($atts){
     } 
     return $ret;
 }
+add_shortcode('script','msdlab_javascript_cheater');
+function msdlab_javascript_cheater($attr,$content){
+    $ret = '<script';
+    foreach($attr AS $k=>$v){
+        $ret .= ' $k="$v"';
+    }
+    $ret .= '>';
+    $ret .= apply_filters('the_content',$content);
+    $ret .= '</script>';
+    return $ret;
+}
