@@ -14,7 +14,22 @@ if(!function_exists('ts_data')){
 * A useful troubleshooting function. Dumps variable info in an easy to follow format in a textarea.
 */
 if(!function_exists('ts_var')){
-	function ts_var($var){
-		ts_data(var_export( $var , true ));
-	}
+    function ts_var($var){
+        ts_data(var_export( $var , true ));
+    }
 }
+
+//add_action('genesis_footer','msdlab_trace_actions');
+function msdlab_trace_actions(){
+    global $wp_filter;
+    ts_var( $wp_filter['genesis_before_footer'] );
+}
+
+/*$data = get_userdata( get_current_user_id() );
+ 
+if ( is_object( $data) ) {
+    $current_user_caps = $data->allcaps;
+     
+    // print it to the screen
+    echo '<pre>' . print_r( $current_user_caps, true ) . '</pre>';
+}*/

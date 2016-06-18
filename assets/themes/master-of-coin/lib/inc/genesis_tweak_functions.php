@@ -6,12 +6,13 @@
  */
  function msdlab_add_apple_touch_icons(){
     $ret = '
-<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon.png" rel="apple-touch-icon" />
-<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
-<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
-<link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
-<link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
-<link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon.png" rel="apple-touch-icon" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120" />
+    <link href="'.get_stylesheet_directory_uri().'/lib/img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+    <link rel="shortcut icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="'.get_stylesheet_directory_uri().'/lib/img/favicon.ico" type="image/x-icon">
+    <meta name="format-detection" content="telephone=yes">
     ';
     print $ret;
 }
@@ -67,6 +68,11 @@ function msdlab_pre_header(){
     </div>';
 }
 
+function msdlab_pre_header_sidebar(){
+    print '<div class="widget-area">';
+    dynamic_sidebar( 'pre-header' );
+    print '</div>';
+}
 //add language widget after subnav
 function msdlab_language_widget(){
     $instance = array (
@@ -125,6 +131,15 @@ function msdlab_logo_for_print(){
 
 /*** SIDEBARS ***/
 function msdlab_add_extra_theme_sidebars(){
+	//* Remove the header right widget area
+    //unregister_sidebar( 'header-right' );
+    // REmove seondary sidebar
+    unregister_sidebar( 'sidebar-alt' );
+	genesis_register_sidebar(array(
+    'name' => 'Pre-header Sidebar',
+    'description' => 'Widget above the logo/nav header',
+    'id' => 'pre-header'
+            ));
     genesis_register_sidebar(array(
     'name' => 'Blog Sidebar',
     'description' => 'Widgets on the Blog Pages',
