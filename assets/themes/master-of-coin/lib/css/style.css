@@ -8539,6 +8539,23 @@ img#wpstats {
   padding: inherit;
   text-align: inherit;
 }
+.pre-header {
+  max-height: 50px;
+}
+.pre-header .wrap .widget-area {
+  width: 100%;
+}
+.pre-header .wrap .widget-area .widget_nav_menu .menu li {
+  background-color: #F16528;
+}
+.pre-header .wrap .widget-area .widget_nav_menu .menu li a {
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  font-size: 1.4rem;
+  line-height: 1.625;
+  color: #FFF;
+}
 /*
 Site Header
 ---------------------------------------------------------------------------------------------------- */
@@ -9896,6 +9913,9 @@ Site Footer
   .sectioned-page-wrapper .section.summary .section-body .bkg-white .content {
     margin-left: 0px;
   }
+}
+#rufous-sandbox {
+  display: none !important;
 }
 .site-header .widget-area .widget.widget_text {
   font-family: "Raleway", "Helvetica Neue", "Trebuchet MS", Calibri, sans-serif;

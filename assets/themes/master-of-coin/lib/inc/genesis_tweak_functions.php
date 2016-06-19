@@ -132,7 +132,7 @@ function msdlab_logo_for_print(){
 /*** SIDEBARS ***/
 function msdlab_add_extra_theme_sidebars(){
 	//* Remove the header right widget area
-    //unregister_sidebar( 'header-right' );
+    unregister_sidebar( 'header-right' );
     // REmove seondary sidebar
     unregister_sidebar( 'sidebar-alt' );
 	genesis_register_sidebar(array(

@@ -6,8 +6,12 @@ require_once('genesis_tweak_functions.php');
 add_theme_support( 'html5' );//* Add HTML5 markup structure
 add_theme_support( 'genesis-responsive-viewport' );//* Add viewport meta tag for mobile browsers
 add_theme_support( 'custom-background' );//* Add support for custom background
+add_filter( 'edit_post_link', '__return_false' );
 
 /*** HEADER ***/
+add_action('genesis_before_header','msdlab_pre_header');
+//add_action( 'msdlab_pre_header', 'genesis_do_subnav' );
+add_action('msdlab_pre_header','msdlab_pre_header_sidebar');
 add_action('wp_head','msdlab_add_open_graph_meta',1);
 add_action('wp_head','msdlab_add_apple_touch_icons',1);
 add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the serach bar placeholder
@@ -60,8 +64,6 @@ add_filter( 'genesis_prev_link_text', 'msdlab_newer_link_text', 20);
 /*** FOOTER ***/
 add_theme_support( 'genesis-footer-widgets', 1 ); //adds automatic footer widgets
 
-remove_action('genesis_before_footer','genesis_footer_widget_areas',10);
-add_action('genesis_after_footer','genesis_footer_widget_areas');
 remove_action('genesis_footer','genesis_do_footer'); //replace the footer
 add_action('genesis_footer','msdlab_do_social_footer');//with a msdsocial support one
 
