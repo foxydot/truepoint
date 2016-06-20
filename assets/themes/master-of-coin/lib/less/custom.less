@@ -12,14 +12,29 @@
   }
 }
 
-.page-title-area{
+.page-title-area,.page-footer-area{
   background: @white;
-  .banner{
-    background-image: url(../img/pg_bkg_lifestyle.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    .texturize{
-      .gradient{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  .page-intro,.page-footer{
+    background: fade(@white,70%);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    color: @blue;
+    .entry-title{
+      margin-bottom: 0;
+    }
+    .breadcrumb{
+      margin-bottom: 1.5em;
+    }
+    ul{
+      list-style: none outside none;
+      margin-left: 1em;
+      li:before{
+        content: '\2022';
+        color: @orange;
+        padding-right: 0.5em;
       }
     }
   }
@@ -42,6 +57,7 @@
   }
 }
 .sidebar.sidebar-primary{
+  padding-top: 6rem;
   section.widget.widget_text{
     padding: 2rem;
     margin-bottom: 4rem;

@@ -8150,11 +8150,6 @@ article {
 .site-inner {
   clear: both;
   padding: 0;
-  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFM0UyRTAiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMzMlIiBzdG9wLWNvbG9yPSIjRTNFMkUwIiBzdG9wLW9wYWNpdHk9IjEiLz48c3RvcCBvZmZzZXQ9IjY2JSIgc3RvcC1jb2xvcj0iI0ZGRiIgc3RvcC1vcGFjaXR5PSIxIi8+PHN0b3Agb2Zmc2V0PSI5OSUiIHN0b3AtY29sb3I9IiNGRkYiIHN0b3Atb3BhY2l0eT0iMSIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNsZXNzaGF0LWdlbmVyYXRlZCkiIC8+PC9zdmc+);
-  background-image: -webkit-linear-gradient(left, #E3E2E0 0%, #E3E2E0 33.3%, #FFF 33.4%, #FFF 100%);
-  background-image: -moz-linear-gradient(left, #E3E2E0 0%, #E3E2E0 33.3%, #FFF 33.4%, #FFF 100%);
-  background-image: -o-linear-gradient(left, #E3E2E0 0%, #E3E2E0 33.3%, #FFF 33.4%, #FFF 100%);
-  background-image: linear-gradient(to right, #E3E2E0 0%, #E3E2E0 33.3%, #FFF 33.4%, #FFF 100%);
 }
 /* Column Widths and Positions
 --------------------------------------------- */
@@ -9017,9 +9012,6 @@ main.content {
 /* Entries
 --------------------------------------------- */
 article.entry {
-  border-radius: 3px;
-  margin-bottom: 40px;
-  margin-bottom: 4rem;
   display: block;
 }
 .entry-content h3 {
@@ -9333,9 +9325,6 @@ li.comment {
 Sidebars
 ---------------------------------------------------------------------------------------------------- */
 .sidebar {
-  background: #E3E2E0;
-  color: #B1B1B1;
-  padding: 6rem 2rem 2rem 0;
   height: 100%;
 }
 .sidebar a {
@@ -9880,13 +9869,48 @@ Site Footer
   padding-top: 1.4em;
   line-height: 1.8;
 }
-.page-title-area {
+.page-title-area,
+.page-footer-area {
   background: #FFF;
-}
-.page-title-area .banner {
-  background-image: url(../img/pg_bkg_lifestyle.jpg);
-  background-repeat: no-repeat;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.page-title-area .page-intro,
+.page-footer-area .page-intro,
+.page-title-area .page-footer,
+.page-footer-area .page-footer {
+  background: rgba(255, 255, 255, 0.7);
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: #28449C;
+}
+.page-title-area .page-intro .entry-title,
+.page-footer-area .page-intro .entry-title,
+.page-title-area .page-footer .entry-title,
+.page-footer-area .page-footer .entry-title {
+  margin-bottom: 0;
+}
+.page-title-area .page-intro .breadcrumb,
+.page-footer-area .page-intro .breadcrumb,
+.page-title-area .page-footer .breadcrumb,
+.page-footer-area .page-footer .breadcrumb {
+  margin-bottom: 1.5em;
+}
+.page-title-area .page-intro ul,
+.page-footer-area .page-intro ul,
+.page-title-area .page-footer ul,
+.page-footer-area .page-footer ul {
+  list-style: none outside none;
+  margin-left: 1em;
+}
+.page-title-area .page-intro ul li:before,
+.page-footer-area .page-intro ul li:before,
+.page-title-area .page-footer ul li:before,
+.page-footer-area .page-footer ul li:before {
+  content: '\2022';
+  color: #F16528;
+  padding-right: 0.5em;
 }
 .section-title {
   text-align: center;
@@ -9909,6 +9933,9 @@ Site Footer
 .section-title a:hover {
   text-decoration: none;
   opacity: 1;
+}
+.sidebar.sidebar-primary {
+  padding-top: 6rem;
 }
 .sidebar.sidebar-primary section.widget.widget_text {
   padding: 2rem;

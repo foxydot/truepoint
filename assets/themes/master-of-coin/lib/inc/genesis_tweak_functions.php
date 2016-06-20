@@ -73,28 +73,6 @@ function msdlab_pre_header_sidebar(){
     dynamic_sidebar( 'pre-header' );
     print '</div>';
 }
-//add language widget after subnav
-function msdlab_language_widget(){
-    $instance = array (
-    'type' => 'both',
-    'hide-title' => 'on',
-  );
-  $attr = array();
-  ob_start();
-  the_widget('qTranslateWidget',$instance,$attr);
-  $ret = ob_get_contents();
-  ob_end_clean();
-  preg_match('@<ul.*?>(.*?)</ul>@i',$ret,$matches);
-  return $matches[0];
-}
-
-function msdlab_subnav_right( $menu, $args ) {
-    $args = (array) $args;
-    $langs = msdlab_language_widget();
-    $menu = preg_replace('@<a.*?>Choose Language</a>@i','<a href="#">Choose Language</a>'."\n".$langs,$menu);
-    return $menu;
-}
-
 
  /**
  * Customize search form input
@@ -122,7 +100,6 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
         $form = sprintf( '<form method="get" class="searchform search-form" action="%s" role="search" >%s<input type="text" value="%s" name="s" class="s search-input" onfocus="%s" onblur="%s" /><input type="submit" class="searchsubmit search-submit" value="%s" /></form>', home_url( '/' ), esc_html( $label ), esc_attr( $search_text ), esc_attr( $onfocus ), esc_attr( $onblur ), esc_attr( $button_text ) );
     return $form;
 }
-
 
 function msdlab_logo_for_print(){
     print '<img src="'.get_stylesheet_directory_uri().'/lib/img/logo.png" class="visible-print print-logo" />';
@@ -178,12 +155,62 @@ function msdlab_do_blog_sidebar(){
 /**
  * Move titles
  */
+ 
+function msdlab_maybe_move_title(){
+    global $post;
+    $template_file = get_post_meta($post->ID,'_wp_page_template',TRUE);
+    if(is_front_page()){
+        return;
+    }
+    if(is_page() || is_single()){
+        remove_action('genesis_entry_header','genesis_do_post_title'); //move the title out of the content area
+        add_action('msdlab_title_area','genesis_do_post_title', 5);
+        add_action( 'msdlab_title_area', 'msdlab_do_post_subtitle', 15);
+        add_action( 'msdlab_title_area', 'msdlab_do_post_intro', 20);
+        add_action('msdlab_footer_area','msdlab_do_post_footer');
+        add_action('genesis_after_header','msdlab_do_title_area');
+        add_action('genesis_before_footer','msdlab_do_page_footer_text',5);
+    } elseif(is_home()){
+        add_action('msdlab_title_area','msdlab_do_blog_header');
+        add_action('genesis_after_header','msdlab_do_title_area');
+    } 
+}
+ 
 function msdlab_do_title_area(){
-    print '<div id="page-title-area" class="page-title-area">';
-    print '<div class="wrap">';
-    do_action('msdlab_title_area');
+    global $post;
+    $postid = is_admin()?$_GET['post']:$post->ID;
+    $background = strlen(msdlab_get_thumbnail_url($postid,'full'))>0?' style="background-image:url('.msdlab_get_thumbnail_url($postid,'full').')"':'';
+    $template_file = get_post_meta($postid,'_wp_page_template',TRUE);
+    print '<div id="page-title-area" class="page-title-area"'.$background.'>';
+        print '<div class="wrap">';
+            print '<div class="row"><div class="page-intro col-xs-12 col-sm-8">';
+                do_action('msdlab_title_area');
+            print '</div></div>';
+        print '</div>';
     print '</div>';
+
+}
+
+function msdlab_get_thumbnail_url($post_id = null, $size = 'post-thumbnail'){
+    global $post;
+    if(!$post_id)
+        $post_id = $post->ID;
+    $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($post_id), $size );
+    $url = $featured_image[0];
+    return $url;
+}
+
+
+function msdlab_do_page_footer_text(){
+    if(is_page()){
+        print '<div id="page-footer-area" class="page-footer-area">';
+        print '<div class="wrap">';
+            print '<div class="row"><div class="page-footer col-xs-12 col-sm-8">';
+            do_action('msdlab_footer_area');
+            print '</div></div>';
+        print '</div>';
     print '</div>';
+    }
 }
 
 /**
@@ -228,10 +255,17 @@ function msdlab_do_breadcrumbs() {
 }
 
 function msdlab_breadcrumb_args($args) {
+    $args['home'] = 'ICON';
     $args['labels']['prefix'] = ''; //marks the spot
-    $args['sep'] = ' > ';
+    $args['sep'] = ' / ';
     return $args;
 }
+
+add_filter ( 'genesis_home_crumb', 'msdlab_breadcrumb_home_link' );
+function msdlab_breadcrumb_home_link($crumb){
+    return preg_replace('/ICON/i','<i class="fa fa-home"></i>',$crumb);
+}
+
 function msdlab_modify_breadcrumb_clickage($crumb){
     if(strpos($crumb,'View About Us')!==FALSE){
     $crumb = '<span>'.strip_tags($crumb).'</span>';
