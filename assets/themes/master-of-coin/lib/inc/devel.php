@@ -22,7 +22,7 @@ if(!function_exists('ts_var')){
 //add_action('genesis_footer','msdlab_trace_actions');
 function msdlab_trace_actions(){
     global $wp_filter;
-    ts_var( $wp_filter['genesis_before_footer'] );
+    ts_var( $wp_filter['genesis_breadcrumb_args'] );
 }
 
 /*$data = get_userdata( get_current_user_id() );

@@ -12,32 +12,43 @@
   }
 }
 
-.page-title-area,.page-footer-area{
-  background: @white;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  .page-intro,.page-footer{
-    background: fade(@white,70%);
-    padding-top: 1em;
-    padding-bottom: 1em;
-    color: @blue;
-    .entry-title{
-      margin-bottom: 0;
-    }
-    .breadcrumb{
-      margin-bottom: 1.5em;
-    }
-    ul{
-      list-style: none outside none;
-      margin-left: 1em;
-      li:before{
-        content: '\2022';
-        color: @orange;
-        padding-right: 0.5em;
-      }
+.page-title-area{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#dce5ec+0,a1b6c9+100 */
+background: #dce5ec; /* Old browsers */
+background: -moz-radial-gradient(top, ellipse cover,  #dce5ec 0%, #a1b6c9 100%); /* FF3.6-15 */
+background: -webkit-radial-gradient(top, ellipse cover,  #dce5ec 0%,#a1b6c9 100%); /* Chrome10-25,Safari5.1-6 */
+background: radial-gradient(ellipse at top,  #dce5ec 0%,#a1b6c9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dce5ec', endColorstr='#a1b6c9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+color: @blue;
+padding: 1em 0;
+  .entry-title{
+    margin: 0;
+  }
+}
+
+.breadcrumb{
+  margin-bottom: 1.5em;
+  a{
+    color: @orange;
+  }
+}
+.intro-text,.footer-text{
+  color: @blue;
+  .entry-title{
+    margin-bottom: 0;
+  }
+  ul{
+    list-style: none outside none;
+    margin-left: 1em;
+    li:before{
+      content: '\2022';
+      color: @orange;
+      padding-right: 0.5em;
     }
   }
+}
+.intro-text{
+  margin-bottom: 1.5em;
 }
 .section-title{
   text-align: center;
@@ -57,7 +68,7 @@
   }
 }
 .sidebar.sidebar-primary{
-  padding-top: 6rem;
+  padding-top: 1em;
   section.widget.widget_text{
     padding: 2rem;
     margin-bottom: 4rem;

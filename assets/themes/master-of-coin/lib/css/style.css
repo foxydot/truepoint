@@ -8145,7 +8145,7 @@ Structure and Layout
 .sidebar-secondary section,
 article {
   margin: 0 auto;
-  max-width: 1100px;
+  max-width: 960px;
 }
 .site-inner {
   clear: both;
@@ -8787,10 +8787,10 @@ Site Navigation
 .nav-primary {
   background: #FFF;
   z-index: 800;
-  text-align: center;
+  text-align: left;
 }
 .nav-primary li.menu-item {
-  padding: 0 1.5em 1.5em;
+  padding: 0 0 1.5em;
 }
 .nav-primary li.menu-item a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
@@ -8798,14 +8798,16 @@ Site Navigation
   font-size: 18px;
   font-size: 1.8rem;
   line-height: 1.625;
-  padding: 0.3em;
+  padding: 0.3em 1.25em;
   color: #28449C;
 }
 .nav-primary li.menu-item.first-child {
   padding-left: 0;
+  margin-left: -1.25em;
 }
 .nav-primary li.menu-item.last-child {
   padding-right: 0;
+  margin-right: -1.25em;
 }
 .nav-primary li.menu-item .sub-menu {
   background-color: #FFF;
@@ -9007,7 +9009,7 @@ Site Navigation
 Content Area
 ---------------------------------------------------------------------------------------------------- */
 main.content {
-  padding: 6rem 0 2rem 2rem;
+  padding: 1em 0 2rem 2rem;
 }
 /* Entries
 --------------------------------------------- */
@@ -9869,48 +9871,51 @@ Site Footer
   padding-top: 1.4em;
   line-height: 1.8;
 }
-.page-title-area,
-.page-footer-area {
-  background: #FFF;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-.page-title-area .page-intro,
-.page-footer-area .page-intro,
-.page-title-area .page-footer,
-.page-footer-area .page-footer {
-  background: rgba(255, 255, 255, 0.7);
-  padding-top: 1em;
-  padding-bottom: 1em;
+.page-title-area {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#dce5ec+0,a1b6c9+100 */
+  background: #dce5ec;
+  /* Old browsers */
+  background: -moz-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* FF3.6-15 */
+  background: -webkit-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at top, #dce5ec 0%, #a1b6c9 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce5ec', endColorstr='#a1b6c9', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */
   color: #28449C;
+  padding: 1em 0;
 }
-.page-title-area .page-intro .entry-title,
-.page-footer-area .page-intro .entry-title,
-.page-title-area .page-footer .entry-title,
-.page-footer-area .page-footer .entry-title {
-  margin-bottom: 0;
+.page-title-area .entry-title {
+  margin: 0;
 }
-.page-title-area .page-intro .breadcrumb,
-.page-footer-area .page-intro .breadcrumb,
-.page-title-area .page-footer .breadcrumb,
-.page-footer-area .page-footer .breadcrumb {
+.breadcrumb {
   margin-bottom: 1.5em;
 }
-.page-title-area .page-intro ul,
-.page-footer-area .page-intro ul,
-.page-title-area .page-footer ul,
-.page-footer-area .page-footer ul {
+.breadcrumb a {
+  color: #F16528;
+}
+.intro-text,
+.footer-text {
+  color: #28449C;
+}
+.intro-text .entry-title,
+.footer-text .entry-title {
+  margin-bottom: 0;
+}
+.intro-text ul,
+.footer-text ul {
   list-style: none outside none;
   margin-left: 1em;
 }
-.page-title-area .page-intro ul li:before,
-.page-footer-area .page-intro ul li:before,
-.page-title-area .page-footer ul li:before,
-.page-footer-area .page-footer ul li:before {
+.intro-text ul li:before,
+.footer-text ul li:before {
   content: '\2022';
   color: #F16528;
   padding-right: 0.5em;
+}
+.intro-text {
+  margin-bottom: 1.5em;
 }
 .section-title {
   text-align: center;
@@ -9935,7 +9940,7 @@ Site Footer
   opacity: 1;
 }
 .sidebar.sidebar-primary {
-  padding-top: 6rem;
+  padding-top: 1em;
 }
 .sidebar.sidebar-primary section.widget.widget_text {
   padding: 2rem;
