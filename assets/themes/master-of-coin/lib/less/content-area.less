@@ -11,10 +11,33 @@ main.content{
 article.entry {
   display: block;
 }
+
 .entry-content{
+  h1{
+  }
+  h2{
+  }
   h3{
-    color: @dkgrey;
-    font-weight: 700;
+    .customheader(2.4);
+    font-weight: 400;
+    color: @blue;
+    line-height: 1.25;
+    text-align: left;
+  }
+  h4{
+    .customheader(1.8);
+    font-weight: 600;
+    color: @blue;
+    line-height: 1.25;
+    text-align: left;
+    margin-bottom: 0;
+    }
+  h5{}
+  h6{}
+  pre{}
+  blockquote{
+    p{
+    }
   }
 }
 .entry-content .attachment a,
@@ -24,6 +47,7 @@ article.entry {
 
 .entry-content{
   a,a:link,a:visited{
+    color: @orange;
     text-decoration: underline;
   }
     /**
@@ -116,13 +140,23 @@ article.entry {
   list-style-type: decimal;
 }
 
-.entry-content ul li {
-  list-style-type: disc;
-}
-
 .entry-content ol ol,
 .entry-content ul ul {
   margin-bottom: 0;
+}
+.entry-content{
+  ul{
+    list-style: none outside none;
+    margin-left: 1em;
+    li{
+      list-style: none outside none;
+      &:before{
+        content: '\2022';
+        color: @orange;
+        padding-right: 0.5em;
+      }
+    }
+  }
 }
 
 .entry-content .search-form {
@@ -174,14 +208,15 @@ article.entry {
     text-transform: uppercase;
     max-width: 75%;
   }
+}
+
   .entry-subtitle{
-    .customheader(2.1);
-    font-weight: 300;
+    .customheader(2.4);
+    font-weight: 400;
     color: @blue;
     line-height: 1.25;
     text-align: left;
   }
-}
 
 /* Pagination
 --------------------------------------------- */

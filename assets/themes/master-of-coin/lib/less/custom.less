@@ -40,10 +40,13 @@ padding: 1em 0;
   ul{
     list-style: none outside none;
     margin-left: 1em;
-    li:before{
-      content: '\2022';
-      color: @orange;
-      padding-right: 0.5em;
+    li{
+      list-style: none outside none;
+      &:before{
+        content: '\2022';
+        color: @orange;
+        padding-right: 0.5em;
+      }
     }
   }
 }
@@ -103,26 +106,6 @@ padding: 1em 0;
   }
 }
 
-.text-sizer{
-  display: block;
-  z-index: 90;
-  color: @ltgreen;
-  text-align: right;
-  div{
-    background: fade(@white,80%);
-    width: auto;
-    padding: 0.5em;
-    float: right;
-    i{
-      margin-left: 0.5em;
-      padding: 0.5em;
-      background: @ltgreen;
-      color: @white;
-      cursor: pointer;
-    }
-  }
-}
-
 .msd-fa, .msd-icon{
   &.block{
     display: block;
@@ -146,23 +129,6 @@ padding: 1em 0;
   &.circle{
     &:before{
       border-radius: 50%;
-    }
-  }
-}
-
-//accoridion
-.su-accordion{
-  >p{
-    display: none;
-  }
-  .su-spoiler{
-    .su-spoiler-title{
-      .custombody(1.8);
-      color: @green;
-      .su-spoiler-icon{
-        font-size: 1.8rem;
-        line-height: 1.8;
-      }
     }
   }
 }
