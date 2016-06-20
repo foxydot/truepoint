@@ -112,15 +112,15 @@ Site Navigation
 --------------------------------------------- */
 
 .nav-primary {
-  .customheader(1.4);
-  background: @vltgrey;
+  background: @white;
   z-index: 800;
+  text-align: center;
   li.menu-item{
-    padding: 0 1.6rem;
+    padding: 0 1.5em 1.5em;
     a{
-      padding: 1.6rem 0 1.3rem;
-      color: @black;
-      text-transform: uppercase;
+      .customheader(1.8);
+      padding: 0.3em;
+      color: @blue;
     }
     &.first-child{
       padding-left: 0;
@@ -129,18 +129,18 @@ Site Navigation
       padding-right: 0;
     }
     .sub-menu{
-      background-color: @vltgrey;
+      background-color: @white;
       margin-top: 0px;
       li.menu-item{
-        background-color: @vltgrey;
+        background-color: @white;
         padding: 0 2rem;
         width: 100%;
         position: relative;
         a{
           background-color: transparent;
           border: 0;
-          color: @black;
-          padding: 1rem 0;
+          color: @blue;
+          padding: 0.5em;
           width: 100%;
         }
         .sub-menu{
@@ -152,7 +152,7 @@ Site Navigation
         border: 0;
       }
       li:hover{
-        background-color: darken(@vltgrey,5%);
+        background-color: @orange;
         &>a{
           color: @black;
           text-decoration: none;
@@ -162,7 +162,8 @@ Site Navigation
   }
   li:hover, li.current-menu-item, li.current-menu-ancestor{
     a, a:hover{
-      color: @black;
+      background-color: @orange;
+      color: @white;
       text-decoration: none;
       }
   }

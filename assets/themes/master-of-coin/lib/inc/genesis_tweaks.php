@@ -7,7 +7,15 @@ add_theme_support( 'html5' );//* Add HTML5 markup structure
 add_theme_support( 'genesis-responsive-viewport' );//* Add viewport meta tag for mobile browsers
 add_theme_support( 'custom-background' );//* Add support for custom background
 add_filter( 'edit_post_link', '__return_false' );
-
+//* Add support for structural wraps
+add_theme_support( 'genesis-structural-wraps', array(
+'header',
+'nav',
+'subnav',
+'footer',
+'site-inner',
+'footer-widgets',
+) );
 /*** HEADER ***/
 add_action('genesis_before_header','msdlab_pre_header');
 //add_action( 'msdlab_pre_header', 'genesis_do_subnav' );

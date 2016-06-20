@@ -6812,7 +6812,9 @@ button.close {
 .modal-header:before,
 .modal-header:after,
 .modal-footer:before,
-.modal-footer:after {
+.modal-footer:after,
+.footer-widgets .widget-area:before,
+.footer-widgets .widget-area:after {
   content: " ";
   display: table;
 }
@@ -6831,7 +6833,8 @@ button.close {
 .pager:after,
 .panel-body:after,
 .modal-header:after,
-.modal-footer:after {
+.modal-footer:after,
+.footer-widgets .widget-area:after {
   clear: both;
 }
 .center-block {
@@ -8547,22 +8550,29 @@ img#wpstats {
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li {
   background-color: #F16528;
+  padding: 1em 0.5em 0;
+}
+.pre-header .wrap .widget-area .widget_nav_menu .menu li:hover {
+  background-color: #d84b0e;
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
   font-weight: 400;
-  font-size: 14px;
-  font-size: 1.4rem;
+  font-size: 18px;
+  font-size: 1.8rem;
   line-height: 1.625;
+  padding: 1em 0.5em 0;
   color: #FFF;
+}
+.pre-header .wrap .widget-area .widget_nav_menu .menu li a:hover {
+  text-decoration: none;
 }
 /*
 Site Header
 ---------------------------------------------------------------------------------------------------- */
 .site-header {
   background-color: #FFF;
-  padding: 20px 0;
-  padding: 2rem 0;
+  padding: 0;
   z-index: 300;
 }
 /* Title Area
@@ -8638,51 +8648,6 @@ Site Header
 .site-header .widget-area .widget,
 .pre-header .widget-area .widget {
   display: inline-block;
-}
-.site-header .widget-area .widget_nav_menu,
-.pre-header .widget-area .widget_nav_menu {
-  position: relative;
-  top: -0.8rem;
-}
-.site-header .widget-area .widget_nav_menu nav ul li,
-.pre-header .widget-area .widget_nav_menu nav ul li {
-  padding: 0.4rem;
-  border: 1px solid #DAE0E5;
-  margin-left: -0.4rem;
-}
-.site-header .widget-area .widget_nav_menu nav ul li a,
-.pre-header .widget-area .widget_nav_menu nav ul li a {
-  padding: 0;
-  text-transform: uppercase;
-  font-size: 1rem;
-  color: #B1B1B1;
-}
-.site-header .widget-area .widget_nav_menu nav ul li a:after,
-.pre-header .widget-area .widget_nav_menu nav ul li a:after {
-  font-family: "FontAwesome";
-  padding: 0 0.2rem 0 0.4rem;
-}
-.site-header .widget-area .widget_nav_menu nav ul li.register,
-.pre-header .widget-area .widget_nav_menu nav ul li.register {
-  border-radius: 6px 0 0 6px;
-}
-.site-header .widget-area .widget_nav_menu nav ul li.register a:after,
-.pre-header .widget-area .widget_nav_menu nav ul li.register a:after {
-  content: "\f007";
-}
-.site-header .widget-area .widget_nav_menu nav ul li.login,
-.pre-header .widget-area .widget_nav_menu nav ul li.login {
-  border-radius: 0 6px 6px 0;
-  border-left: 0;
-}
-.site-header .widget-area .widget_nav_menu nav ul li.login a:after,
-.pre-header .widget-area .widget_nav_menu nav ul li.login a:after {
-  content: "\f023";
-}
-.site-header .widget-area .widget_nav_menu nav ul li:hover a,
-.pre-header .widget-area .widget_nav_menu nav ul li:hover a {
-  color: #797A79;
-  text-decoration: none;
 }
 .site-header .widget-area .search-form,
 .pre-header .widget-area .search-form {
@@ -8825,21 +8790,21 @@ Site Navigation
 /* Primary Navigation
 --------------------------------------------- */
 .nav-primary {
-  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  font-size: 1.4rem;
-  line-height: 1.625;
-  background: #DAE0E5;
+  background: #FFF;
   z-index: 800;
+  text-align: center;
 }
 .nav-primary li.menu-item {
-  padding: 0 1.6rem;
+  padding: 0 1.5em 1.5em;
 }
 .nav-primary li.menu-item a {
-  padding: 1.6rem 0 1.3rem;
-  color: #000;
-  text-transform: uppercase;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  font-size: 1.8rem;
+  line-height: 1.625;
+  padding: 0.3em;
+  color: #28449C;
 }
 .nav-primary li.menu-item.first-child {
   padding-left: 0;
@@ -8848,11 +8813,11 @@ Site Navigation
   padding-right: 0;
 }
 .nav-primary li.menu-item .sub-menu {
-  background-color: #DAE0E5;
+  background-color: #FFF;
   margin-top: 0px;
 }
 .nav-primary li.menu-item .sub-menu li.menu-item {
-  background-color: #DAE0E5;
+  background-color: #FFF;
   padding: 0 2rem;
   width: 100%;
   position: relative;
@@ -8860,8 +8825,8 @@ Site Navigation
 .nav-primary li.menu-item .sub-menu li.menu-item a {
   background-color: transparent;
   border: 0;
-  color: #000;
-  padding: 1rem 0;
+  color: #28449C;
+  padding: 0.5em;
   width: 100%;
 }
 .nav-primary li.menu-item .sub-menu li.menu-item .sub-menu {
@@ -8872,7 +8837,7 @@ Site Navigation
   border: 0;
 }
 .nav-primary li.menu-item .sub-menu li:hover {
-  background-color: #cbd3da;
+  background-color: #F16528;
 }
 .nav-primary li.menu-item .sub-menu li:hover > a {
   color: #000;
@@ -8884,7 +8849,8 @@ Site Navigation
 .nav-primary li:hover a:hover,
 .nav-primary li.current-menu-item a:hover,
 .nav-primary li.current-menu-ancestor a:hover {
-  color: #000;
+  background-color: #F16528;
+  color: #FFF;
   text-decoration: none;
 }
 .mainNav > ul > li.first > ul > li.title > ul > li > ul > li {
@@ -9454,10 +9420,14 @@ Sidebars
 Footer Widgets
 ---------------------------------------------------------------------------------------------------- */
 .footer-widgets {
-  background-color: #797A79;
+  background-color: #13214b;
   color: #FFF;
   clear: both;
   padding: 2rem 0;
+}
+.footer-widgets .widget-area {
+  margin-left: -15px;
+  margin-right: -15px;
 }
 .footer-widgets a {
   color: #FFF;
@@ -9467,14 +9437,25 @@ Footer Widgets
 }
 .footer-widgets .widget {
   margin: 2rem auto;
-  float: none;
-  clear: both;
+  text-align: left;
+  font-size: 0.75em;
+}
+.footer-widgets .msd-connected .msdsocial_street,
+.footer-widgets .msd-connected .msdsocial_street_2 {
   display: block;
-  text-align: center;
+}
+.footer-widgets .msd-connected .connected-phone,
+.footer-widgets .msd-connected .connected-tollfree {
+  display: inline;
+}
+.footer-widgets .msd-connected .connected-social {
+  float: right;
+  display: block;
 }
 .footer-widgets .connected-social .social-media {
   margin: 1rem 0;
-  float: none;
+  display: block;
+  float: left;
   margin: 0 auto;
 }
 .footer-widgets .connected-social .social-media a,
@@ -9490,10 +9471,10 @@ Footer Widgets
   background: #FFF;
   color: #797A79;
   border-radius: 100%;
-  font-size: 2rem;
+  font-size: 2em;
   height: 2em;
   line-height: 2;
-  margin: 10px;
+  margin: 0 1em;
   width: 2em;
 }
 .footer-widgets .connected-social .social-media a.fa.last-child {
@@ -9551,41 +9532,13 @@ Footer Widgets
   border: 0 solid #ddd;
 }
 .footer-widgets .widget.widget_nav_menu {
-  margin: 0 auto;
-  max-width: 1100px;
-  text-align: left;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu {
-  -moz-column-count: 4;
-  -moz-column-gap: 30px;
-  -webkit-column-count: 4;
-  -webkit-column-gap: 30px;
-  column-count: 4;
-  column-gap: 30px;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu > li {
-  -webkit-column-break-inside: avoid;
-  page-break-inside: avoid;
-  break-inside: avoid;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu > li > a {
-  text-transform: uppercase;
-  font-weight: 700;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu > li .sub-menu {
-  margin-bottom: 1em;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu > li .sub-menu .sub-menu {
-  display: none;
-}
-.footer-widgets .widget.widget_nav_menu ul.menu > li.first-child {
-  display: none;
+  text-align: right;
 }
 /*
 Site Footer
 ---------------------------------------------------------------------------------------------------- */
 .site-footer {
-  background-color: #2B2C2C;
+  background-color: #13214b;
   color: #FFF;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
   font-weight: 400;
