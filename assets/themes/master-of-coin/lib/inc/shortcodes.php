@@ -141,7 +141,7 @@ add_shortcode('tp-grid','msdlab_tpgrid_shortcode_handler');
 add_shortcode('tp-square','msdlab_tpsquare_shortcode_handler');
 function msdlab_tpgrid_shortcode_handler($atts,$content){
     extract( shortcode_atts( array(
-    $classes = '';
+    $classes = ''
     ), $atts ) );
     $ret = '
     <div class="tp-grid" class="'.$classes.'">
