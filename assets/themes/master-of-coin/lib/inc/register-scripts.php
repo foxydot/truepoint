@@ -62,8 +62,6 @@ function msdlab_add_scripts() {
         }
         if(is_front_page()){
             wp_enqueue_script('msd-homepage-jquery',get_stylesheet_directory_uri().'/lib/js/homepage-jquery.js',array('jquery','bootstrap-jquery'));
-        } else {
-            wp_enqueue_script('msd-page-jquery',get_stylesheet_directory_uri().'/lib/js/page-jquery.js',array('jquery','bootstrap-jquery','scroll-magic'));
-        }
+        } 
     }
 }
