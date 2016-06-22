@@ -145,7 +145,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
     ), $atts ) );
     $ret = '
     <div class="tp-grid" class="'.$classes.'">
-        '.do_shortcode($content).'
+        '.do_shortcode(remove_wpautop($content)).'
     </div>';
     return $ret;
 }
@@ -166,16 +166,16 @@ function msdlab_tpsquare_shortcode_handler($atts,$content){
             <div class="title-holder">
                 <h3>'.$title.'</h3>
             </div>
-        </div>
-        <div class="on">
-            <div class="icon-holder">
-                <i class="icon icon-'.$icon.'"></i>
+            <div class="on">
+                <div class="icon-holder">
+                    <i class="icon icon-'.$icon.'"></i>
+                </div>
+                <div class="title-holder">
+                    <h3>'.$title.'</h3>
+                </div>
+                <div class="content-holder">'.do_shortcode(remove_wpautop($content)).'</div>
+                <div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>
             </div>
-            <div class="title-holder">
-                <h3>'.$title.'</h3>
-            </div>
-            <div class="content-holder">'.do_shortcode($content).'</div>
-            <div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>
         </div>
     </div>';
     return $ret;

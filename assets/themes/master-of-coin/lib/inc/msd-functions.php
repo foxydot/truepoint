@@ -197,7 +197,7 @@ if(!function_exists('is_cpt')){
 
 function remove_wpautop( $content ) { 
     $content = do_shortcode( shortcode_unautop( $content ) ); 
-    $content = preg_replace( '#^<\/p>|^<br \/>|<p>$#', '', $content );
+    $content = preg_replace( '#^<\/p>|<br \/?>|<p>$#', '', $content );
     return $content;
 }
 if(!function_exists('get_attachment_id_from_src')){
