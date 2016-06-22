@@ -7160,6 +7160,12 @@ button.close {
 .icon-scales:before {
   content: "\6f";
 }
+.icon-grow:before {
+  content: "\70";
+}
+.icon-piechart:before {
+  content: "\71";
+}
 /* Import Fonts
 ------------------------------------------------------------ */
 /* Font Stacks */
@@ -9481,7 +9487,7 @@ Site Footer
   padding: 2em;
 }
 .tp-grid .tp-square .off .icon-holder i.icon {
-  background-color: #4895CE;
+  background-color: #A6BCCA;
   color: #FFF;
   border-radius: 100%;
   height: 2em;

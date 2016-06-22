@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "truepoint-icons";
-  src:url("../fonts/truepoint-icons.eot");
-  src:url("../fonts/truepoint-icons.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/truepoint-icons.woff") format("woff"),
-    url("../fonts/truepoint-icons.ttf") format("truetype"),
-    url("../fonts/truepoint-icons.svg#truepoint-icons") format("svg");
+  src:url("fonts/truepoint-icons.eot");
+  src:url("fonts/truepoint-icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/truepoint-icons.woff") format("woff"),
+    url("fonts/truepoint-icons.ttf") format("truetype"),
+    url("fonts/truepoint-icons.svg#truepoint-icons") format("svg");
   font-weight: normal;
   font-style: normal;
 
