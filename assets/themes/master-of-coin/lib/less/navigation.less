@@ -115,7 +115,7 @@ Site Navigation
   background: @white;
   z-index: 800;
   text-align: left;
-  li.menu-item{
+  .menu-primary>li.menu-item{
     padding: 0 0 1.5em;
     a{
       .customheader(1.8);
@@ -133,12 +133,14 @@ Site Navigation
     .sub-menu{
       background-color: @white;
       margin-top: 0px;
+      border: 1px solid @offwhite;
       li.menu-item{
         background-color: @white;
         padding: 0 2rem;
         width: 100%;
         position: relative;
         a{
+          .customheader(1.8);
           background-color: transparent;
           border: 0;
           color: @blue;

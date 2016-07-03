@@ -8175,10 +8175,10 @@ Site Navigation
   z-index: 800;
   text-align: left;
 }
-.nav-primary li.menu-item {
+.nav-primary .menu-primary > li.menu-item {
   padding: 0 0 1.5em;
 }
-.nav-primary li.menu-item a {
+.nav-primary .menu-primary > li.menu-item a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
   font-weight: 400;
   font-size: 18px;
@@ -8187,42 +8187,48 @@ Site Navigation
   padding: 0.3em 1.25em;
   color: #28449C;
 }
-.nav-primary li.menu-item.first-child {
+.nav-primary .menu-primary > li.menu-item.first-child {
   padding-left: 0;
   margin-left: -1.25em;
 }
-.nav-primary li.menu-item.last-child {
+.nav-primary .menu-primary > li.menu-item.last-child {
   padding-right: 0;
   margin-right: -1.25em;
 }
-.nav-primary li.menu-item .sub-menu {
+.nav-primary .menu-primary > li.menu-item .sub-menu {
   background-color: #FFF;
   margin-top: 0px;
+  border: 1px solid #E3E2E0;
 }
-.nav-primary li.menu-item .sub-menu li.menu-item {
+.nav-primary .menu-primary > li.menu-item .sub-menu li.menu-item {
   background-color: #FFF;
   padding: 0 2rem;
   width: 100%;
   position: relative;
 }
-.nav-primary li.menu-item .sub-menu li.menu-item a {
+.nav-primary .menu-primary > li.menu-item .sub-menu li.menu-item a {
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  font-size: 1.8rem;
+  line-height: 1.625;
   background-color: transparent;
   border: 0;
   color: #28449C;
   padding: 0.5em;
   width: 100%;
 }
-.nav-primary li.menu-item .sub-menu li.menu-item .sub-menu {
+.nav-primary .menu-primary > li.menu-item .sub-menu li.menu-item .sub-menu {
   left: 0;
   top: 0;
 }
-.nav-primary li.menu-item .sub-menu li.last-child > a {
+.nav-primary .menu-primary > li.menu-item .sub-menu li.last-child > a {
   border: 0;
 }
-.nav-primary li.menu-item .sub-menu li:hover {
+.nav-primary .menu-primary > li.menu-item .sub-menu li:hover {
   background-color: #F16528;
 }
-.nav-primary li.menu-item .sub-menu li:hover > a {
+.nav-primary .menu-primary > li.menu-item .sub-menu li:hover > a {
   color: #000;
   text-decoration: none;
 }
@@ -9557,6 +9563,165 @@ Site Footer
 .tp-grid .tp-square:hover .on {
   height: 100%;
   top: 0;
+}
+/**TEAM MEMBERS**/
+#filters {
+  padding: 0 0 1rem 0;
+}
+#filters a {
+  color: #F16528;
+  padding: 0;
+  -webkit-border-radius: 12px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 12px;
+  -moz-background-clip: padding;
+  border-radius: 12px;
+  background-clip: padding-box;
+}
+#filters a.first-child {
+  padding-left: 0;
+}
+#filters a.last-child {
+  padding-right: 0;
+}
+#filters a:hover,
+#filters a.active {
+  color: #28449C;
+  text-decoration: none;
+}
+#filters.allbutton {
+  padding: 0;
+  margin-top: -1rem;
+}
+#filters.allbutton a {
+  border: 0px solid;
+  border-radius: 0;
+  opacity: 1;
+  padding: 0.3rem 0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  position: relative;
+  top: -1rem;
+}
+#filters.allbutton a .logo-mark {
+  background: none repeat scroll 0 0 #F16528;
+  height: 20px;
+  margin: 0 0.5em 0 0;
+  position: relative;
+  top: -2px;
+  width: 20px;
+}
+#filters.allbutton a:hover .logo-mark {
+  background: #28449C;
+}
+#filters.allbutton a.active {
+  opacity: 0;
+}
+.entry-content #team-members a.team-member {
+  cursor: pointer;
+  display: block;
+  margin: 5px;
+  text-decoration: none;
+  border: 0;
+  max-width: 310px;
+}
+.entry-content #team-members a.team-member:hover {
+  text-decoration: none;
+}
+.entry-content #team-members a.team-member div.info {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#dce5ec+0,a1b6c9+100 */
+  background: #dce5ec;
+  /* Old browsers */
+  background: -moz-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* FF3.6-15 */
+  background: -webkit-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at top, #dce5ec 0%, #a1b6c9 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce5ec', endColorstr='#a1b6c9', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */
+  color: #28449C;
+  padding: 1rem 0.75rem;
+}
+.entry-content #team-members a.team-member div.info h4,
+.entry-content #team-members a.team-member div.info h5 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin: 0;
+  color: #28449C;
+}
+.entry-content #team-members a.team-member div.info h5 {
+  font-size: 1.2rem;
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot {
+  margin: 0 1em 1em 0;
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot ul.team-member-contact-info {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#dce5ec+0,a1b6c9+100 */
+  background: #dce5ec;
+  /* Old browsers */
+  background: -moz-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* FF3.6-15 */
+  background: -webkit-radial-gradient(top, ellipse cover, #dce5ec 0%, #a1b6c9 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at top, #dce5ec 0%, #a1b6c9 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dce5ec', endColorstr='#a1b6c9', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */
+  color: #28449C;
+  margin: 0;
+  padding: 0.8rem;
+  list-style: none outside none;
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot ul.team-member-contact-info li {
+  list-style: none outside none;
+  display: inline-block;
+  text-indent: 0;
+  margin: 0 0.25em;
+  line-height: 0;
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot ul.team-member-contact-info li a,
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot ul.team-member-contact-info li a:visited {
+  background-color: #FFF;
+  color: #B1B1B1;
+  display: block;
+  border-radius: 100%;
+  height: 2em;
+  width: 2em;
+  text-align: center;
+  line-height: 2;
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content section.headshot ul.team-member-contact-info li:before {
+  content: '';
+}
+.single-team_member .site-inner .content-sidebar-wrap main article .entry-content h6 {
+  font-family: "Raleway", "Helvetica Neue", "Trebuchet MS", Calibri, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  font-size: 1.8rem;
+  line-height: 1.625;
+  color: #28449C;
+}
+.single-team_member .site-inner .content-sidebar-wrap aside.sidebar section.widget .widget-wrap .team-viewpoints h4.widget-title {
+  background: #F16528;
+  color: #FFF;
+}
+.single-team_member .site-inner .content-sidebar-wrap aside.sidebar section.widget .widget-wrap .team-viewpoints .article {
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+}
+.single-team_member .site-inner .content-sidebar-wrap aside.sidebar section.widget .widget-wrap .team-viewpoints .article .title-link {
+  font-weight: 700;
+  color: #28449C;
+}
+.single-team_member .site-inner .content-sidebar-wrap aside.sidebar section.widget .widget-wrap .team-viewpoints .article .read-more {
+  color: #F16528;
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
 }
 .nav-responsive ul,
 .nav-responsive li,
