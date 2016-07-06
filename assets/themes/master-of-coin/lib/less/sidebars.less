@@ -27,9 +27,14 @@ Sidebars
 
 .sidebar .widget {
   border-radius: 0px;
+  margin-bottom: 1em;
+  .clearfix();
   .widget-title{
-    .custombody(2.4);
-    color: @blue;
+    .custombody(1.6);
+    color: @white;
+    background: @orange;
+    padding: 0.5em 1em;
+    text-transform: uppercase;
   }
 }
 
@@ -48,18 +53,7 @@ Sidebars
   }
    a {border: none;}
 }
-.widget_sp_image{
-  text-align: center;
-  .link{
-    a{
-      color: @dkgrey;
-      border: 0;
-      i{
-        color: @orange;
-      }
-    }
-  }
-}
+
 .widget.gform_widget{
     background-color: @ltgrey;
     margin-right: -2rem;
