@@ -141,12 +141,111 @@ add_shortcode('tp-grid','msdlab_tpgrid_shortcode_handler');
 add_shortcode('tp-square','msdlab_tpsquare_shortcode_handler');
 function msdlab_tpgrid_shortcode_handler($atts,$content){
     extract( shortcode_atts( array(
-    $classes = ''
+    'classes' => '',
+    'recent' => false,
+    'channel' => false,
+    'link' => false
     ), $atts ) );
-    $ret = '
-    <div class="tp-grid" class="'.$classes.'">
-        '.do_shortcode(remove_wpautop($content)).'
-    </div>';
+    if(!$recent){
+        $ret = '
+        <div class="tp-grid" class="'.$classes.'">
+            '.do_shortcode(remove_wpautop($content)).'
+        </div>';
+    } else {
+        switch($channel){
+            case 'quarterly':
+                $icon = 'quadrants';
+                $title = 'Quarterly Insights';
+                $more = 'Quarterly Insights';
+                $args = array(
+                    'post_type' => 'post',
+                    'posts_per_page' => $recent,
+                    'cat' => 42
+                ); 
+            break;
+            case 'events':
+                $icon = 'calendar';
+                $title = 'Events';
+                $more = 'Events';
+                $args = array(
+                    'post_type' => 'event',
+                    'posts_per_page' => $recent,
+                ); 
+            break;
+            case 'press':
+                $icon = 'topicbubble';
+                $title = 'Press Releases';
+                $more = 'Press Releases';
+                $args = array(
+                    'post_type' => 'event',
+                    'posts_per_page' => $recent,
+                ); 
+            break;
+            case 'news':
+                $icon = 'arrow';
+                $title = 'In The News';
+                $more = 'News';
+                $args = array(
+                    'post_type' => 'news',
+                    'posts_per_page' => $recent,
+                ); 
+            break;
+            case 'viewpoints':
+            default:
+                $icon = 'logo';
+                $title = 'Viewpoints';
+                $more = 'Viewpoints';
+                $args = array(
+                    'post_type' => 'post',
+                    'posts_per_page' => $recent,
+                    'cat' => -42
+                ); 
+            break;
+        }
+        $ret = '<div class="grid-hdr row">
+            <div class="col-sm-6 col-xs-12">
+                <h3><i class="icon icon-'.$icon.'"></i> '.$title.'</h3>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <a href="#" class="more">More '.$more.'</a>
+            </div>
+        </div>';
+        $loop = new WP_Query($args);
+        
+        if($loop->have_posts()){
+        $ret .= '
+        <div class="tp-grid" class="'.$classes.'">';
+            while($loop->have_posts()){
+                $loop->the_post();
+                $ret .= '
+                <div class="tp-square" id="'.$post->post_name.'">
+                    <div class="off">
+                        <div class="icon-holder">
+                            <h3>'.get_the_title().'</h3>
+                        </div>
+                        <div class="title-holder">';
+                        if($args['post_type']=='post'){
+                            $ret .= '
+                            <div class="author">Contributed by '.get_the_author().'</div>';
+                            }
+                        $ret .= '
+                            <div class="date">'.get_the_date().'</div>
+                        </div>
+                        <div class="on">
+                            <div class="icon-holder">
+                                <i class="icon icon-'.$icon.'"></i>
+                            </div>
+                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,15,'').'</div>
+                            <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
+                        </div>
+                    </div>
+                </div>';
+            }
+        $ret .= '
+        </div>';
+        }
+        
+    }
     return $ret;
 }
 function msdlab_tpsquare_shortcode_handler($atts,$content){
