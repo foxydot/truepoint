@@ -85,15 +85,38 @@ section.layerslider_widget{
   }
 }
 
+.widget.widget_recent_entries{
+  .article{
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    .author{
+      .condensed(1.6);
+      color: @blue;
+      font-style: italic;
+    }
+    .title-link{
+      display: inline;
+      color: @dkgrey;
+      font-weight: 400;
+    }
+    .date{
+      display: none;
+    }
+    .read-more{
+      display: inline;
+      font-size: 0.8em;
+      color: @orange;
+      margin-left: 1em;
+    }
+  }
+}
+
 .widget_sp_image, .widget_video_remix{
   .widget-content{
     padding: 1rem;
     color: @dkgrey;
     font-weight: 200;
     text-align: left;
-  }
-  img{
-    .img-circle;
   }
   a{
     color: @orange;
