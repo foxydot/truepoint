@@ -8309,18 +8309,18 @@ Site Navigation
   border: 0;
 }
 .nav-primary .menu-primary > li.menu-item .sub-menu li:hover {
-  background-color: #F16528;
+  background-color: #28449C;
 }
 .nav-primary .menu-primary > li.menu-item .sub-menu li:hover > a {
-  color: #000;
+  color: #FFF;
   text-decoration: none;
 }
-.nav-primary li:hover a,
-.nav-primary li.current-menu-item a,
-.nav-primary li.current-menu-ancestor a,
-.nav-primary li:hover a:hover,
-.nav-primary li.current-menu-item a:hover,
-.nav-primary li.current-menu-ancestor a:hover {
+.nav-primary .menu-primary > li.menu-item:hover a,
+.nav-primary .menu-primary > li.menu-item.current-menu-item a,
+.nav-primary .menu-primary > li.menu-item.current-menu-ancestor a,
+.nav-primary .menu-primary > li.menu-item:hover a:hover,
+.nav-primary .menu-primary > li.menu-item.current-menu-item a:hover,
+.nav-primary .menu-primary > li.menu-item.current-menu-ancestor a:hover {
   background-color: #F16528;
   color: #FFF;
   text-decoration: none;

@@ -156,20 +156,20 @@ Site Navigation
         border: 0;
       }
       li:hover{
-        background-color: @orange;
+        background-color: @blue;
         &>a{
-          color: @black;
+          color: @white;
           text-decoration: none;
         }
       }
     }
-  }
-  li:hover, li.current-menu-item, li.current-menu-ancestor{
+  &:hover, &.current-menu-item, &.current-menu-ancestor{
     a, a:hover{
       background-color: @orange;
       color: @white;
       text-decoration: none;
       }
+    }
   }
 }
 .mainNav>ul>li.first>ul>li.title>ul>li>ul>li {
