@@ -144,6 +144,40 @@ padding: 1em 0;
 }
 
 //TP Grid!
+.grid-hdr{
+  >div.first-child{
+    h3{
+      color: @blue;
+      font-size: 1.6em;
+      font-weight: 300;
+      text-transform: uppercase;
+      i{
+        font-size: 1.6em;
+        line-height: 1;
+        position: relative;
+        top: 0.3em;
+      }
+    }
+  }
+  >div.last-child{
+    text-align: right;
+    padding: 1em;
+    a.more{
+      color: @orange;
+      text-transform: uppercase;
+      text-decoration: none !important;
+      &:after{
+        .fontawesome;
+        content: '\f105';
+        margin-left: 0.5em;
+      }
+      &:hover{
+        text-decoration: none !important;
+        color: darken(@orange,20%);
+      }
+    }
+  }
+}
 .tp-grid{
   .make-row();
   .tp-square{
@@ -180,6 +214,14 @@ padding: 1em 0;
           margin: 0 auto;
           line-height: 2.2;
         }
+        h3{
+          color: @orange;
+          font-weight: 400;
+          font-size: 1.2em;
+          text-transform: none;
+          line-height: 1.2;
+          text-align: left;
+        }
       }
       >.title-holder{
         position: absolute;
@@ -187,11 +229,23 @@ padding: 1em 0;
         right: 0;
         bottom: 0;
         background: @ltgrey;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        .author,.date{
+          padding: 0 2em;
+          font-size: 0.9em;
+          line-height: 1.2;
+        }
+        .author{
+          color: @blue;
+        }
+        .date{
+        }
       }
       .title-holder{
         h3{
           font-weight: 700;
-          padding: 1em 0;
+          padding: 0;
           margin: 0;
         }
       }

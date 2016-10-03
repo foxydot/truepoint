@@ -9552,6 +9552,36 @@ Site Footer
 .notification-bar p {
   margin: 0;
 }
+.grid-hdr > div.first-child h3 {
+  color: #28449C;
+  font-size: 1.6em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.grid-hdr > div.first-child h3 i {
+  font-size: 1.6em;
+  line-height: 1;
+  position: relative;
+  top: 0.3em;
+}
+.grid-hdr > div.last-child {
+  text-align: right;
+  padding: 1em;
+}
+.grid-hdr > div.last-child a.more {
+  color: #F16528;
+  text-transform: uppercase;
+  text-decoration: none !important;
+}
+.grid-hdr > div.last-child a.more:after {
+  font-family: "FontAwesome";
+  content: '\f105';
+  margin-left: 0.5em;
+}
+.grid-hdr > div.last-child a.more:hover {
+  text-decoration: none !important;
+  color: #a83b0b;
+}
 .tp-grid {
   margin-left: -15px;
   margin-right: -15px;
@@ -9607,16 +9637,35 @@ Site Footer
   margin: 0 auto;
   line-height: 2.2;
 }
+.tp-grid .tp-square .off .icon-holder h3 {
+  color: #F16528;
+  font-weight: 400;
+  font-size: 1.2em;
+  text-transform: none;
+  line-height: 1.2;
+  text-align: left;
+}
 .tp-grid .tp-square .off > .title-holder {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   background: #B1B1B1;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.tp-grid .tp-square .off > .title-holder .author,
+.tp-grid .tp-square .off > .title-holder .date {
+  padding: 0 2em;
+  font-size: 0.9em;
+  line-height: 1.2;
+}
+.tp-grid .tp-square .off > .title-holder .author {
+  color: #28449C;
 }
 .tp-grid .tp-square .off .title-holder h3 {
   font-weight: 700;
-  padding: 1em 0;
+  padding: 0;
   margin: 0;
 }
 .tp-grid .tp-square .off .on {

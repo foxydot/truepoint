@@ -177,7 +177,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 $title = 'Press Releases';
                 $more = 'Press Releases';
                 $args = array(
-                    'post_type' => 'event',
+                    'post_type' => 'press',
                     'posts_per_page' => $recent,
                 ); 
             break;
