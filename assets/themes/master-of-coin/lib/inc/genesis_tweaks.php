@@ -54,9 +54,9 @@ add_shortcode('post_author_bio','msdlab_post_author_bio');
 //add_action('genesis_before_entry','msd_post_image');//add the image above the entry
 add_action('genesis_entry_header','msdlab_author_image', 1);
 
-remove_action( 'genesis_before_post_content', 'genesis_post_info' ); //remove the info (date, posted by,etc.)
-remove_action( 'genesis_after_post_content', 'genesis_post_meta' ); //remove the meta (filed under, tags, etc.)
 //add_action( 'genesis_entry_header', 'msdlab_do_post_subtitle' );
+remove_action( 'genesis_entry_header', 'genesis_post_info', 12 );
+add_action( 'genesis_entry_header', 'msdlab_post_info', 12 );
 add_action('genesis_entry_content',array('MSDNewsCPT','do_news_url_display'), 4);
 add_filter('post_type_link',array('MSDNewsCPT','do_news_url'));
 add_action( 'genesis_before_post', 'msdlab_post_image', 8 ); //add feature image across top of content on *pages*.

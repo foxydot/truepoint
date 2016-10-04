@@ -170,7 +170,22 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 $args = array(
                     'post_type' => 'event',
                     'posts_per_page' => $recent,
-                ); 
+                    'meta_query' => array(
+                        array(
+                            'key' => '_date_event_end_datestamp',
+                            'value' => time()-86400,
+                            'compare' => '>'
+                        ),
+                        array(
+                            'key' => '_date_event_end_datestamp',
+                            'value' => mktime(0, 0, 0, date("m")+12, date("d"), date("Y")),
+                            'compare' => '<'
+                        )
+                    ),
+                    'meta_key' => '_date_event_end_datestamp',
+                    'orderby'=>'meta_value_num',
+                    'order'=>'ASC',
+                    ); 
             break;
             case 'press':
                 $icon = 'topicbubble';

@@ -197,6 +197,16 @@ function msdlab_get_thumbnail_url($post_id = null, $size = 'post-thumbnail'){
     $url = $featured_image[0];
     return $url;
 }
+    
+function msdlab_post_info(){
+    global $post;
+    if(!$post_id)
+        $post_id = $post->ID;
+    $cptstohide = array('press');
+    if(!in_array($post->post_type, $cptstohide)){
+        genesis_post_info();
+    }
+}
 
 function msdlab_do_page_footer_text(){
     if(is_page()){
