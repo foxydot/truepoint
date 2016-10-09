@@ -300,27 +300,22 @@ if (!class_exists('MSDEventCPT')) {
 
         function custom_query( $query ) {
             if(!is_admin()){
-                $post_types = $query->query_vars['post_type'];
+                $is_this_cpt = ($query->query['post_type'] == $this->cpt)?TRUE:FALSE;
                 if($query->is_main_query() && $query->is_search){
-                    if(is_array($query->query_vars['post_type'])){
-                    $searchterm = $query->query_vars['s'];
-                    // we have to remove the "s" parameter from the query, because it will prevent the posts from being found
-                    //$query->query_vars['s'] = "";
-                    
-                    if ($searchterm != "") {
-                        $query->set('meta_value',$searchterm);
-                        $query->set('meta_compare','LIKE');
-                    };
-                    $post_types[] = $this->cpt;
-                    $query->set( 'post_type', $post_types );
+                    $post_types = $query->query_vars['post_type'];
+                    if(count($post_types)==0){
+                        $post_types[] = 'post';
+                        $post_types[] = 'page';
                     }
-                }
-                elseif( $query->is_main_query() && $query->is_archive && !$query->query_vars['product_cat'] ) {
                     $post_types[] = $this->cpt;
                     $query->set( 'post_type', $post_types );
+                }
+                elseif( $query->is_main_query() && $query->is_archive && $is_this_cpt) {
+                    $query->set( 'post_type', $this->cpt );
+                    $query->set( 'meta_query', array() );
                 }
             }
-        }           
+        }     
         
         function register_metaboxes(){
             global $date_info,$location_info,$event_info;

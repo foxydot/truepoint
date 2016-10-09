@@ -162,6 +162,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'posts_per_page' => $recent,
                     'cat' => 42
                 ); 
+                $link = !$link?'/category/quarterly-insight/':$link;
             break;
             case 'events':
                 $icon = 'calendar';
@@ -186,6 +187,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'orderby'=>'meta_value_num',
                     'order'=>'ASC',
                     ); 
+                $link = !$link?'/resources/events/':$link;
             break;
             case 'press':
                 $icon = 'topicbubble';
@@ -195,6 +197,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'post_type' => 'press',
                     'posts_per_page' => $recent,
                 ); 
+                $link = !$link?'/viewpoints/press-release/':$link;
             break;
             case 'news':
                 $icon = 'arrow';
@@ -204,6 +207,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'post_type' => 'news',
                     'posts_per_page' => $recent,
                 ); 
+                $link = !$link?'/about-us/news/':$link;
             break;
             case 'viewpoints':
             default:
@@ -215,15 +219,19 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'posts_per_page' => $recent,
                     'cat' => -42
                 ); 
+                $link = !$link?'/resources/truepoint-viewpoint/':$link;
             break;
         }
         $ret = '<div class="grid-hdr row">
             <div class="col-sm-6 col-xs-12">
                 <h3><i class="icon icon-'.$icon.'"></i> '.$title.'</h3>
-            </div>
-            <div class="col-sm-6 col-xs-12">
-                <a href="#" class="more">More '.$more.'</a>
-            </div>
+            </div>';
+            if($link){
+            $ret .= '<div class="col-sm-6 col-xs-12">
+                <a href="'.$link.'" class="more">More '.$more.'</a>
+            </div>';
+            }
+            $ret .= '
         </div>';
         $loop = new WP_Query($args);
         
