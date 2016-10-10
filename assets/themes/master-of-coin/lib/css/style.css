@@ -8638,6 +8638,9 @@ article.entry {
   padding-right: 0.5em;
   margin-left: -0.875em;
 }
+.entry-content ul li li:before {
+  content: '-';
+}
 .entry-content .search-form {
   width: 50%;
 }
