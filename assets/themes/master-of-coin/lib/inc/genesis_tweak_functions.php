@@ -283,9 +283,9 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
    //ts_data($crumb);
     if(is_cpt('post')){
         if(is_single()){
-            $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
         } else {
-            $crumb = '<span>About Us</span> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
         }
     } else {
         $pattern = array(
@@ -294,7 +294,7 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
             '/news-info/i',
         );
         $replacement = array(
-            '<span>About Us</span>
+            '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a>
     &gt; <a title="View Meet the Team" href="'.site_url( '/about-truepoint/meet-the-team/' ).'">Meet the Team</a>',
             '<span>About Us</span> &gt; News',
             'news',
