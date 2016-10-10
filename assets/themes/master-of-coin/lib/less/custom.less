@@ -447,3 +447,33 @@ padding: 1em 0;
     }
   }
 }
+
+.blog,.archive{
+  article.entry{
+    clear: both;
+    border-bottom: 1px solid @ltgrey;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    min-height: 125px;
+    .entry-header{
+      p{
+        margin:0;
+      }
+    }
+    .entry-content{
+      clear: none;
+      .entry-permalink{
+        margin: 0;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.single-post{
+  .entry-content{
+    clear: both;
+    border-top: 1px solid @ltgrey;
+    padding-top: 1em;
+  }
+}
