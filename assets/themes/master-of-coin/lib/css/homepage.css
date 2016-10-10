@@ -185,7 +185,7 @@
 }
 .sectioned-page-wrapper .section.section-hero {
   padding-top: 15em;
-  background-position: 50% 50%;
+  background-position: center bottom;
 }
 .sectioned-page-wrapper .section.section-hero .section-title:before {
   display: block;
