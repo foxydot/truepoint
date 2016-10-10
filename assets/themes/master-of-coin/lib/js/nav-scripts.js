@@ -45,7 +45,7 @@ jQuery(document).ready(function(){
     sf_duplicate_menu( jQuery('.nav-responsive>ul'), jQuery('#pull'), 'mobile_menu', 'sf_mobile_menu' );
     
             
-     jQuery('#pull li.about-you .toggle-switch, #pull li.about-us .toggle-switch').click( function(){
+     jQuery('#pull li.about-you .toggle-switch, #pull li.about- .toggle-switch').click( function(){
         if ( jQuery(this).parent('a').parent('li').hasClass('opened') ){
             jQuery(this).children('i').removeClass('fa-chevron-circle-down').addClass('fa-chevron-circle-right');
             jQuery(this).parent('a').parent('li').removeClass( 'opened' ).addClass( 'closed' );

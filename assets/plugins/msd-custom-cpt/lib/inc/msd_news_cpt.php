@@ -105,7 +105,7 @@ if (!class_exists('MSDNewsCPT')) {
                 'has_archive' => true,
                 'query_var' => true,
                 'can_export' => true,
-                'rewrite' => array('slug'=>'about-us/news','with_front'=>false),
+                'rewrite' => array('slug'=>'about-truepoint/news','with_front'=>false),
                 'capability_type' => 'post'
             );
         

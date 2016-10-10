@@ -207,7 +207,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'post_type' => 'news',
                     'posts_per_page' => $recent,
                 ); 
-                $link = !$link?'/about-us/news/':$link;
+                $link = !$link?'/about-truepoint/news/':$link;
             break;
             case 'viewpoints':
             default:
