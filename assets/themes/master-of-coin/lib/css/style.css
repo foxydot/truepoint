@@ -9779,7 +9779,7 @@ Site Footer
   margin: 5px;
   text-decoration: none;
   border: 0;
-  max-width: 310px;
+  max-width: 230px;
 }
 .entry-content #team-members a.team-member:hover {
   text-decoration: none;
@@ -9798,6 +9798,7 @@ Site Footer
   /* IE6-9 fallback on horizontal gradient */
   color: #28449C;
   padding: 1rem 0.75rem;
+  min-height: 70px;
 }
 .entry-content #team-members a.team-member div.info h4,
 .entry-content #team-members a.team-member div.info h5 {
