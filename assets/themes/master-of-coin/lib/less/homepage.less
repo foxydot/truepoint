@@ -2,30 +2,149 @@
 @import 'mixins';
 
 .site-inner{
-  div{
-  }
-  .button, .button:hover{
-    width: auto;
+  display: none;
+  visibility: hidden;
+}
+.button{
+  .button(@orange,@orange);
+  border-radius: 2em;
+  width: 47%;
+  &:hover{
+    .button-hover(@orange,@orange);
+    border-radius: 2em;
+    width: 47%;
   }
 }
 .sectioned-page-wrapper{
   .section{
     text-align: center;
-    background-size: cover;
+    background-size: 100vw auto;
     .section-title{
       padding: 0;
       text-shadow: 0 0 0 rgba(255,255,255,0);
+      h3{
+        padding: 0.25em 0;
+        font-size: 1.2em;
+      }
+    }
+  }
+  .section.section-investment-approach{
+    padding-bottom: 2em;
+    .section-title{
+      background-color: @orange;
+      h3{
+        color: @white;
+      }
+    }
+    .section-body{
+      p{
+      color: @blue;
+      font-size: 1.6em;
+      }
+      .button{
+        margin-left: 1%;
+        margin-right: 1%;
+        float: left;
+      }
+    }
+  }
+  .section.section-kids-and-money{
+    .section-title{
+      h3{
+        color: @blue;
+        text-align: left;
+        line-height: 1;
+        font-size: 1.5em;
+      }
+    }
+    .section-body{
+      .wrap{
+      padding-top: 0;
+        .section-subtitle{
+          color: @blue;
+          font-size: 2.4em;
+          text-align: left;
+          line-height: 1;
+        }
+        .button{
+          margin-left: 0;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .section.section-viewpoint{
+    .section-title{
+      background-color: @blue;
+      h3{
+        color: @white;
+      }
+    }
+    .section-body{
+    }
+  }
+  .section.section-truepoint-by-the-numbers{
+    .section-title{
+      background-color: @ltblue;
+      h3{
+        color: @white;
+      }
+    }
+    .section-body{
+      color: @blue;
+      font-weight: 600;
+      font-size: 1.4em;
+      i.icon{
+        color: darken(@ltblue, 10%);
+        font-size: 4em;
+        line-height: 0;
+      }
+      h4,h5{
+        color: @orange;
+        font-size: 1.8em;
+        margin: 0;
+        text-transform: uppercase;
+        line-height: 1;
+      }
+      h4{
+        font-weight: 700;
+      }
+      h5{
+        font-weight: 400;
+      }
+      .column-3{
+        h4{
+          font-size: 1.4em;
+        }
+        h5{
+          font-size: 2.2em;
+        }
+      }
     }
   }
 }
 
 
-
-@media only screen and (max-width: 980px) {
-
-}
-
-
-@media only screen and (max-width: 479px) {
+@media only screen and (min-width: 479px) { //tablets
 
 }
+
+@media only screen and (min-width: 980px) { //large screens
+.sectioned-page-wrapper{
+  .section{
+  }
+  .section.section-kids-and-money{
+    padding-bottom: 6em;
+    .section-title{
+    }
+    .section-body{
+      .wrap{
+        .section-subtitle{
+          max-width: 40%;
+        }
+      }
+    }
+  }
+}
+}
+
