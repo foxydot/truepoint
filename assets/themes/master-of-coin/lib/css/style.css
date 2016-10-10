@@ -8528,6 +8528,15 @@ article.entry {
   text-align: left;
   margin-bottom: 0;
 }
+.entry-content hr {
+  background: #fff;
+  border: 0;
+  border-top: 1px solid #B1B1B1;
+  color: #fff;
+  clear: both;
+  margin-bottom: 30px;
+  width: 100%;
+}
 .entry-content .attachment a,
 .entry-content .gallery a {
   border: none;
