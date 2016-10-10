@@ -258,7 +258,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                             <div class="icon-holder">
                                 <i class="icon icon-'.$icon.'"></i>
                             </div>
-                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,15,'').'</div>
+                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
                             <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
                         </div>
                     </div>
