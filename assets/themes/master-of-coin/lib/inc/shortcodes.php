@@ -295,8 +295,11 @@ function msdlab_tpsquare_shortcode_handler($atts,$content){
                 <div class="title-holder">
                     <h3>'.$title.'</h3>
                 </div>
-                <div class="content-holder">'.do_shortcode(remove_wpautop($content)).'</div>
-                <div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>
+                <div class="content-holder">'.do_shortcode(remove_wpautop($content)).'</div>';
+                if($url){
+                $ret .= '<div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>';
+                }
+                $ret .= '
             </div>
         </div>
     </div>';
