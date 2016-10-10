@@ -307,6 +307,42 @@ padding: 1em 0;
   }
 }
 
+/* News Grid */
+.news-grid{
+  .make-row();
+  .news-square{
+    .make-sm-column(6);
+    .make-xs-column(12);
+    .date{
+      .make-xs-column(3);
+      text-align: right;
+      color: @ltgrey;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      line-height: 1;
+      span{
+        display: block;
+        &.number{
+          font-size: 1.8em;
+        }
+      }
+    }
+    .info{
+      .make-xs-column(9);
+      text-align: left;
+      h3{
+        margin: 0;
+      }
+      a,a:visited,a:active{
+        color: @orange;
+        text-decoration: none;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
 /**TEAM MEMBERS**/
 #filters{
   padding: 0 0 1rem 0;

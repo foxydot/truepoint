@@ -6817,7 +6817,9 @@ button.close {
 .footer-widgets .widget-area:before,
 .footer-widgets .widget-area:after,
 .tp-grid:before,
-.tp-grid:after {
+.tp-grid:after,
+.news-grid:before,
+.news-grid:after {
   content: " ";
   display: table;
 }
@@ -6838,7 +6840,8 @@ button.close {
 .modal-header:after,
 .modal-footer:after,
 .footer-widgets .widget-area:after,
-.tp-grid:after {
+.tp-grid:after,
+.news-grid:after {
   clear: both;
 }
 .center-block {
@@ -9727,6 +9730,64 @@ Site Footer
 .tp-grid .tp-square:hover .on {
   height: 100%;
   top: 0;
+}
+/* News Grid */
+.news-grid {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.news-grid .news-square {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .news-grid .news-square {
+    float: left;
+    width: 50%;
+  }
+}
+.news-grid .news-square .date {
+  position: relative;
+  float: left;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: right;
+  color: #B1B1B1;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.4em;
+  line-height: 1;
+}
+.news-grid .news-square .date span {
+  display: block;
+}
+.news-grid .news-square .date span.number {
+  font-size: 1.8em;
+}
+.news-grid .news-square .info {
+  position: relative;
+  float: left;
+  width: 75%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: left;
+}
+.news-grid .news-square .info h3 {
+  margin: 0;
+}
+.news-grid .news-square .info a,
+.news-grid .news-square .info a:visited,
+.news-grid .news-square .info a:active {
+  color: #F16528;
+  text-decoration: none;
+  font-weight: 700;
 }
 /**TEAM MEMBERS**/
 #filters {

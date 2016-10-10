@@ -322,3 +322,35 @@ function msdlab_icon_shortcodes($atts){
     }
     return '<i class="'.implode(" ",$classes).'"></i>';
 }
+add_shortcode('homepage_news_widget','msdlab_homepage_news_widget_handler');
+function msdlab_homepage_news_widget_handler($atts){
+    extract( shortcode_atts( array(
+    'classes' => '',
+    'recent' => 2,
+    ), $atts ) );
+    $args = array(
+        'post_type' => 'news',
+        'posts_per_page' => $recent,
+    ); 
+    $loop = new WP_Query($args);
+        
+    if($loop->have_posts()){
+    $ret .= '
+    <div class="news-grid '.$classes.'">';
+        while($loop->have_posts()){
+            $loop->the_post();
+            $ret .= '
+            <div class="news-square" id="'.$post->post_name.'">
+                <div class="date"><span class="number">'.get_the_date('j').'</span><span class="month">'.get_the_date('M').'</span></div>
+                <div class="info">
+                    <h3>'.get_the_title().'</h3>
+                    <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                    <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
+                </div>
+            </div>';
+        }
+    $ret .= '
+    </div>';
+    }
+    return $ret;
+}
