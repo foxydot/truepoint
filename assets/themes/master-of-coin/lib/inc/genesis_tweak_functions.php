@@ -295,9 +295,7 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
         );
         $replacement = array(
             '<span>About Us</span>
-    &gt;
-    <a title="View Truepoint Team" href="'.site_url( '/about-truepoint/team/' ).'">Truepoint Team</a>
-    &gt; <a title="View Meet the Team" href="'.site_url( '/about-truepoint/team/meet-the-team/' ).'">Meet the Team</a>',
+    &gt; <a title="View Meet the Team" href="'.site_url( '/about-truepoint/meet-the-team/' ).'">Meet the Team</a>',
             '<span>About Us</span> &gt; News',
             'news',
         );
