@@ -7270,6 +7270,12 @@ body {
   font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 a,
 button,

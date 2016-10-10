@@ -1,8 +1,9 @@
 jQuery(document).ready(function($) {	
-    $('*:first-child').not('.no-break span').addClass('first-child');
-    $('*:last-child').not('.no-break span').addClass('last-child');
-    $('*:nth-child(even)').not('.no-break span').addClass('even');
-    $('*:nth-child(odd)').not('.no-break span').addClass('odd');
+    $('body *:first-child').not('.no-break span').addClass('first-child');
+    $('body *:last-child').not('.no-break span').addClass('last-child');
+    $('body *:nth-child(even)').not('.no-break span').addClass('even');
+    $('body *:nth-child(odd)').not('.no-break span').addClass('odd');
+    $('body').css('opacity','1');
 	
 	var numwidgets = $('#footer-widgets div.widget').length;
 	$('#footer-widgets').addClass('cols-'+numwidgets);
