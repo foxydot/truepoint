@@ -159,6 +159,11 @@ function msd_allow_all_embeds(){
 			"height" => array(),
 			"width" => array()
 	);
+    
+    $allowedposttags["a"] = array(
+            "data-toggle" => array(),
+            "data-target" => array()
+    );
 }
 
 /* ---------------------------------------------------------------------- */
