@@ -160,10 +160,8 @@ function msd_allow_all_embeds(){
 			"width" => array()
 	);
     
-    $allowedposttags["a"] = array(
-            "data-toggle" => array(),
-            "data-target" => array()
-    );
+    $allowedposttags["a"]['data-toggle'] = array();
+    $allowedposttags["a"]['data-target'] = array();
 }
 
 /* ---------------------------------------------------------------------- */
