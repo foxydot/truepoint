@@ -20,64 +20,63 @@
 .button {
   color: #28449C;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #F16528;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
-  text-decoration: none;
   background-color: rgba(241, 101, 40, 0);
-  border: 2px solid #F16528;
+  border: 1px solid #F16528;
   border-radius: 6px;
+  font-size: 1.2em;
   border-radius: 2em;
   width: 47%;
+  text-decoration: none;
+}
+.button:after {
+  content: ' >';
 }
 .button:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #F16528;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
-  text-decoration: none;
   background-color: rgba(241, 101, 40, 0);
-  border: 2px solid #F16528;
+  border: 1px solid #F16528;
   border-radius: 6px;
   background-color: rgba(241, 101, 40, 0.4);
+  font-size: 1.2em;
   border-radius: 2em;
   width: 47%;
+  text-decoration: none;
 }
 .button:hover,
 .button a:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   background-color: rgba(40, 68, 156, 0.4);
 }
@@ -96,43 +95,44 @@
 .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #F16528;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
-  text-decoration: none;
   background-color: rgba(241, 101, 40, 0);
-  border: 2px solid #F16528;
+  border: 1px solid #F16528;
   border-radius: 6px;
+  font-size: 1.2em;
   border-radius: 2em;
   width: 47%;
+  text-decoration: none;
+}
+.button:after {
+  content: ' >';
 }
 .button:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #F16528;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
-  text-decoration: none;
   background-color: rgba(241, 101, 40, 0);
-  border: 2px solid #F16528;
+  border: 1px solid #F16528;
   border-radius: 6px;
   background-color: rgba(241, 101, 40, 0.4);
+  font-size: 1.2em;
   border-radius: 2em;
   width: 47%;
+  text-decoration: none;
 }
 .sectioned-page-wrapper .section {
   text-align: center;
@@ -170,6 +170,9 @@
   line-height: 1;
   font-size: 1.5em;
 }
+.sectioned-page-wrapper .section.section-kids-and-money .section-body {
+  text-align: left;
+}
 .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap {
   padding-top: 0;
 }
@@ -179,9 +182,13 @@
   text-align: left;
   line-height: 1;
 }
-.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .button {
-  margin-left: 0;
-  margin-right: 0;
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:visited,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:link,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:active {
+  color: #F16528;
+  font-size: 1.4em;
+  font-weight: 400;
 }
 .sectioned-page-wrapper .section.section-hero {
   padding-top: 15em;
@@ -272,6 +279,7 @@
 }
 @media only screen and (min-width: 980px) {
   .sectioned-page-wrapper .section.section-kids-and-money {
+    padding-top: 2em;
     padding-bottom: 6em;
   }
   .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {

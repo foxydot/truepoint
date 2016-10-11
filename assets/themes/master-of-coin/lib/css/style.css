@@ -7205,19 +7205,17 @@ button.close {
 .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
@@ -7229,19 +7227,17 @@ button.close {
 .button a:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   background-color: rgba(40, 68, 156, 0.4);
 }
@@ -7464,19 +7460,17 @@ input[type="submit"],
 .entry-content .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
@@ -7492,19 +7486,17 @@ input:hover[type="submit"],
 .entry-content .button:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   background-color: rgba(40, 68, 156, 0.4);
 }
@@ -8003,19 +7995,17 @@ img#wpstats {
 .single_job_listing .application .application_button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
@@ -8922,19 +8912,17 @@ Sidebars
 .sidebar .widget_text .textwidget .readmore {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #28449C;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(40, 68, 156, 0);
-  border: 2px solid #28449C;
+  border: 1px solid #28449C;
   border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
@@ -9218,9 +9206,9 @@ Site Footer
 .sectioned-page-wrapper .section .section-body .wrap {
   padding: 2rem 0;
 }
-.sectioned-page-wrapper .section .section-body .wrap a,
-.sectioned-page-wrapper .section .section-body .wrap a:link,
-.sectioned-page-wrapper .section .section-body .wrap a:visited {
+.sectioned-page-wrapper .section .section-body .wrap a:not('.button'),
+.sectioned-page-wrapper .section .section-body .wrap a:link:not('.button'),
+.sectioned-page-wrapper .section .section-body .wrap a:visited:not('.button') {
   text-decoration: underline;
 }
 .sectioned-page-wrapper .section .section-body:after {
@@ -9518,19 +9506,17 @@ Site Footer
 .sidebar.sidebar-primary section.widget.widget_text .widget-wrap .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
-  font-weight: 400;
-  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
   color: #384B45;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
   text-decoration: none;
   background-color: rgba(100, 133, 123, 0);
-  border: 2px solid #384B45;
+  border: 1px solid #384B45;
   border-radius: 6px;
   background-color: #64857b;
   font-size: 14px;

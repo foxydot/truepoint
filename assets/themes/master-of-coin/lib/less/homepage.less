@@ -7,12 +7,19 @@
 }
 .button{
   .button(@orange,@orange);
+  font-size: 1.2em;
   border-radius: 2em;
   width: 47%;
+  text-decoration: none;
+  &:after{
+    content: ' >';
+  }
   &:hover{
     .button-hover(@orange,@orange);
+    font-size: 1.2em;
     border-radius: 2em;
     width: 47%;
+    text-decoration: none;
   }
 }
 .sectioned-page-wrapper{
@@ -58,6 +65,7 @@
       }
     }
     .section-body{
+      text-align: left;
       .wrap{
       padding-top: 0;
         .section-subtitle{
@@ -66,9 +74,10 @@
           text-align: left;
           line-height: 1;
         }
-        .button{
-          margin-left: 0;
-          margin-right: 0;
+        a, a:visited, a:link, a:active{
+          color: @orange;
+          font-size: 1.4em;
+          font-weight: 400;
         }
       }
     }
@@ -181,6 +190,7 @@
   .section{
   }
   .section.section-kids-and-money{
+    padding-top: 2em;
     padding-bottom: 6em;
     .section-title{
     }
