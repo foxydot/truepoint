@@ -170,7 +170,8 @@ function msdlab_maybe_move_title(){
         add_action('msdlab_footer_area','msdlab_do_post_footer');
         add_action('genesis_after_header','msdlab_do_title_area');
         add_action('genesis_after_entry','msdlab_do_page_footer_text',5);
-    } elseif(is_home()){
+    } elseif(is_home() || is_archive()){
+        remove_action('genesis_entry_header','genesis_do_post_title'); //move the title out of the content area
         add_action('msdlab_title_area','msdlab_do_blog_header');
         add_action('genesis_after_header','msdlab_do_title_area');
     } 
@@ -197,6 +198,13 @@ function msdlab_get_thumbnail_url($post_id = null, $size = 'post-thumbnail'){
     $url = $featured_image[0];
     return $url;
 }
+    
+function msdlab_do_blog_header(){
+    global $wp_query;
+    $page_title = $wp_query->queried_object->post_title;
+    print '<h1 class="entry-title" itemprop="headline">'.apply_filters('the_title',$page_title).'</h1>';
+}
+    
     
 function msdlab_post_info(){
     global $post;
@@ -478,9 +486,7 @@ function msdlab_blog_index(){
 }
 function msdlab_add_page_content_to_blog_home(){
     global $wp_query;
-    $page_title = $wp_query->queried_object->post_title;
     $page_content = $wp_query->queried_object->post_content;
-    print '<h1 class="entry-title" itemprop="headline">'.apply_filters('the_title',$page_title).'</h1>';
     print '<header class="index-header">'.apply_filters('the_content',$page_content).'</header>';
 }
 
