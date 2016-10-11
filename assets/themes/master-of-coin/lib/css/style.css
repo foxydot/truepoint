@@ -7205,18 +7205,19 @@ button.close {
 .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
@@ -7227,19 +7228,20 @@ button.close {
 .button a:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
-  background-color: rgba(40, 68, 156, 0.4);
+  background-color: rgba(241, 101, 40, 0.4);
 }
 /* Clears */
 .msd-clearfix {
@@ -7460,18 +7462,19 @@ input[type="submit"],
 .entry-content .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
@@ -7486,19 +7489,20 @@ input:hover[type="submit"],
 .entry-content .button:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
-  background-color: rgba(40, 68, 156, 0.4);
+  background-color: rgba(241, 101, 40, 0.4);
 }
 .entry-content .button:hover {
   color: #FFF;
@@ -7995,18 +7999,19 @@ img#wpstats {
 .single_job_listing .application .application_button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
@@ -8497,9 +8502,6 @@ Site Navigation
 /*
 Content Area
 ---------------------------------------------------------------------------------------------------- */
-main.content {
-  padding: 1em 0 2rem 2rem;
-}
 /* Entries
 --------------------------------------------- */
 article.entry {
@@ -8702,25 +8704,11 @@ article.entry {
   font-size: 1.4rem;
   margin: 40px 0;
   margin: 4rem 0;
+  width: 100%;
 }
-.archive-pagination li {
-  display: inline;
-}
-.archive-pagination li a {
-  background-color: #333;
-  border-radius: 3px;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  padding: 8px 12px;
-  padding: 0.8rem 1.2rem;
-}
-.archive-pagination li a:hover,
-.archive-pagination li.active a {
-  background-color: #f15123;
-}
+.archive-pagination a,
 .entry-pagination a {
-  border-bottom: 1px solid #ddd;
+  color: #F16528;
 }
 /* Comments
 --------------------------------------------- */
@@ -8857,7 +8845,7 @@ Sidebars
 .sidebar {
   height: 100%;
 }
-.sidebar a {
+.sidebar a:not('.button') {
   border-bottom: 1px solid #ddd;
 }
 .sidebar p:last-child {
@@ -8912,18 +8900,19 @@ Sidebars
 .sidebar .widget_text .textwidget .readmore {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
@@ -8931,7 +8920,7 @@ Sidebars
   transition: all 0.1s ease-in-out;
   float: right;
 }
-.sidebar .widget_text a {
+.sidebar .widget_text a:not('.button') {
   border: none;
 }
 .sidebar .widget.gform_widget {

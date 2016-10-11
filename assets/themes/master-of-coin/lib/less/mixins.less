@@ -210,11 +210,11 @@
 
 
 /* Buttons */
-.button(@background:@blue,@color:@blue) {
+.button(@background:@orange,@color:@orange) {
   padding: 6px 24px;
   .customsanserif;
   color: @color;
-  font-size: 16px;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
@@ -222,14 +222,15 @@
   text-decoration: none;
   background-color: fade(@background,0%);
   border: 1px solid @color;
-  border-radius: 6px;
+  border-radius: 2em;
+  text-decoration: none;
 }
 
 .button{
   .button();
 }
 
-.button-hover(@background:@blue,@color:@blue) {
+.button-hover(@background:@orange,@color:@orange) {
   .button(@background,@color);
   background-color: fade(@background,40%);
 }

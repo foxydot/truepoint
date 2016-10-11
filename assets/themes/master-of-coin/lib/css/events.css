@@ -20,36 +20,38 @@
 .button {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
 }
 .button:hover,
 .button a:hover {
   padding: 6px 24px;
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #28449C;
-  font-size: 16px;
+  color: #F16528;
+  font-size: 1.2em;
   font-weight: 400;
   text-transform: uppercase;
   display: table;
   margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
   text-decoration: none;
-  background-color: rgba(40, 68, 156, 0);
-  border: 1px solid #28449C;
-  border-radius: 6px;
-  background-color: rgba(40, 68, 156, 0.4);
+  background-color: rgba(241, 101, 40, 0.4);
 }
 /* Clears */
 .msd-clearfix {
