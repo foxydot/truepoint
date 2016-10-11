@@ -535,7 +535,25 @@ function msdlab_newer_link_text() {
 }
 
 /*** FOOTER ***/
-
+add_action('wp_footer','msdlab_add_footer_subscribe_modal');
+function msdlab_add_footer_subscribe_modal($atts){
+    print '<div class="modal fade" id="subscribe" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Subscribe to the Truepoint Bulletin</h4>
+      </div>
+      <div class="modal-body">
+      do_shortcode('[gravityform id="2" name="Truepoint Subscription" title="false" ajax="true"]);
+    print '
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>';
+}
 
 /*** SITEMAP ***/
 /**
