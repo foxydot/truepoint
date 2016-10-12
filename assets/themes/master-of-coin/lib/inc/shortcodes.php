@@ -187,6 +187,20 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'orderby'=>'meta_value_num',
                     'order'=>'ASC',
                     ); 
+                    
+                $args2 = array(
+                    'post_type' => 'event',
+                    'meta_query' => array(
+                        array(
+                            'key' => '_date_event_end_datestamp',
+                            'value' => time()-86400,
+                            'compare' => '<='
+                        ),
+                    ),
+                    'meta_key' => '_date_event_end_datestamp',
+                    'orderby'=>'meta_value_num',
+                    'order'=>'DESC',
+                    ); 
                 $link = !$link?'/resources/events/':$link;
             break;
             case 'press':
@@ -236,9 +250,11 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
         $loop = new WP_Query($args);
         
         if($loop->have_posts()){
+        $ctr = 0;
         $ret .= '
         <div class="tp-grid" class="'.$classes.'">';
             while($loop->have_posts()){
+                $ctr++;
                 $loop->the_post();
                 $ret .= '
                 <div class="tp-square" id="'.$post->post_name.'">
@@ -263,6 +279,36 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         </div>
                     </div>
                 </div>';
+            }
+        if($ctr<3 && $channel == 'events'){
+            //do second query to get recent but past events.
+            $args2['posts_per_page'] = $recent - $ctr;
+            $loop2 = new WP_Query($args2);
+            if($loop2->have_posts()){
+                $ret .= '
+                <div class="tp-grid" class="'.$classes.'">';
+                    while($loop2->have_posts()){
+                        $loop2->the_post();
+                        $ret .= '
+                        <div class="tp-square" id="'.$post->post_name.'">
+                            <div class="off">
+                                <div class="icon-holder">
+                                    <h3>Past Event:'.get_the_title().'</h3>
+                                </div>
+                                <div class="title-holder">
+                                    <div class="date">'.get_the_date().'</div>
+                                </div>
+                                <div class="on">
+                                    <div class="icon-holder">
+                                        <i class="icon icon-'.$icon.'"></i>
+                                    </div>
+                                    <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                                    <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
+                                </div>
+                            </div>
+                        </div>';
+                    }
+                }
             }
         $ret .= '
         </div>';
