@@ -293,7 +293,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         <div class="tp-square" id="'.$post->post_name.'">
                             <div class="off">
                                 <div class="icon-holder">
-                                    <h3>Past Event:'.get_the_title().'</h3>
+                                    <h3>Past Event: '.get_the_title().'</h3>
                                 </div>
                                 <div class="title-holder">
                                     <div class="date">'.get_the_date().'</div>
@@ -302,7 +302,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                                     <div class="icon-holder">
                                         <i class="icon icon-'.$icon.'"></i>
                                     </div>
-                                    <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                                    <div class="content-holder">'.msdlab_get_excerpt($post->ID,28,'').'</div>
                                     <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
                                 </div>
                             </div>
