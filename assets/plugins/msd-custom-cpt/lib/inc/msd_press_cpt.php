@@ -54,7 +54,7 @@ if (!class_exists('MSDPressCPT')) {
                 'labels' => $labels,
                 'hierarchical' => false,
                 'description' => 'Press',
-                'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
+                'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'genesis-cpt-archives-settings' ),
                 'taxonomies' => array(),
                 'public' => true,
                 'show_ui' => true,
