@@ -171,9 +171,9 @@ function msdlab_maybe_move_title(){
         add_action('genesis_after_header','msdlab_do_title_area');
         add_action('genesis_after_entry','msdlab_do_page_footer_text',5);
     } elseif(is_home() || is_archive()){
-        remove_action('genesis_entry_header','genesis_do_post_title'); //move the title out of the content area
         add_action('msdlab_title_area','msdlab_do_blog_header');
         add_action('genesis_after_header','msdlab_do_title_area');
+        
     } 
 }
  

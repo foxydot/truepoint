@@ -19,10 +19,10 @@ if(!function_exists('ts_var')){
     }
 }
 
-//add_action('genesis_footer','msdlab_trace_actions');
+add_action('genesis_footer','msdlab_trace_actions');
 function msdlab_trace_actions(){
     global $wp_filter;
-    ts_var( $wp_filter['genesis_entry_header'] );
+    ts_var( $wp_filter['genesis_entry_content'] );
 }
 
 /*$data = get_userdata( get_current_user_id() );

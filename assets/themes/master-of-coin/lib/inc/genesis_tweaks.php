@@ -48,7 +48,6 @@ add_filter('genesis_breadcrumb_args', 'msdlab_breadcrumb_args', 10); //customize
 remove_action('genesis_before_loop', 'genesis_do_breadcrumbs'); //move the breadcrumbs 
 add_filter( 'genesis_post_info', 'sp_post_info_filter' );
 add_action('genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs', 10); //to outside of the loop area
-
 add_action('template_redirect','msdlab_maybe_move_title');
 add_shortcode('post_author_bio','msdlab_post_author_bio');
 //add_action('genesis_before_entry','msd_post_image');//add the image above the entry

@@ -4,7 +4,9 @@ global $wp_filter;
 //ts_var( $wp_filter['body_class'] );
 
 remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-add_action('genesis_before_loop','msdlab_category_title');
+
+remove_action('genesis_before_loop','genesis_do_taxonomy_title_description',15);
+add_action('msdlab_title_area','msdlab_category_title');
 function msdlab_category_title(){
     print '<h1 class="entry-title" itemprop="headline">'.single_cat_title( '', false ).'</h1>';
 }
