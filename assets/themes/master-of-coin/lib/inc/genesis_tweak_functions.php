@@ -778,3 +778,63 @@ $quarterly_insights = new WPAlchemy_MetaBox(array
     'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
     'prefix' => '_qi_' // defaults to NULL
 ));
+
+function msdlab_do_cpt_archive_title_description() {
+
+    if ( ! is_post_type_archive() || ! genesis_has_post_type_archive_support() )
+        return;
+
+    if ( get_query_var( 'paged' ) >= 2 )
+        return;
+
+    $headline   = genesis_get_cpt_option( 'headline' );
+    $intro_text = genesis_get_cpt_option( 'intro_text' );
+
+    $headline   = $headline ? sprintf( '<h1 class="archive-title">%s</h1>', $headline ) : '';
+    $intro_text = $intro_text ? apply_filters( 'genesis_cpt_archive_intro_text_output', $intro_text ) : '';
+
+    if ( $headline || $intro_text )
+        //printf( '<div class="archive-description cpt-archive-description"><div class="wrap">%s</div></div>', $headline .'<div class="sep"></div>'. $intro_text );
+        printf( '<div class="archive-description cpt-archive-description"><div class="wrap">%s</div></div>',  $intro_text );
+
+}
+
+
+function msdlab_get_cpt_archive_title() {
+
+    if ( ! is_post_type_archive() || ! genesis_has_post_type_archive_support() )
+        return;
+
+    if ( get_query_var( 'paged' ) >= 2 )
+        return;
+
+    $headline   = genesis_get_cpt_option( 'headline' );
+
+    $headline   = $headline ? sprintf( '<h1 class="archive-title">%s</h1>', $headline ) : FALSE;
+    return $headline;
+}
+function msdlab_do_cpt_archive_title() {
+    print msdlab_get_cpt_archive_title();
+}
+
+function msdlab_get_cpt_archive_description() {
+
+    if ( ! is_post_type_archive() || ! genesis_has_post_type_archive_support() )
+        return;
+
+    if ( get_query_var( 'paged' ) >= 2 )
+        return;
+
+    $intro_text = genesis_get_cpt_option( 'intro_text' );
+
+    $intro_text = $intro_text ? apply_filters( 'genesis_cpt_archive_intro_text_output', $intro_text ) : '';
+
+    if ( $intro_text )
+        return sprintf( '<div class="archive-description cpt-archive-description"><div class="wrap">%s</div></div>',  $intro_text );
+
+}
+
+
+function msdlab_do_cpt_archive_description() {
+    print msdlab_get_cpt_archive_description();
+}

@@ -4,9 +4,15 @@ global $wp_filter;
 //ts_var( $wp_filter['body_class'] );
 
 remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-add_action('genesis_before_loop','msdlab_archive_title');
+remove_all_actions('msdlab_title_area');
+add_action('msdlab_title_area','msdlab_archive_title');
+remove_action('genesis_before_loop','genesis_do_cpt_archive_title_description');
+add_action('genesis_before_loop','msdlab_do_cpt_archive_description');
 function msdlab_archive_title(){
-    if ( is_day() ) :
+    if (msdlab_get_cpt_archive_title()):
+        print msdlab_get_cpt_archive_title();
+        return;
+    elseif ( is_day() ) :
         $title = sprintf( __( 'Daily Archives: %s', 'veritas' ), '<span>' . get_the_date() . '</span>' );
     elseif ( is_month() ) :
         $title = sprintf( __( 'Monthly Archives: %s', 'veritas' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'veritas' ) ) . '</span>' );
