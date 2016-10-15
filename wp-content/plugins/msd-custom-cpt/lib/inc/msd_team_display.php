@@ -73,7 +73,7 @@ if (!class_exists('MSDTeamDisplay')) {
                 
                 $practice_areas = implode(' ', $practice_areas);
             }
-            $mini_bio = msdlab_excerpt($team->ID);
+            $mini_bio = msdlab_get_excerpt($team->ID);
             $team_contact_info = '';
             $contact_info->the_meta($team->ID);
             $contact_info->the_field('_team_member_phone');
