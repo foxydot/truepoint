@@ -22,6 +22,5 @@ function msdlab_archive_title(){
     endif;
     print '<h1 class="entry-title" itemprop="headline">'.$title.'</h1>';
 }
-add_filter('genesis_post_info','msdlab_remove_contribute');
 add_action('genesis_entry_content','msdlab_excerpt',6);
 genesis();

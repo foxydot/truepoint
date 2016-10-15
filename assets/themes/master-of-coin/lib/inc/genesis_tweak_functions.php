@@ -210,10 +210,11 @@ function msdlab_post_info(){
     global $post;
     if(!$post_id)
         $post_id = $post->ID;
-    $cptstohide = array('press');
-    if(!in_array($post->post_type, $cptstohide)){
-        genesis_post_info();
+    $cptstohide = array('press','news');
+    if(in_array($post->post_type, $cptstohide)){
+        add_filter('genesis_post_info','msdlab_remove_contribute');
     }
+    genesis_post_info();
 }
 
 function msdlab_remove_contribute($info){
@@ -539,6 +540,8 @@ function msdlab_older_link_text() {
     global $post;
     if($post->post_type == 'news'){
         $olderlink = 'Older Articles &raquo;';
+    } elseif($post->post_type == 'press'){
+        $olderlink = 'Older Press Releases &raquo;';
     } else {
         $olderlink = 'Older Posts &raquo;';
     }
@@ -548,6 +551,8 @@ function msdlab_older_link_text() {
 function msdlab_newer_link_text() {
     if($post->post_type == 'news'){
         $newerlink = '&laquo; Newer Articles';
+    } elseif($post->post_type == 'press'){
+        $newerlink = '&laquo; Newer Press Releases';
     } else {
         $newerlink = '&laquo; Newer Posts';
     }

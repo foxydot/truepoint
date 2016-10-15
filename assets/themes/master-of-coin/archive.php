@@ -29,4 +29,5 @@ if(is_cpt('post')){
     remove_action('genesis_sidebar','genesis_do_sidebar');
     add_action('genesis_sidebar','msdlab_do_blog_sidebar');
 }
+add_action('genesis_entry_content','msdlab_excerpt',6);
 genesis();
