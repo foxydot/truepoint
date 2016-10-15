@@ -216,6 +216,11 @@ function msdlab_post_info(){
     }
 }
 
+function msdlab_remove_contribute($info){
+    $info = '[post_date]';
+    return $info;
+}
+
 function msdlab_do_page_footer_text(){
     if(is_page()){
         print '<div id="page-footer-area" class="page-footer-area">';

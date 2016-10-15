@@ -22,8 +22,6 @@ function msdlab_archive_title(){
     endif;
     print '<h1 class="entry-title" itemprop="headline">'.$title.'</h1>';
 }
-
-remove_action( 'genesis_entry_header', 'msdlab_post_info', 12 ); //remove the info (date, posted by,etc.)
-remove_action( 'genesis_entry_footer', 'msdlab_post_meta' ); //remove the meta (filed under, tags, etc.)
-
+add_filter('genesis_post_info','msdlab_remove_contribute');
+add_action('genesis_entry_content','msdlab_excerpt',6);
 genesis();

@@ -1,10 +1,10 @@
 <?php
 function msdlab_excerpt($content){
     global $post;
-    return msdlab_get_excerpt($post->ID);
+    print msdlab_get_excerpt($post->ID);
 }
 
-function msdlab_get_excerpt( $post_id, $excerpt_length = 50, $trailing_character = '&nbsp;<i class="fa fa-arrow-circle-right"></i>' ) {
+function msdlab_get_excerpt( $post_id, $excerpt_length = 50, $trailing_character = '&nbsp;>' ) {
     $the_post = get_post( $post_id );
     $the_excerpt = strip_tags( strip_shortcodes( $the_post->post_excerpt ) );
      
