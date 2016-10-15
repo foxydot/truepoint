@@ -9431,17 +9431,19 @@ Site Footer
 .intro-text ul,
 .footer-text ul {
   list-style: none outside none;
-  margin-left: 1em;
+  margin-left: 2em;
 }
 .intro-text ul li,
 .footer-text ul li {
   list-style: none outside none;
+  margin-bottom: 0.25em;
 }
 .intro-text ul li:before,
 .footer-text ul li:before {
   content: '\2022';
   color: #F16528;
   padding-right: 0.5em;
+  margin-left: -1em;
 }
 .intro-text {
   margin-bottom: 1.5em;
