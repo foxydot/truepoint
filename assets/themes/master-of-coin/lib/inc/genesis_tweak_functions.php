@@ -536,12 +536,21 @@ function msdlab_do_post_permalink() {
 
 }
 function msdlab_older_link_text() {
+    global $post;
+    if($post->post_type == 'news'){
+        $olderlink = 'Older Articles &raquo;';
+    } else {
         $olderlink = 'Older Posts &raquo;';
+    }
         return $olderlink;
 }
 
 function msdlab_newer_link_text() {
+    if($post->post_type == 'news'){
+        $newerlink = '&laquo; Newer Articles';
+    } else {
         $newerlink = '&laquo; Newer Posts';
+    }
         return $newerlink;
 }
 
