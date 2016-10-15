@@ -4,6 +4,7 @@
 */
 add_action('wp_enqueue_scripts', 'msdlab_add_styles');
 add_action('wp_enqueue_scripts', 'msdlab_add_scripts');
+add_action('admin_enqueue_scripts','msdlab_add_admin_styles');
 
 function msdlab_add_styles() {
     global $is_IE;
@@ -65,4 +66,10 @@ function msdlab_add_scripts() {
             wp_enqueue_script('msd-homepage-jquery',get_stylesheet_directory_uri().'/lib/js/homepage-jquery.js',array('jquery','bootstrap-jquery'));
         } 
     }
+}
+function msdlab_add_admin_styles(){
+            //use cdn        
+            wp_enqueue_style('bootstrap-style','//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css');
+            wp_enqueue_style('font-awesome-style','//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css',array('bootstrap-style'),'4.5.0');
+    
 }

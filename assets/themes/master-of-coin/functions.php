@@ -2,10 +2,6 @@
 /** Start the engine */
 require_once( get_template_directory() . '/lib/init.php' );
 
-//* Child theme (do not remove)
-define( 'CHILD_THEME_NAME', 'The Super' );
-define( 'CHILD_THEME_URL', 'http://msdlab.com/' );
-define( 'CHILD_THEME_VERSION', '2.0.1' );
 
 /*
  * Pull in some stuff from other files

@@ -9890,6 +9890,28 @@ Site Footer
   border-top: 1px solid #B1B1B1;
   padding-top: 1em;
 }
+.landing-page-wrapper .feature {
+  margin-bottom: 2em;
+}
+.landing-page-wrapper .feature .wrapper {
+  background-color: #E3E2E0;
+  padding: 0.5em;
+}
+.landing-page-wrapper .feature .wrapper .feature-img {
+  height: 200px;
+  overflow: hidden;
+}
+.landing-page-wrapper .feature .wrapper .feature-type {
+  font-weight: 700;
+  color: #F16528;
+}
+.landing-page-wrapper .feature .wrapper .feature-type a {
+  color: #F16528;
+}
+.landing-page-wrapper .feature .wrapper .feature-title {
+  height: 4em;
+  overflow: hidden;
+}
 .nav-responsive ul,
 .nav-responsive li,
 .nav-responsive li a {
