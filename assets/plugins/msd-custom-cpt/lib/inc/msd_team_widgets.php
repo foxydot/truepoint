@@ -51,6 +51,7 @@ class MSD_Widget_Team_Viewpoints extends WP_Widget {
             <div class="col-md-12">
             <?php foreach($viewpoints AS $viewpoint){
                 print '<div class="article">
+                <div class="title-link">'.$viewpoint->post_title.'</div>
                 <div class="author">'.get_the_author_meta('display_name',$viewpoint->post_author);
                 
                 $coauthors = get_post_meta($viewpoint->ID,'_coauthor_team_members', TRUE);
@@ -86,7 +87,6 @@ class MSD_Widget_Team_Viewpoints extends WP_Widget {
                 
                 print '</div>
                 
-                <div class="title-link">'.$viewpoint->post_title.'</div>
                 <div class="date">'.get_the_time( 'l, F j, Y', $viewpoint ).'</div>
                 <a class="read-more" href="'.get_post_permalink($viewpoint->ID).'">'.apply_filters('team_viewpoints_more_link_text','MORE >').'</a>
                 </div>';
