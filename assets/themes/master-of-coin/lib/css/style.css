@@ -9906,8 +9906,12 @@ Site Footer
   color: #F16528;
 }
 .landing-page-wrapper .feature .wrapper .feature-title {
-  height: 4em;
+  height: 3em;
   overflow: hidden;
+}
+.landing-page-wrapper .feature .wrapper .feature-title h3 {
+  font-size: 1.2em;
+  color: #797A79;
 }
 .nav-responsive ul,
 .nav-responsive li,
