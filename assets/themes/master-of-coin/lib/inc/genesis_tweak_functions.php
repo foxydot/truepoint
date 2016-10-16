@@ -297,9 +297,9 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
    //ts_data($crumb);
     if(is_cpt('post')){
         if(is_single()){
-            $crumb = '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/about-us/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
         } else {
-            $crumb = '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a> &gt; <a href="'.site_url( '/about-truepoint/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
         }
     } else {
         $pattern = array(
@@ -857,4 +857,8 @@ function msdlab_get_cpt_archive_description() {
 
 function msdlab_do_cpt_archive_description() {
     print msdlab_get_cpt_archive_description();
+}
+add_action('genesis_before','msdlab_google_tag_manager');
+function msdlab_google_tag_manager(){
+    if ( function_exists( 'gtm4wp_the_gtm_tag' ) ) { gtm4wp_the_gtm_tag(); }
 }
