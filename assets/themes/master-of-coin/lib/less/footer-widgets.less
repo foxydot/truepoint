@@ -119,3 +119,60 @@ Footer Widgets
     text-align: right;
   }
 }
+
+
+@media only screen and (max-width: 980px) {
+.footer-widgets {
+  .widget.msd-connected{
+    .connected-social,
+    .connected-bizname,
+    .connected-address
+    {
+      display: block;
+      float: none;
+      clear: both;
+    }
+    .connected-social{
+      .social-media{
+        margin-bottom: 1em;
+        a.fa{
+          font-size: 3vw;
+        }
+      }
+    }
+  }
+}
+}
+
+
+@media only screen and (max-width: 768px) {
+ .footer-widgets {
+  .widget.msd-connected{
+      text-align: center;
+    .connected-social,
+    .connected-bizname,
+    .connected-address
+    {
+      text-align: center;
+    }
+    .connected-social{
+      .social-media{
+        margin: 0 auto 1em auto;
+        float: none;
+        a.fa{
+          font-size: 3vw;
+        }
+      }
+    }
+  }
+  
+  .widget.widget_nav_menu{
+    .menu{
+      .menu-item{
+        display: block;
+        text-align: center;
+      }
+    }
+  }
+} 
+}

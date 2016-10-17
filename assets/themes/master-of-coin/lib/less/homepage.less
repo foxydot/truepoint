@@ -25,7 +25,6 @@
       text-shadow: 0 0 0 rgba(255,255,255,0);
       h3{
         padding: 0.25em 0;
-        font-size: 1.2em;
       }
     }
   }
@@ -174,7 +173,24 @@
   }
 }
 
-
+@media only screen and (max-width: 980px) { //smaller screens
+.sectioned-page-wrapper{
+  .wrap{
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .button{
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    &:hover{
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+}
 @media only screen and (min-width: 479px) { //tablets
 
 }
@@ -187,6 +203,10 @@
     padding-top: 2em;
     padding-bottom: 6em;
     .section-title{
+    h3{
+        padding: 0.25em 0;
+        font-size: 1.2em;
+      }
     }
     .section-body{
       .wrap{

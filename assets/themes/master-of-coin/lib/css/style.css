@@ -9044,6 +9044,42 @@ Footer Widgets
 .footer-widgets .widget.widget_nav_menu {
   text-align: right;
 }
+@media only screen and (max-width: 980px) {
+  .footer-widgets .widget.msd-connected .connected-social,
+  .footer-widgets .widget.msd-connected .connected-bizname,
+  .footer-widgets .widget.msd-connected .connected-address {
+    display: block;
+    float: none;
+    clear: both;
+  }
+  .footer-widgets .widget.msd-connected .connected-social .social-media {
+    margin-bottom: 1em;
+  }
+  .footer-widgets .widget.msd-connected .connected-social .social-media a.fa {
+    font-size: 3vw;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .footer-widgets .widget.msd-connected {
+    text-align: center;
+  }
+  .footer-widgets .widget.msd-connected .connected-social,
+  .footer-widgets .widget.msd-connected .connected-bizname,
+  .footer-widgets .widget.msd-connected .connected-address {
+    text-align: center;
+  }
+  .footer-widgets .widget.msd-connected .connected-social .social-media {
+    margin: 0 auto 1em auto;
+    float: none;
+  }
+  .footer-widgets .widget.msd-connected .connected-social .social-media a.fa {
+    font-size: 3vw;
+  }
+  .footer-widgets .widget.widget_nav_menu .menu .menu-item {
+    display: block;
+    text-align: center;
+  }
+}
 /*
 Site Footer
 ---------------------------------------------------------------------------------------------------- */
@@ -9897,6 +9933,7 @@ Site Footer
 .landing-page-wrapper .feature .wrapper .feature-img {
   height: 200px;
   overflow: hidden;
+  text-align: center;
 }
 .landing-page-wrapper .feature .wrapper .feature-type {
   font-weight: 700;
@@ -9991,7 +10028,7 @@ Site Footer
     display: inline-block;
     width: 100%;
     text-indent: 20px;
-    background: #64857b;
+    background: #28449C;
     min-height: 50px;
     padding-top: 14px;
     position: relative;
@@ -10011,7 +10048,7 @@ Site Footer
     padding: 0;
   }
   .nav-responsive a#pull ul#mobile_menu li a {
-    background: #64857b;
+    background: #28449C;
     color: #FFF;
     display: block;
     width: 100%;
@@ -10023,7 +10060,7 @@ Site Footer
     right: 15px;
   }
   .nav-responsive a#pull ul#mobile_menu li a:hover {
-    background: #7e9e94;
+    background: #3256c5;
   }
   .nav-responsive a#pull ul#mobile_menu li .toggle-switch {
     margin-right: 12px;
@@ -10053,7 +10090,7 @@ Site Footer
     display: none;
   }
   .nav-responsive a#pull ul#mobile_menu li.current-menu-item a {
-    background: #8ca9a0;
+    background: #4264cf;
   }
   .nav-responsive a#pull:hover {
     text-decoration: none;
