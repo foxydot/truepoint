@@ -85,7 +85,7 @@
         background: url(../img/white-logo-mark.png);
         background-repeat: no-repeat;
         background-position: center center;
-        min-height: 100px;
+        height: 100px;
       }
       h3{
         color: @white;
@@ -173,12 +173,8 @@
   }
 }
 
-@media only screen and (max-width: 980px) { //smaller screens
+@media only screen and (max-width: 960px) { //smaller screens
 .sectioned-page-wrapper{
-  .wrap{
-    margin-left: 15px;
-    margin-right: 15px;
-  }
   .button{
     width: auto;
     margin-left: auto;
@@ -189,6 +185,75 @@
       margin-right: auto;
     }
   }
+  
+  .section.section-hero{
+    padding-top: 33vw;
+    background-size: cover;
+    .section-title{
+      &:before{
+        background-size: contain;
+        height: 6vw;
+      }
+      h3{
+        font-size: 5.75vw;
+      }
+    }
+    .section-body{
+      .section-subtitle{
+        font-size: 3.75vw;
+      }
+    }
+  }
+  .section.section-kids-and-money{
+    .section-title{
+      h3{
+        font-size: 5.75vw;
+        margin-left: 15px;
+      }
+    }
+    .section-body .wrap{
+      .section-subtitle{
+        font-size: 3.75vw;
+      }
+    }
+  }
+  .section.section-truepoint-by-the-numbers{
+    background-size: cover;
+  }
+}
+}@media only screen and (max-width: 479px) { //smaller screens
+.sectioned-page-wrapper{
+
+  .button{
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    &:hover{
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+  .section.section-hero{
+    padding-top: 33vw;
+    background-position:  center top;
+    .section-title{
+      &:before{
+        background-size: contain;
+        height: 7vw;
+      }
+      h3{
+        font-size: 6vw;
+      }
+    }
+    .section-body{
+      .section-subtitle{
+        font-size: 3.5vw;
+      }
+    }
+  }
+  
 }
 }
 @media only screen and (min-width: 479px) { //tablets

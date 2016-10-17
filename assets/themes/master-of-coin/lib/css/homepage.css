@@ -193,7 +193,7 @@
   background: url(../img/white-logo-mark.png);
   background-repeat: no-repeat;
   background-position: center center;
-  min-height: 100px;
+  height: 100px;
 }
 .sectioned-page-wrapper .section.section-hero .section-title h3 {
   color: #FFF;
@@ -268,11 +268,7 @@
 .sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body .column-3 h5 {
   font-size: 2.2em;
 }
-@media only screen and (max-width: 980px) {
-  .sectioned-page-wrapper .wrap {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
+@media only screen and (max-width: 960px) {
   .sectioned-page-wrapper .button {
     width: auto;
     margin-left: auto;
@@ -282,6 +278,56 @@
     width: auto;
     margin-left: auto;
     margin-right: auto;
+  }
+  .sectioned-page-wrapper .section.section-hero {
+    padding-top: 33vw;
+    background-size: cover;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title:before {
+    background-size: contain;
+    height: 6vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title h3 {
+    font-size: 5.75vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
+    font-size: 3.75vw;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+    font-size: 5.75vw;
+    margin-left: 15px;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+    font-size: 3.75vw;
+  }
+  .sectioned-page-wrapper .section.section-truepoint-by-the-numbers {
+    background-size: cover;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .sectioned-page-wrapper .button {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .button:hover {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .section.section-hero {
+    padding-top: 33vw;
+    background-position: center top;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title:before {
+    background-size: contain;
+    height: 7vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title h3 {
+    font-size: 6vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
+    font-size: 3.5vw;
   }
 }
 @media only screen and (min-width: 479px) {

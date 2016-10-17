@@ -9223,7 +9223,8 @@ Site Footer
   margin-bottom: 0;
 }
 .sectioned-page-wrapper .section .section-body .wrap {
-  padding: 2rem 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 .sectioned-page-wrapper .section .section-body .wrap a:not('.button'),
 .sectioned-page-wrapper .section .section-body .wrap a:link:not('.button'),
@@ -9966,7 +9967,8 @@ Site Footer
 /* Smaller screens */
 @media only screen and (max-width: 1099px) {
   /* Enter Your Custom Styles Here */
-  div.wrap {
+  .site-inner div.wrap,
+  .sectioned-page-wrapper div.wrap {
     padding: 0 15px;
   }
   .nav-primary {
@@ -9994,28 +9996,7 @@ Site Footer
     padding-right: 2vw;
   }
 }
-@media only screen and (max-width: 980px) {
-  /* Enter Your Custom Styles Here */
-  .section-title {
-    font-size: 7vw;
-  }
-  .site-inner {
-    background-image: none;
-  }
-  .footer-widgets .widget.widget_nav_menu ul.menu {
-    -moz-column-count: 2;
-    -webkit-column-count: 2;
-    column-count: 2;
-  }
-}
-/* Mobile */
-@media only screen and (max-width: 767px) {
-  /* Enter Your Custom Styles Here */
-  .mobile-only {
-    display: block;
-  }
-}
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 960px) {
   .nav-responsive {
     text-align: left;
     border-bottom: 0;
@@ -10109,6 +10090,24 @@ Site Footer
     top: 0.25em;
   }
   /* Enter Your Custom Styles Here */
+  .site-inner {
+    background-image: none;
+  }
+  .footer-widgets .widget.widget_nav_menu ul.menu {
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+  }
+}
+/* Mobile */
+@media only screen and (max-width: 767px) {
+  /* Enter Your Custom Styles Here */
+  .mobile-only {
+    display: block;
+  }
+}
+@media only screen and (max-width: 479px) {
+  /* Enter Your Custom Styles Here */
   .pre-header .wrap .header-widget-area .widget {
     display: block;
     width: 100%;
@@ -10156,12 +10155,4 @@ Site Footer
 }
 @media only screen and (max-width: 322px) {
   /* Enter Your Custom Styles Here */
-  .footer-widgets .widget.widget_nav_menu ul.menu {
-    -moz-column-count: 1;
-    -webkit-column-count: 1;
-    column-count: 1;
-  }
-  .site-footer .wrap div.icons i.logo-lcs {
-    top: 2em;
-  }
 }
