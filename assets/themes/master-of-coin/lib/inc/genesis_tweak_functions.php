@@ -276,6 +276,8 @@ function msdlab_do_breadcrumbs() {
 function msdlab_breadcrumb_args($args) {
     $args['home'] = 'Home';
     $args['labels']['prefix'] = ''; //marks the spot
+    $args['labels']['post_type'] = '';
+    $args['labels']['category'] = '';
     $args['sep'] = ' > ';
     return $args;
 }
@@ -297,20 +299,22 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
    //ts_data($crumb);
     if(is_cpt('post')){
         if(is_single()){
-            $crumb = '<a href="'.site_url( '/resources/' ).'" title="View Resources">Resources</a> &gt; <a href="'.site_url( '/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; <a href="'.site_url( '/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
         } else {
-            $crumb = '<a href="'.site_url( '/resources/' ).'" title="View Resources">Resources</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
         }
+    } elseif(is_cpt('press')){
+            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
+    } elseif(is_cpt('news')){
+            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
     } else {
         $pattern = array(
             '/Team Members/i',
-            '/Archives for News/i',
             '/news-info/i',
         );
         $replacement = array(
             '<a href="'.site_url( '/about-truepoint/' ).'" title="About Truepoint">About Truepoint</a>
     &gt; <a title="View Meet the Team" href="'.site_url( '/about-truepoint/meet-the-team/' ).'">Meet the Team</a>',
-            '<span>About Us</span> &gt; News',
             'news',
         );
         $crumb = preg_replace($pattern, $replacement, $crumb);
