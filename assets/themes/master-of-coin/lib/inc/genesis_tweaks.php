@@ -40,6 +40,7 @@ add_filter( 'widget_text', array( $wp_embed, 'autoembed'), 8 );
 /*** CONTENT ***/
 
 add_filter('genesis_breadcrumb_link','msdlab_modify_breadcrumb_clickage');
+add_filter('genesis_category_crumb','msdlab_jank_the_cpt_breadcrumb');
 add_filter('genesis_single_crumb','msdlab_jank_the_cpt_breadcrumb');
 add_filter('genesis_post_type_crumb','msdlab_jank_the_cpt_breadcrumb');
 add_filter('genesis_page_crumb','msdlab_jank_the_cpt_breadcrumb');
