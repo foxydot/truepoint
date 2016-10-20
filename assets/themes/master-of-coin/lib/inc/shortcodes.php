@@ -265,7 +265,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         <div class="title-holder">';
                         if($args['post_type']=='post'){
                             $ret .= '
-                            <div class="author">Contributed by '.get_the_author().'</div>';
+                            <div class="author">'.msdlab_post_author_bio().'</div>';
                             }
                         $ret .= '
                             <div class="date">'.get_the_date().'</div>
