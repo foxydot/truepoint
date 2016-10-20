@@ -7804,12 +7804,8 @@ section.layerslider_widget {
   color: #2B2C2C;
 }
 .widget_team_viewpoints .article .title-link {
-  font-family: "Roboto Condensed", "Trebuchet MS", Calibri, sans-serif;
-  font-size: 16px;
-  font-size: 1.6rem;
-  line-height: 1.625;
   color: #28449C;
-  font-weight: 400;
+  font-weight: 600;
 }
 .widget_team_viewpoints .article .date {
   display: none;
@@ -7830,12 +7826,8 @@ section.layerslider_widget {
   color: #2B2C2C;
 }
 .widget.widget_recent_entries .article .title-link {
-  font-family: "Roboto Condensed", "Trebuchet MS", Calibri, sans-serif;
-  font-size: 16px;
-  font-size: 1.6rem;
-  line-height: 1.625;
   color: #28449C;
-  font-weight: 400;
+  font-weight: 600;
 }
 .widget.widget_recent_entries .article .date {
   display: none;
