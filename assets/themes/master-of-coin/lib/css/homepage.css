@@ -316,7 +316,7 @@
     margin-right: auto;
   }
   .sectioned-page-wrapper .section.section-hero {
-    padding-top: 33vw;
+    padding-top: 55vw;
     background-position: center top;
   }
   .sectioned-page-wrapper .section.section-hero .section-title:before {
@@ -328,6 +328,25 @@
   }
   .sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
     font-size: 3.5vw;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money {
+    padding-top: 40vw;
+    background-size: cover;
+    background-position: top right;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+    color: #FFF;
+    text-shadow: 2px 2px 4px #2B2C2C;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+    max-width: 100%;
+    margin-bottom: 0;
+    color: #FFF;
+    text-shadow: 2px 2px 4px #2B2C2C;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap p {
+    margin-bottom: 0;
+    text-shadow: 2px 2px 4px #2B2C2C;
   }
 }
 @media only screen and (min-width: 479px) {

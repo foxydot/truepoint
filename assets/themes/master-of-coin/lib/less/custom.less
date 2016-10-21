@@ -185,7 +185,7 @@ padding: 1em 0;
         h3{
           color: @orange;
           font-weight: 400;
-          font-size: 1.2em;
+          font-size: 1.4em;
           text-transform: none;
           line-height: 1.2;
           text-align: left;
@@ -510,4 +510,40 @@ padding: 1em 0;
       }
     }
   }
+}
+
+
+@media only screen and (max-width: 479px) {
+.tp-grid{
+  .tp-square{
+    h3{
+      font-size: 8vw;
+    }
+    .off{
+      .icon-holder{
+        i.icon{
+          font-size: 22vw;
+        }
+        h3{
+          font-size: 8vw;
+        }
+      }
+      >.title-holder{
+        .author,.date{
+          font-size: 5vw;
+        }
+      }
+    .on{
+      .icon-holder{
+        i.icon{
+          font-size: 22vw;
+        }
+      }
+      .content-holder,.link-holder{
+        font-size: 4vw;
+      }
+    }
+    }
+  }
+}
 }

@@ -9074,6 +9074,11 @@ Footer Widgets
     text-align: center;
   }
 }
+@media only screen and (max-width: 479px) {
+  .footer-widgets .widget.msd-connected .connected-social .social-media a.fa {
+    font-size: 5vw;
+  }
+}
 /*
 Site Footer
 ---------------------------------------------------------------------------------------------------- */
@@ -9615,7 +9620,7 @@ Site Footer
 .tp-grid .tp-square .off .icon-holder h3 {
   color: #F16528;
   font-weight: 400;
-  font-size: 1.2em;
+  font-size: 1.4em;
   text-transform: none;
   line-height: 1.2;
   text-align: left;
@@ -9944,6 +9949,28 @@ Site Footer
 .landing-page-wrapper .feature .wrapper .feature-title h3 {
   font-size: 1.2em;
   color: #797A79;
+}
+@media only screen and (max-width: 479px) {
+  .tp-grid .tp-square h3 {
+    font-size: 8vw;
+  }
+  .tp-grid .tp-square .off .icon-holder i.icon {
+    font-size: 22vw;
+  }
+  .tp-grid .tp-square .off .icon-holder h3 {
+    font-size: 8vw;
+  }
+  .tp-grid .tp-square .off > .title-holder .author,
+  .tp-grid .tp-square .off > .title-holder .date {
+    font-size: 5vw;
+  }
+  .tp-grid .tp-square .off .on .icon-holder i.icon {
+    font-size: 22vw;
+  }
+  .tp-grid .tp-square .off .on .content-holder,
+  .tp-grid .tp-square .off .on .link-holder {
+    font-size: 4vw;
+  }
 }
 .nav-responsive ul,
 .nav-responsive li,
