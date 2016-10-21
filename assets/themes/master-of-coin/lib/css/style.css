@@ -8301,7 +8301,8 @@ Site Navigation
   font-size: 1.8rem;
   line-height: 1.625;
   background-color: transparent;
-  border: 0;
+  border-color: #B1B1B1;
+  border-width: 0 0 1px 0;
   color: #28449C;
   padding: 0.5em;
   width: 100%;
@@ -8319,6 +8320,7 @@ Site Navigation
 .nav-primary .menu-primary > li.menu-item .sub-menu li:hover > a {
   color: #FFF;
   text-decoration: none;
+  border-color: transparent;
 }
 .nav-primary .menu-primary > li.menu-item:hover a,
 .nav-primary .menu-primary > li.menu-item.current-menu-item a,
