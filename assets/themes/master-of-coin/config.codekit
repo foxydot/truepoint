@@ -3249,6 +3249,15 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/search.php": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/search.php",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
 	"\/single-team_member.php": {
 		"fileType": 8192,
 		"ignore": 0,

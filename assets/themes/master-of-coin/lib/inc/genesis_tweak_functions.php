@@ -866,3 +866,26 @@ add_action('genesis_before','msdlab_google_tag_manager');
 function msdlab_google_tag_manager(){
     if ( function_exists( 'gtm4wp_the_gtm_tag' ) ) { gtm4wp_the_gtm_tag(); }
 }
+
+
+
+add_action('pre_get_posts','msdlab_custom_query',99);
+//add_action('pre_get_posts','msdlab_show_query',999);
+function msdlab_show_query($query){
+    if($query->is_main_query() && $query->is_search){
+        ts_data($query);
+    }
+}
+
+function msdlab_custom_query( $query ) {
+            if(!is_admin()){
+                if($query->is_main_query() && $query->is_search){
+                    $post_types = $query->query_vars['post_type'];
+                    if(count($post_types)==0){
+                        $post_types[] = 'post';
+                        $post_types[] = 'news';
+                    }
+                    $query->set( 'post_type', $post_types );
+                }
+            }
+        } 
