@@ -84,3 +84,7 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# Codekit
+config.codekit
+.codekit-cache
