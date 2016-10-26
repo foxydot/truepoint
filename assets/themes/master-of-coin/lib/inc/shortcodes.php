@@ -261,7 +261,13 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     <div class="off">
                         <div class="icon-holder">
                             <h3>'.get_the_title().'</h3>
-                        </div>
+                        </div>';
+                        if(wp_is_mobile()){
+                            $ret .= '
+                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                            <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>';
+                        }
+                        $ret .= '
                         <div class="title-holder">';
                         if($args['post_type']=='post'){
                             $ret .= '
@@ -269,14 +275,18 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                             }
                         $ret .= '
                             <div class="date">'.get_the_date().'</div>
-                        </div>
+                        </div>';
+                        if(!wp_is_mobile()){
+                            $ret .= '
                         <div class="on">
                             <div class="icon-holder">
                                 <i class="icon icon-'.$icon.'"></i>
                             </div>
                             <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
                             <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
-                        </div>
+                        </div>';
+                        }
+                        $ret .= '
                     </div>
                 </div>';
             }
@@ -329,11 +339,19 @@ function msdlab_tpsquare_shortcode_handler($atts,$content){
         <div class="off">
             <div class="icon-holder">
                 <i class="icon icon-'.$icon.'"></i>
-            </div>
+            </div>';
+            if(wp_is_mobile()){
+                $ret .= '<div class="content-holder">'.do_shortcode(remove_wpautop($content)).'</div>';
+                if($url){
+                $ret .= '<div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>';
+                }
+            }
+            $ret .= '
             <div class="title-holder">
                 <h3>'.$title.'</h3>
-            </div>
-            <div class="on">
+            </div>';
+            if(!wp_is_mobile()){
+            $ret .= '<div class="on">
                 <div class="icon-holder">
                     <i class="icon icon-'.$icon.'"></i>
                 </div>
@@ -345,7 +363,9 @@ function msdlab_tpsquare_shortcode_handler($atts,$content){
                 $ret .= '<div class="link-holder"><a href="'.$url.'" class="morelink">more ></a></div>';
                 }
                 $ret .= '
-            </div>
+            </div>';
+            }
+            $ret .= '
         </div>
     </div>';
     return $ret;

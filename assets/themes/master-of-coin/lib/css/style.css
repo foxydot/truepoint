@@ -9626,6 +9626,10 @@ Site Footer
   line-height: 1.2;
   text-align: left;
 }
+.tp-grid .tp-square .off > .content-holder,
+.tp-grid .tp-square .off > .link-holder {
+  padding: 0 2em;
+}
 .tp-grid .tp-square .off > .title-holder {
   position: absolute;
   left: 0;
@@ -9971,6 +9975,15 @@ Site Footer
   .tp-grid .tp-square .off .on .content-holder,
   .tp-grid .tp-square .off .on .link-holder {
     font-size: 4vw;
+  }
+  .ismobile .tp-grid .tp-square .off .icon-holder {
+    padding-bottom: 0;
+  }
+  .ismobile .tp-grid .tp-square .off .icon-holder i.icon {
+    font-size: 15vw;
+  }
+  .ismobile .tp-grid .tp-square .off h3 {
+    font-size: 6vw;
   }
 }
 .nav-responsive ul,

@@ -46,6 +46,7 @@ function browser_body_class($classes) {
     else $classes[] = 'unknown';
  
     if($is_iphone) $classes[] = 'iphone';
+    if(wp_is_mobile()) $classes[] = 'ismobile';
     return $classes;
 }
 
