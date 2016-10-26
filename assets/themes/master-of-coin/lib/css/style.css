@@ -8287,18 +8287,19 @@ Site Navigation
   background-color: #FFF;
   margin-top: 0px;
   border: 1px solid #E3E2E0;
+  width: 250px;
 }
 .nav-primary .menu-primary > li.menu-item .sub-menu li.menu-item {
   background-color: #FFF;
-  padding: 0 2rem;
+  padding: 0;
   width: 100%;
   position: relative;
 }
 .nav-primary .menu-primary > li.menu-item .sub-menu li.menu-item a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
   font-weight: 400;
-  font-size: 18px;
-  font-size: 1.8rem;
+  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 1.625;
   background-color: transparent;
   border-color: #B1B1B1;
