@@ -26,7 +26,7 @@ function msdlab_team(){
 add_action('genesis_entry_content','msdlab_team');
 function msdlab_team_footer_scripts(){
     print '<script>
-        jQuery(window).load(function() {
+        jQuery(window).on("load",function() {
             jQuery("#team-members").isotope({
               itemSelector : ".team-member",
               layoutMode: "fitRows",
