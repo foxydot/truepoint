@@ -25,4 +25,9 @@ jQuery(document).ready(function($) {
            return 'hidden';
        }
     });
+    
+    $('.blog article.entry,.blog article.entry').each(function(){
+        $(this).find('.thumb-wrapper, .entry-header').equalHeightColumns();
+    }); 
+
 });
