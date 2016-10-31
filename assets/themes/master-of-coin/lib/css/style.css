@@ -8015,9 +8015,11 @@ img#wpstats {
   background-color: #28449C;
   color: #FFF;
 }
-.tablepress thead tr.first-child.odd td.odd,
-.tablepress thead tr.first-child.odd td.even {
+.tablepress thead tr.first-child.odd th.odd,
+.tablepress thead tr.first-child.odd th.even {
   background-color: transparent;
+  font-weight: 400;
+  line-height: 1.2;
 }
 .tablepress tbody tr.odd,
 .tablepress tbody tr.even {
@@ -8028,6 +8030,7 @@ img#wpstats {
 .tablepress tbody tr.odd td.even,
 .tablepress tbody tr.even td.even {
   background-color: transparent;
+  line-height: 1.2;
 }
 .pre-header {
   max-height: 50px;
