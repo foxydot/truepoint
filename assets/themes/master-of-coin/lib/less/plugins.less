@@ -151,3 +151,22 @@ ul.publication-list-pagination{
     text-align: inherit;
   }
 }
+
+
+.tablepress{
+  tbody{
+    tr.odd, tr.even{
+      background-color: transparent;
+      td.odd, td.even{
+        background-color: transparent;
+      }
+    }
+    tr.first-child.odd{
+      background-color: @blue;
+      color: @white;
+      td.odd, td.even{
+        background-color: transparent;
+      }
+    }
+  }
+}

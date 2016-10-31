@@ -8011,6 +8011,24 @@ img#wpstats {
   padding: inherit;
   text-align: inherit;
 }
+.tablepress tbody tr.odd,
+.tablepress tbody tr.even {
+  background-color: transparent;
+}
+.tablepress tbody tr.odd td.odd,
+.tablepress tbody tr.even td.odd,
+.tablepress tbody tr.odd td.even,
+.tablepress tbody tr.even td.even {
+  background-color: transparent;
+}
+.tablepress tbody tr.first-child.odd {
+  background-color: #28449C;
+  color: #FFF;
+}
+.tablepress tbody tr.first-child.odd td.odd,
+.tablepress tbody tr.first-child.odd td.even {
+  background-color: transparent;
+}
 .pre-header {
   max-height: 50px;
 }
