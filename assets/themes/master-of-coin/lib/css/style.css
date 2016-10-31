@@ -7754,6 +7754,9 @@ img.alignright,
 /*
 Widgets
 ---------------------------------------------------------------------------------------------------- */
+.widget {
+  background-color: rgba(227, 226, 224, 0.3);
+}
 .widget ul li {
   list-style: none inside none;
 }
@@ -7794,6 +7797,9 @@ section.layerslider_widget {
   max-width: none;
   padding: 0;
   margin: 0;
+}
+.widget_team_viewpoints {
+  background-color: rgba(227, 226, 224, 0.3);
 }
 .widget_team_viewpoints .article {
   padding: 1rem 0;
@@ -7864,6 +7870,12 @@ section.layerslider_widget {
 }
 .widget_video_remix a.readmore {
   margin-left: 1rem;
+}
+.widget.widget_text .wrap {
+  padding: 1em;
+}
+.widget.widget_categories ul {
+  padding: 1em;
 }
 /*
 Plugins
