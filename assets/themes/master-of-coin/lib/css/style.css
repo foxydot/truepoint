@@ -7754,7 +7754,7 @@ img.alignright,
 /*
 Widgets
 ---------------------------------------------------------------------------------------------------- */
-.widget {
+.sidebar .widget {
   background-color: rgba(227, 226, 224, 0.3);
 }
 .widget ul li {
@@ -7824,7 +7824,7 @@ section.layerslider_widget {
   margin-left: 1em;
 }
 .widget.widget_recent_entries .article {
-  padding: 1rem 0;
+  padding: 1rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid #B1B1B1;
 }
@@ -9662,6 +9662,12 @@ Site Footer
 .tp-grid .tp-square .off > .content-holder,
 .tp-grid .tp-square .off > .link-holder {
   padding: 0 2em;
+}
+.tp-grid .tp-square .off > .content-holder {
+  text-align: left;
+}
+.tp-grid .tp-square .off > .link-holder {
+  text-align: right;
 }
 .tp-grid .tp-square .off > .title-holder {
   position: absolute;
