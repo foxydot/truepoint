@@ -264,8 +264,8 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         </div>';
                         if(wp_is_mobile()){
                             $ret .= '
-                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
-                            <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>';
+                            <div class="content-holder excerpt">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                            <div class="link-holder excerpt"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>';
                         }
                         $ret .= '
                         <div class="title-holder">';
