@@ -30,4 +30,6 @@ jQuery(document).ready(function($) {
         $(this).find('.thumb-wrapper, .entry-header').equalHeightColumns();
     }); 
 
+    $(".nav-primary").sticky();
+
 });

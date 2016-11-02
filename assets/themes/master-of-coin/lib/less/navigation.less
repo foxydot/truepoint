@@ -115,6 +115,8 @@ Site Navigation
   background: @white;
   z-index: 800;
   text-align: left;
+  width: 100vw;
+  border-bottom: 1px solid fade(@offwhite,0%);
   .menu-primary>li.menu-item{
     padding: 0 0.75em 1.5em;
     a{
@@ -177,6 +179,12 @@ Site Navigation
 }
 .mainNav>ul>li.first>ul>li.title>ul>li>ul>li {
   padding: 3px 0;
+}
+.is-sticky .nav-primary{
+  border-bottom: 1px solid fade(@offwhite,40%);
+   .menu-primary>li.menu-item{
+    padding-bottom: 0;
+  }
 }
 
 /* Secondary Navigation

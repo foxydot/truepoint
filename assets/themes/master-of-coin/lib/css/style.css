@@ -8296,6 +8296,8 @@ Site Navigation
   background: #FFF;
   z-index: 800;
   text-align: left;
+  width: 100vw;
+  border-bottom: 1px solid rgba(227, 226, 224, 0);
 }
 .nav-primary .menu-primary > li.menu-item {
   padding: 0 0.75em 1.5em;
@@ -8369,6 +8371,12 @@ Site Navigation
 }
 .mainNav > ul > li.first > ul > li.title > ul > li > ul > li {
   padding: 3px 0;
+}
+.is-sticky .nav-primary {
+  border-bottom: 1px solid rgba(227, 226, 224, 0.4);
+}
+.is-sticky .nav-primary .menu-primary > li.menu-item {
+  padding-bottom: 0;
 }
 /* Secondary Navigation
 --------------------------------------------- */
