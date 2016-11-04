@@ -241,7 +241,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 <h3><i class="icon icon-'.$icon.'"></i> '.$title.'</h3>
             </div>';
             if($link){
-            $ret .= '<div class="col-sm-6 col-xs-12">
+            $ret .= '<div class="col-sm-6 hidden-xs">
                 <a href="'.$link.'" class="more">More '.$more.'</a>
             </div>';
             }
@@ -319,6 +319,15 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 }
                 }
             }
+
+        $ret .= '<div class="grid-ftr row">';
+            if($link){
+            $ret .= '<div class="col-xs-12 hidden-lg hidden-md hidden-sm">
+                <a href="'.$link.'" class="more">More '.$more.'</a>
+            </div>';
+            }
+            $ret .= '
+        </div>';
         $ret .= '
         </div>';
         }

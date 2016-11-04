@@ -6814,8 +6814,6 @@ button.close {
 .modal-header:after,
 .modal-footer:before,
 .modal-footer:after,
-.footer-widgets .widget-area:before,
-.footer-widgets .widget-area:after,
 .tp-grid:before,
 .tp-grid:after,
 .news-grid:before,
@@ -6839,7 +6837,6 @@ button.close {
 .panel-body:after,
 .modal-header:after,
 .modal-footer:after,
-.footer-widgets .widget-area:after,
 .tp-grid:after,
 .news-grid:after {
   clear: both;
@@ -8972,10 +8969,6 @@ Footer Widgets
   clear: both;
   padding: 2rem 0;
 }
-.footer-widgets .widget-area {
-  margin-left: -15px;
-  margin-right: -15px;
-}
 .footer-widgets a {
   color: #FFF;
 }
@@ -9575,33 +9568,39 @@ Site Footer
 .notification-bar p {
   margin: 0;
 }
-.grid-hdr > div.first-child h3 {
+.grid-hdr > div.first-child h3,
+.grid-ftr > div.first-child h3 {
   color: #28449C;
   font-size: 1.6em;
   font-weight: 300;
   text-transform: uppercase;
 }
-.grid-hdr > div.first-child h3 i {
+.grid-hdr > div.first-child h3 i,
+.grid-ftr > div.first-child h3 i {
   font-size: 1.6em;
   line-height: 1;
   position: relative;
   top: 0.3em;
 }
-.grid-hdr > div.last-child {
+.grid-hdr > div.last-child,
+.grid-ftr > div.last-child {
   text-align: right;
   padding: 1em;
 }
-.grid-hdr > div.last-child a.more {
+.grid-hdr > div.last-child a.more,
+.grid-ftr > div.last-child a.more {
   color: #F16528;
   text-transform: uppercase;
   text-decoration: none !important;
 }
-.grid-hdr > div.last-child a.more:after {
+.grid-hdr > div.last-child a.more:after,
+.grid-ftr > div.last-child a.more:after {
   font-family: "FontAwesome";
   content: '\f105';
   margin-left: 0.5em;
 }
-.grid-hdr > div.last-child a.more:hover {
+.grid-hdr > div.last-child a.more:hover,
+.grid-ftr > div.last-child a.more:hover {
   text-decoration: none !important;
   color: #a83b0b;
 }
@@ -10033,6 +10032,9 @@ Site Footer
   .ismobile .tp-grid .tp-square .off h3 {
     font-size: 6vw;
   }
+  .landing-page-wrapper .feature .wrapper .feature-img {
+    height: auto;
+  }
 }
 .nav-responsive ul,
 .nav-responsive li,
@@ -10230,10 +10232,6 @@ Site Footer
   }
   .header-image .nav-primary .wrap {
     padding: 0;
-  }
-  .tablepress td,
-  .tablepress th {
-    display: inline-block;
   }
 }
 @media only screen and (max-width: 322px) {
