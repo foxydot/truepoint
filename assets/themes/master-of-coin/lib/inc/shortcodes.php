@@ -1,4 +1,8 @@
 <?php
+add_filter('img_caption_shortcode_width','msdlab_remove_inline_width');
+function msdlab_remove_inline_width(){
+    return false;
+}
 add_shortcode('button','msdlab_button_function');
 function msdlab_button_function($atts, $content = null){	
 	extract( shortcode_atts( array(
