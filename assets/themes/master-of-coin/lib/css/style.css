@@ -7725,7 +7725,7 @@ img.alignright,
 .section-title a,
 .entry-title a,
 .sidebar .widget-title a {
-  color: #28449C;
+  color: #F16528;
 }
 .section-title a:hover,
 .entry-title a:hover {
@@ -7752,7 +7752,10 @@ img.alignright,
 Widgets
 ---------------------------------------------------------------------------------------------------- */
 .sidebar .widget {
-  background-color: rgba(227, 226, 224, 0.3);
+  background-color: #FFF;
+  border: 1px solid rgba(121, 122, 121, 0.2);
+  -webkit-box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
+  box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
 }
 .widget ul li {
   list-style: none inside none;
@@ -7762,7 +7765,7 @@ Widgets
   padding: 0.4rem 0;
   font-weight: normal;
   margin-bottom: 0;
-  color: #28449C;
+  color: #F16528;
 }
 /* Featured Content
 --------------------------------------------- */
@@ -7795,9 +7798,6 @@ section.layerslider_widget {
   padding: 0;
   margin: 0;
 }
-.widget_team_viewpoints {
-  background-color: rgba(227, 226, 224, 0.3);
-}
 .widget_team_viewpoints .article {
   padding: 1rem 0;
   margin-bottom: 1rem;
@@ -7823,7 +7823,7 @@ section.layerslider_widget {
 .widget.widget_recent_entries .article {
   padding: 1rem;
   margin-bottom: 1rem;
-  border-bottom: 1px solid #B1B1B1;
+  border-bottom: 2px solid rgba(121, 122, 121, 0.2);
 }
 .widget.widget_recent_entries .article .author {
   color: #2B2C2C;
@@ -7841,7 +7841,9 @@ section.layerslider_widget {
   font-size: 0.8em;
   color: #F16528;
   margin-left: 1em;
-  font-weight: 800;
+}
+.widget.widget_recent_entries .article.last-child {
+  border-bottom: 0;
 }
 .widget_sp_image .widget-content,
 .widget_video_remix .widget-content {
@@ -8914,10 +8916,11 @@ Sidebars
   font-size: 16px;
   font-size: 1.6rem;
   line-height: 1.625;
-  color: #FFF;
-  background: #F16528;
+  color: #F16528;
+  background: #FFF;
   padding: 0.5em 1em;
-  text-transform: uppercase;
+  text-transform: normal;
+  border-bottom: 1px solid #F16528;
 }
 .sidebar .enews-widget {
   background-color: #333;

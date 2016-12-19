@@ -2,7 +2,10 @@
 Widgets
 ---------------------------------------------------------------------------------------------------- */
 .sidebar .widget{
-  background-color: fade(@offwhite,30%);
+  background-color: @white;
+  border: 1px solid fade(@medgrey,20%);
+  -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+  box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
 }
 .widget{
   ul{
@@ -15,7 +18,7 @@ Widgets
     padding: 0.4rem 0;
     font-weight: normal;
     margin-bottom: 0;
-    color: @blue;
+    color: @orange;
   }
 }
 
@@ -58,9 +61,6 @@ section.layerslider_widget{
 }
 
 .widget_team_viewpoints{
-  background-color: fade(@offwhite,30%);
-  .widget-title{
-  }
   .article{
     padding: 1rem 0;
     margin-bottom: 1rem;
@@ -89,7 +89,7 @@ section.layerslider_widget{
   .article{
     padding: 1rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid @ltgrey;
+    border-bottom: 2px solid fade(@medgrey,20%);
     .author{
       color: @dkgrey;
     }
@@ -106,7 +106,9 @@ section.layerslider_widget{
       font-size: 0.8em;
       color: @orange;
       margin-left: 1em;
-      font-weight: 800;
+    }
+    &.last-child{
+      border-bottom: 0;
     }
   }
 }
