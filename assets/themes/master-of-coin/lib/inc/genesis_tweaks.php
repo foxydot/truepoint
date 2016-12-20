@@ -26,7 +26,11 @@ add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the sera
 add_filter('genesis_search_button_text', 'msdlab_search_button'); //customize the search form to add fontawesome search button.
 add_filter('genesis_do_subnav','msdlab_subnav_right',10,2);
 add_action('genesis_site_title','msdlab_logo_for_print');
-/*** NAV ***/
+/*** NAV ***//**
+ * Move nav into header
+ */
+remove_action( 'genesis_after_header', 'genesis_do_nav' );
+add_action( 'genesis_header', 'genesis_do_nav' );
 
 //*** SIDEBARS ***/
 //add_action('genesis_before', 'msdlab_ro_layout_logic'); //This ensures that the primary sidebar is always to the left.

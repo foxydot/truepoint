@@ -6,15 +6,18 @@
       .widget_nav_menu{
         .menu{
           li{
-            background-color: @orange;
+              background-color: @white;
+              border: 1px solid fade(@medgrey,20%);
+              -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+              box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
               padding: 1em 0.5em 0;
             &:hover{
-              background-color: darken(@orange,10%);
+              background-color: @offwhite;
             }
             a{
               .customheader(1.8);
               padding: 1em 0.5em 0;
-              color: @white;
+              color: @blue;
               &:hover{
                 text-decoration: none;
               }
@@ -48,7 +51,7 @@ Site Header
   font-weight: 700;
   padding: 16px 0;
   padding: 1.6rem 0;
-  width: 300px;
+  width: 25vw;
 }
 
 .header-image .title-area {
@@ -99,13 +102,21 @@ Site Header
 
 .header-image .site-title a {
   float: left;
+  width: 100%;
   min-height: 80px;
-  width: 292px;
-  height: 80px;
   background: url(../img/logo.png) no-repeat center left;
   background-size: contain;
   margin: 10px 0;
   margin: 1rem 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.header-image .is-sticky .site-title a {
+  min-height: 35px;
 }
 
 /* Widget Area

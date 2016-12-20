@@ -8051,11 +8051,14 @@ img#wpstats {
   width: 100%;
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li {
-  background-color: #F16528;
+  background-color: #FFF;
+  border: 1px solid rgba(121, 122, 121, 0.2);
+  -webkit-box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
+  box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
   padding: 1em 0.5em 0;
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li:hover {
-  background-color: #d84b0e;
+  background-color: #E3E2E0;
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
@@ -8064,7 +8067,7 @@ img#wpstats {
   font-size: 1.8rem;
   line-height: 1.625;
   padding: 1em 0.5em 0;
-  color: #FFF;
+  color: #28449C;
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li a:hover {
   text-decoration: none;
@@ -8089,7 +8092,7 @@ Site Header
   font-weight: 700;
   padding: 16px 0;
   padding: 1.6rem 0;
-  width: 300px;
+  width: 25vw;
 }
 .header-image .title-area {
   padding: 0;
@@ -8130,13 +8133,20 @@ Site Header
 }
 .header-image .site-title a {
   float: left;
+  width: 100%;
   min-height: 80px;
-  width: 292px;
-  height: 80px;
   background: url(../img/logo.png) no-repeat center left;
   background-size: contain;
   margin: 10px 0;
   margin: 1rem 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.header-image .is-sticky .site-title a {
+  min-height: 35px;
 }
 /* Widget Area
 --------------------------------------------- */
@@ -8292,14 +8302,12 @@ Site Navigation
 /* Primary Navigation
 --------------------------------------------- */
 .nav-primary {
-  background: #FFF;
   z-index: 800;
   text-align: left;
   width: 100vw;
-  border-bottom: 1px solid rgba(227, 226, 224, 0);
 }
 .nav-primary .menu-primary > li.menu-item {
-  padding: 0 0.75em 1.5em;
+  padding: 0 0.5em;
 }
 .nav-primary .menu-primary > li.menu-item a {
   font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
@@ -8307,8 +8315,14 @@ Site Navigation
   font-size: 18px;
   font-size: 1.8rem;
   line-height: 1.625;
-  padding: 0.3em 1.25em;
+  padding: 0.3em 0.75em;
   color: #28449C;
+  border-bottom: 2px solid rgba(241, 101, 40, 0);
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 .nav-primary .menu-primary > li.menu-item.first-child {
   padding-left: 0;
@@ -8364,18 +8378,26 @@ Site Navigation
 .nav-primary .menu-primary > li.menu-item:hover a:hover,
 .nav-primary .menu-primary > li.menu-item.current-menu-item a:hover,
 .nav-primary .menu-primary > li.menu-item.current-menu-ancestor a:hover {
-  background-color: #F16528;
-  color: #FFF;
   text-decoration: none;
+  border-bottom: 2px solid #f16528;
 }
 .mainNav > ul > li.first > ul > li.title > ul > li > ul > li {
   padding: 3px 0;
 }
-.is-sticky .nav-primary {
-  border-bottom: 1px solid rgba(227, 226, 224, 0.4);
-}
-.is-sticky .nav-primary .menu-primary > li.menu-item {
-  padding-bottom: 0;
+@media only screen and (min-width: 960px) {
+  .nav-primary {
+    width: 50vw;
+    clear: right;
+    float: right;
+    text-align: right;
+  }
+  .nav-primary .menu.menu-primary {
+    text-align: right;
+    padding-top: 3.2em;
+  }
+  .is-sticky .nav-primary .menu.menu-primary {
+    padding-top: 0.5em;
+  }
 }
 /* Secondary Navigation
 --------------------------------------------- */

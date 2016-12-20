@@ -112,17 +112,21 @@ Site Navigation
 --------------------------------------------- */
 
 .nav-primary {
-  background: @white;
   z-index: 800;
   text-align: left;
   width: 100vw;
-  border-bottom: 1px solid fade(@offwhite,0%);
   .menu-primary>li.menu-item{
-    padding: 0 0.75em 1.5em;
+    padding: 0 0.5em;
     a{
       .customheader(1.8);
-      padding: 0.3em 1.25em;
+      padding: 0.3em 0.75em;
       color: @blue;
+      border-bottom: 2px solid fade(@orange,0%);
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
     }
     &.first-child{
       padding-left: 0;
@@ -170,20 +174,32 @@ Site Navigation
     }
   &:hover, &.current-menu-item, &.current-menu-ancestor{
     a, a:hover{
-      background-color: @orange;
-      color: @white;
       text-decoration: none;
+      border-bottom: 2px solid fade(@orange,100%);
       }
     }
   }
 }
+
 .mainNav>ul>li.first>ul>li.title>ul>li>ul>li {
   padding: 3px 0;
 }
-.is-sticky .nav-primary{
-  border-bottom: 1px solid fade(@offwhite,40%);
-   .menu-primary>li.menu-item{
-    padding-bottom: 0;
+
+@media only screen and (min-width: 960px) {
+  .nav-primary {
+  width: 50vw;
+  clear: right;
+  float: right;
+    text-align: right;
+  .menu.menu-primary{
+    text-align: right;
+    padding-top: 3.2em;
+  }
+}
+  .is-sticky .nav-primary{
+     .menu.menu-primary{
+      padding-top: 0.5em;
+    }
   }
 }
 
