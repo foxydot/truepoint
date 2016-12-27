@@ -107,6 +107,21 @@ Site Navigation
   margin-top: -55px;
 }
 
+/* Plus up nav */
+.menu-item.Client-Login{
+       &:before {
+          font-family: "truepoint-icons" !important;
+          font-style: normal !important;
+          font-weight: normal !important;
+          font-variant: normal !important;
+          text-transform: none !important;
+          speak: none;
+          line-height: 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          content: "\77";
+        }
+}
 
 /* Primary Navigation
 --------------------------------------------- */
@@ -118,15 +133,15 @@ Site Navigation
   .menu-primary>li.menu-item{
     padding: 0 0.5em;
     a{
-      .customheader(1.8);
-      padding: 0.3em 0.75em;
-      color: @blue;
-      border-bottom: 2px solid fade(@orange,0%);
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -ms-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+    .customheader(1.8);
+    padding: 0.3em 0.75em;
+    color: @blue;
+    border-bottom: 2px solid fade(@orange,0%);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
     }
     &.first-child{
       padding-left: 0;

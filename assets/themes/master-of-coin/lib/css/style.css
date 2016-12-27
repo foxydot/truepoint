@@ -7181,6 +7181,9 @@ button.close {
 .icon-quadrants:before {
   content: "\75";
 }
+.icon-login:before {
+  content: "\77";
+}
 /* Import Fonts
 ------------------------------------------------------------ */
 /* Font Stacks */
@@ -8303,6 +8306,19 @@ Site Navigation
 }
 .site-header .sub-menu .sub-menu {
   margin-top: -55px;
+}
+/* Plus up nav */
+.menu-item.Client-Login:before {
+  font-family: "truepoint-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\77";
 }
 /* Primary Navigation
 --------------------------------------------- */
