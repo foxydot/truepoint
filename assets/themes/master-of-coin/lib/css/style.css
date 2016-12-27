@@ -8077,7 +8077,7 @@ Site Header
 ---------------------------------------------------------------------------------------------------- */
 .site-header {
   background-color: #FFF;
-  padding: 0;
+  padding: 0 0 0.75em 0;
   z-index: 300;
 }
 /* Title Area
@@ -8147,6 +8147,11 @@ Site Header
 }
 .header-image .is-sticky .site-title a {
   min-height: 35px;
+}
+@media only screen and (min-width: 961px) {
+  .title-area {
+    width: 240px;
+  }
 }
 /* Widget Area
 --------------------------------------------- */
@@ -8384,9 +8389,9 @@ Site Navigation
 .mainNav > ul > li.first > ul > li.title > ul > li > ul > li {
   padding: 3px 0;
 }
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: 961px) {
   .nav-primary {
-    width: 50vw;
+    width: 720px;
     clear: right;
     float: right;
     text-align: right;

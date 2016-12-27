@@ -35,7 +35,7 @@ Site Header
 
 .site-header {
   background-color: @white;
-  padding: 0;
+  padding: 0 0 0.75em 0;
   z-index: 300;
 }
 
@@ -117,6 +117,13 @@ Site Header
 
 .header-image .is-sticky .site-title a {
   min-height: 35px;
+}
+
+
+@media only screen and (min-width: 961px) { //screens large than wrap
+  .title-area {
+    width: 240px;
+  }
 }
 
 /* Widget Area
