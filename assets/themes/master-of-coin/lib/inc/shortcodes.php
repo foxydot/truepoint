@@ -215,7 +215,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'post_type' => 'press',
                     'posts_per_page' => $recent,
                 ); 
-                $link = !$link?'/viewpoints/press-release/':$link;
+                $link = !$link?'/resources/press-release/':$link;
             break;
             case 'news':
                 $icon = 'arrow';
@@ -225,7 +225,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                     'post_type' => 'news',
                     'posts_per_page' => $recent,
                 ); 
-                $link = !$link?'/about-truepoint/news/':$link;
+                $link = !$link?'/resources/news/':$link;
             break;
             case 'viewpoints':
             default:

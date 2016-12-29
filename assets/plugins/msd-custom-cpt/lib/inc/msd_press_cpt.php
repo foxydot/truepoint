@@ -67,7 +67,7 @@ if (!class_exists('MSDPressCPT')) {
                 'has_archive' => true,
                 'query_var' => true,
                 'can_export' => true,
-                'rewrite' => array('slug'=>'viewpoint/press-release','with_front'=>false),
+                'rewrite' => array('slug'=>'resources/press-release','with_front'=>false),
                 'capability_type' => 'post'
             );
         
