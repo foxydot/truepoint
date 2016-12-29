@@ -259,13 +259,10 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 <div class="tp-square" id="'.$post->post_name.'">
                     <div class="off">
                         <div class="icon-holder">
-                            <h3>'.get_the_title().'</h3>
+                            <h3>'.get_the_title().'<a href="'.get_the_permalink().'" class="morelink"> ></a></h3>
                         </div>';
-                        if(wp_is_mobile()){
                             $ret .= '
-                            <div class="content-holder excerpt">'.msdlab_get_excerpt($post->ID,30,'').'</div>
-                            <div class="link-holder excerpt"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>';
-                        }
+                            <div class="content-holder excerpt">'.msdlab_get_excerpt($post->ID,30,'').'<a href="'.get_the_permalink().'" class="morelink"> ></a></div>';
                         $ret .= '
                         <div class="title-holder">';
                         if($args['post_type']=='post'){
@@ -275,16 +272,6 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         $ret .= '
                             <div class="date">'.get_the_date().'</div>
                         </div>';
-                        if(!wp_is_mobile()){
-                            $ret .= '
-                        <div class="on">
-                            <div class="icon-holder">
-                                <i class="icon icon-'.$icon.'"></i>
-                            </div>
-                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
-                            <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
-                        </div>';
-                        }
                         $ret .= '
                     </div>
                 </div>';
@@ -319,7 +306,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 }
             }
 
-        $ret .= '<div class="grid-ftr row">';
+        $ret .= '<div class="grid-ftr">';
             if($link){
             $ret .= '<div class="col-xs-12">
                 <a href="'.$link.'" class="more">More '.$more.'</a>
@@ -331,7 +318,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
         </div>';
         wp_reset_postdata();
         }
-        
+        $ret = '<div class="tp-grid-channel">'.$ret.'</div>';
     }
     return $ret;
 }

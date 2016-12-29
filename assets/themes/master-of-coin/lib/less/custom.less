@@ -146,7 +146,6 @@ padding: 1em 0;
     }
   }
 }
-
 .tp-grid{
   .make-row();
   .tp-square{
@@ -286,9 +285,103 @@ padding: 1em 0;
 }
 
 .sidebar{
-  .tp-grid{
-    .tp-square{
-      .make-sm-column(12);
+  .tp-grid-channel{
+    background-color: @white;
+    border: 1px solid fade(@medgrey,20%);
+    -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+    box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+    .tp-grid{
+      .tp-square{
+        .make-sm-column(12);
+        bottom: 5px;
+        top: 5px;
+        
+        &:before{
+          content: "";
+          display: none;
+          margin-top:0;
+        }
+        .off{
+          position: relative;
+          background: @white;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          a.morelink{
+            color: @orange;
+            &:hover{
+              text-decoration: none;
+              color: @blue;
+            }
+          }
+          .icon-holder{
+            padding: 0 1em;
+            h3{
+              font-size: 1em;
+            }
+          }
+          >.content-holder{
+            padding: 0 1em;
+            font-size: 0.8em;
+          }
+          >.title-holder{
+            position: relative;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin-top: 1em;
+            background: @offwhite;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+          }
+          .title-holder{
+            h3{
+              font-weight: 700;
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+    .grid-hdr{
+      >div{
+        padding-top: 0;
+        padding-bottom: 0;
+        text-align: left;
+        h3{
+          font-size: 1em;
+          text-align: left;
+          border-bottom: 2px solid @blue;
+          padding: 0.5em 1em;
+          margin: 0;
+          i{
+            font-size: 1.6em;
+            top: 0.3em;
+          }
+        }
+      }
+    }
+    .grid-ftr{
+      >div{
+        padding: 1em;
+        a.more{
+          color: @orange;
+          text-transform: uppercase;
+          text-decoration: none !important;
+          padding: 0.5em 1em;
+          &:after{
+            .fontawesome;
+            content: '\f105';
+            margin-left: 0.5em;
+          }
+          &:hover{
+            text-decoration: none !important;
+            color: darken(@orange,20%);
+          }
+        }
+      }
     }
   }
 }
