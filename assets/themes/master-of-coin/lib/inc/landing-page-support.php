@@ -20,21 +20,24 @@ class MSDLandingPage{
         public static function get_instance() {
 
                 if( null == self::$instance ) {
-                        self::$instance = new MSDSectionedPage();
+                        self::$instance = new MSDLandingPage();
                 } 
 
                 return self::$instance;
 
         } 
         
+        private $templates;
+        
         /**
          * Initializes the plugin by setting filters and administration functions.
          */
-   function __construct() {    
+   function __construct() {
+            $this->templates = array('landing-page.php','resources-template.php');
         }
         
     function add_metaboxes(){
-        global $post,$landing_page_metabox,$wpalchemy_media_access;
+        global $landing_page_metabox,$wpalchemy_media_access;
         $landing_page_metabox = new WPAlchemy_MetaBox(array
         (
             'id' => '_landing_page',
@@ -46,7 +49,7 @@ class MSDLandingPage{
             'autosave' => TRUE,
             'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
             'prefix' => '_msdlab_', // defaults to NULL
-            'include_template' => 'landing-page.php',
+            'include_template' => array('landing-page.php','resources-template.php'),
         ));
     }
     
@@ -101,26 +104,26 @@ class MSDLandingPage{
     }
 
     function landing_page_output(){
-        global $post,$subtitle_metabox,$landing_page_metabox,$nav_ids;
+        global $meta,$landing_page_metabox;
         $i = 0;
         $meta = $landing_page_metabox->the_meta();
-        if(is_object($landing_page_metabox)){
-        while($landing_page_metabox->have_fields('features')){
-            $layout = $landing_page_metabox->get_the_value('layout');
-            $features[] = self::default_output($meta['features'][$i],$i);
-            $i++;
-        }//close while
-        print '<div class="landing-page-wrapper row">';
-        print implode("\n",$features);
-        print '</div>';
+        if($landing_page_metabox->have_fields('features')){
+            while($landing_page_metabox->have_fields('features')){
+                $features[] = self::default_output($meta['features'][$i],$i);
+                $i++;
+            }//close while
+            print '<div class="landing-page-wrapper">';
+            print implode("\n",$features);
+            print '</div>';
         }//clsoe if
     }
 
         function info_footer_hook()
         {
+            global $post;
             $postid = is_admin()?$_GET['post']:$post->ID;
             $template_file = get_post_meta($postid,'_wp_page_template',TRUE);
-            if($template_file == 'page-landing.php'){
+            if(in_array($template_file,$this->templates)){
             ?><script type="text/javascript">
                 
                 </script><?php
@@ -130,7 +133,7 @@ class MSDLandingPage{
         function enqueue_admin(){
             $postid = $_GET['post'];
             $template_file = get_post_meta($postid,'_wp_page_template',TRUE);
-            if($template_file == 'page-landing.php'){
+            if(in_array($template_file,$this->templates)){
                 //js
                 wp_enqueue_script('jquery-ui-core');
                 wp_enqueue_script('jquery-ui-sortable');

@@ -1874,6 +1874,12 @@
 		"oAP": "\/lib\/inc\/register-scripts.php",
 		"oF": 0
 		},
+	"\/lib\/inc\/resource-page-support.php": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/lib\/inc\/resource-page-support.php",
+		"oF": 0
+		},
 	"\/lib\/inc\/shortcodes.php": {
 		"ft": 8192,
 		"oA": 0,
@@ -2765,6 +2771,12 @@
 		"ft": 8192,
 		"oA": 0,
 		"oAP": "\/lib\/template\/metabox-landing-page.php",
+		"oF": 0
+		},
+	"\/lib\/template\/metabox-resource-page.php": {
+		"ft": 8192,
+		"oA": 2,
+		"oAP": "\/lib\/template\/metabox-resource-page.php",
 		"oF": 0
 		},
 	"\/lib\/template\/metabox-spec.php": {

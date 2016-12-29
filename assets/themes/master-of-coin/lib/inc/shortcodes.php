@@ -241,14 +241,9 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
             break;
         }
         $ret = '<div class="grid-hdr row">
-            <div class="col-sm-6 col-xs-12">
+            <div class="col-xs-12">
                 <h3><i class="icon icon-'.$icon.'"></i> '.$title.'</h3>
             </div>';
-            if($link){
-            $ret .= '<div class="col-sm-6 hidden-xs">
-                <a href="'.$link.'" class="more">More '.$more.'</a>
-            </div>';
-            }
             $ret .= '
         </div>';
         $loop = new WP_Query($args);
@@ -326,7 +321,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
 
         $ret .= '<div class="grid-ftr row">';
             if($link){
-            $ret .= '<div class="col-xs-12 hidden-lg hidden-md hidden-sm">
+            $ret .= '<div class="col-xs-12">
                 <a href="'.$link.'" class="more">More '.$more.'</a>
             </div>';
             }
@@ -334,6 +329,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
         </div>';
         $ret .= '
         </div>';
+        wp_reset_postdata();
         }
         
     }

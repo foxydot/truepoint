@@ -9795,6 +9795,18 @@ Site Footer
   height: 100%;
   top: 0;
 }
+.sidebar .tp-grid .tp-square {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .sidebar .tp-grid .tp-square {
+    float: left;
+    width: 100%;
+  }
+}
 /* News Grid */
 .news-grid {
   margin-left: -15px;
@@ -10047,6 +10059,18 @@ Site Footer
 .landing-page-wrapper .feature .wrapper .feature-title h3 {
   font-size: 1.2em;
   color: #797A79;
+}
+.page-template-resources-template .landing-page-wrapper {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .page-template-resources-template .landing-page-wrapper {
+    float: left;
+    width: 66.66666667%;
+  }
 }
 @media only screen and (max-width: 479px) {
   .tp-grid .tp-square h3 {
