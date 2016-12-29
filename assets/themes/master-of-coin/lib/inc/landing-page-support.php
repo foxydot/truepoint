@@ -94,8 +94,8 @@ class MSDLandingPage{
         $ret = '
         <div id="'.$slug.'" class="'.implode(' ', $classes).'" >
             <div class="wrapper">
-                '.$featured_image.'
                 '.$wrapped_type.'
+                '.$featured_image.'
                 '.$wrapped_title.'
             </div>
         </div>
