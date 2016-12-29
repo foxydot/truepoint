@@ -10037,8 +10037,9 @@ Site Footer
   margin-bottom: 2em;
 }
 .landing-page-wrapper .feature .wrapper {
-  background-color: #E3E2E0;
+  background-color: #FFF;
   padding: 0.5em;
+  border: 2px solid #DAE0E5;
 }
 .landing-page-wrapper .feature .wrapper .feature-img {
   height: 200px;
