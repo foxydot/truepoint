@@ -31,5 +31,7 @@ jQuery(document).ready(function($) {
     }); 
 
     $(".site-header").sticky();
-
+    $(window).scroll(function() {
+            $("#sticky-wrapper").not(".is-sticky").removeAttr("style");
+    });
 });
