@@ -105,7 +105,7 @@ class MSDVideoCPT {
             'labels' => $labels,
             'hierarchical' => true,
             'description' => 'Customer Videos',
-            'supports' => array( 'title', 'editor', 'author', 'thumbnail','page-attributes'),
+            'supports' => array( 'title', 'editor', 'author', 'thumbnail','page-attributes', 'genesis-cpt-archives-settings'),
             'taxonomies' => array('msd_video_tag'),
             'public' => true,
             'show_ui' => true,

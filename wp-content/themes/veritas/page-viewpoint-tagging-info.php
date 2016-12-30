@@ -21,6 +21,7 @@ function get_all_content_info_into_table(){
             echo '</table>';
     } else {
         // no posts found
+        echo "nothing here";
     }
 }
 add_action('genesis_loop','get_all_content_info_into_table');

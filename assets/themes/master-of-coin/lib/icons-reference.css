@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "truepoint-icons";
+  src:url("fonts/truepoint-icons.eot");
+  src:url("fonts/truepoint-icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/truepoint-icons.woff") format("woff"),
+    url("fonts/truepoint-icons.ttf") format("truetype"),
+    url("fonts/truepoint-icons.svg#truepoint-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "truepoint-icons" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "truepoint-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bank:before {
+  content: "\61";
+}
+.icon-target:before {
+  content: "\62";
+}
+.icon-umbrella:before {
+  content: "\63";
+}
+.icon-bullbear:before {
+  content: "\64";
+}
+.icon-capitol:before {
+  content: "\65";
+}
+.icon-chart:before {
+  content: "\66";
+}
+.icon-flag:before {
+  content: "\67";
+}
+.icon-handshake:before {
+  content: "\68";
+}
+.icon-head:before {
+  content: "\69";
+}
+.icon-hourglass:before {
+  content: "\6a";
+}
+.icon-house:before {
+  content: "\6b";
+}
+.icon-key:before {
+  content: "\6c";
+}
+.icon-math:before {
+  content: "\6d";
+}
+.icon-pin:before {
+  content: "\6e";
+}
+.icon-scales:before {
+  content: "\6f";
+}
+.icon-grow:before {
+  content: "\70";
+}
+.icon-piechart:before {
+  content: "\71";
+}

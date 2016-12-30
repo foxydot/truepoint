@@ -73,7 +73,7 @@ if (!class_exists('MSDTeamDisplay')) {
                 
                 $practice_areas = implode(' ', $practice_areas);
             }
-            $mini_bio = msdlab_excerpt($team->ID);
+            $mini_bio = msdlab_get_excerpt($team->ID);
             $team_contact_info = '';
             $contact_info->the_meta($team->ID);
             $contact_info->the_field('_team_member_phone');
@@ -176,27 +176,27 @@ if (!class_exists('MSDTeamDisplay')) {
             <ul class="team-member-contact-info">
                 <?php $contact_info->the_field('_team_phone'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="phone"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-phone fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
+                    <li class="phone"><i class="fa fa-phone"></i> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_mobile'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="mobile"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-mobile-phone fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
+                    <li class="mobile"><i class="fa fa-mobile-phone"></i> <?php //print msd_str_fmt($contact_info->get_the_value(),'phone'); ?></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_linked_in'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="linkedin"><a href="<?php print $contact_info->get_the_value(); ?>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin-square fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li class="linkedin"><a href="<?php print $contact_info->get_the_value(); ?>"><i class="fa fa-linkedin-square"></i></a></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_bio_sheet'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="vcard"><a href="<?php print $contact_info->get_the_value(); ?>"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-download-alt fa-stack-1x fa-inverse"></i></span></a></li>
+                    <li class="vcard"><a href="<?php print $contact_info->get_the_value(); ?>"><i class="fa fa-download-alt"></i></a></li>
                 <?php } ?>
                 
                 <?php $contact_info->the_field('_team_email'); ?>
                 <?php if($contact_info->get_the_value() != ''){ ?>
-                    <li class="email"><a href="mailto:<?php print antispambot($contact_info->get_the_value());?>" class="email"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span> <?php //print msd_str_fmt($contact_info->get_the_value(),'email'); ?></a></li>
+                    <li class="email"><a href="mailto:<?php print antispambot($contact_info->get_the_value());?>" class="email"><i class="fa fa-envelope"></i> <?php //print msd_str_fmt($contact_info->get_the_value(),'email'); ?></a></li>
                 <?php } ?>
             </ul>
             <?php

@@ -1,0 +1,366 @@
+/* Import Fonts
+------------------------------------------------------------ */
+@import url(//fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Raleway:400,200,700);
+/* Font Stacks */
+.customsansserif,
+.customsanserif {
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+}
+.fontawesome {
+  font-family: "FontAwesome";
+}
+/* Colors */
+/* Neutrals */
+/* Arrows */
+/* Buttons */
+.button {
+  padding: 6px 24px;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+  color: #F16528;
+  font-size: 1.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
+  text-decoration: none;
+  width: 47%;
+}
+.button:after {
+  content: ' >';
+}
+.button:hover {
+  padding: 6px 24px;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+  color: #F16528;
+  font-size: 1.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
+  text-decoration: none;
+  background-color: rgba(241, 101, 40, 0.4);
+  width: 47%;
+}
+.button:hover,
+.button a:hover {
+  padding: 6px 24px;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+  color: #F16528;
+  font-size: 1.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
+  text-decoration: none;
+  background-color: rgba(241, 101, 40, 0.4);
+}
+/* Clears */
+.msd-clearfix {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.site-inner {
+  display: none;
+  visibility: hidden;
+}
+.button {
+  padding: 6px 24px;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+  color: #F16528;
+  font-size: 1.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
+  text-decoration: none;
+  width: 47%;
+}
+.button:after {
+  content: ' >';
+}
+.button:hover {
+  padding: 6px 24px;
+  font-family: "Raleway", "Trebuchet MS", Calibri, sans-serif;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 1.625;
+  color: #F16528;
+  font-size: 1.2em;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: table;
+  margin: 12px auto;
+  background-color: rgba(241, 101, 40, 0);
+  border: 1px solid #F16528;
+  border-radius: 2em;
+  text-decoration: none;
+  background-color: rgba(241, 101, 40, 0.4);
+  width: 47%;
+}
+.sectioned-page-wrapper .section {
+  text-align: center;
+  background-size: 100vw auto;
+}
+.sectioned-page-wrapper .section .section-title {
+  padding: 0;
+  text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+.sectioned-page-wrapper .section .section-title h3 {
+  padding: 0.25em 0;
+}
+.sectioned-page-wrapper .section.section-investment-approach {
+  padding-bottom: 2em;
+}
+.sectioned-page-wrapper .section.section-investment-approach .section-title {
+  background-color: #F16528;
+}
+.sectioned-page-wrapper .section.section-investment-approach .section-title h3 {
+  color: #FFF;
+}
+.sectioned-page-wrapper .section.section-investment-approach .section-body p {
+  color: #28449C;
+  font-size: 1.6em;
+}
+.sectioned-page-wrapper .section.section-investment-approach .section-body .button {
+  margin-left: 1%;
+  margin-right: 1%;
+  float: left;
+}
+.sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+  color: #28449C;
+  text-align: left;
+  line-height: 1;
+  font-size: 1.5em;
+}
+.sectioned-page-wrapper .section.section-kids-and-money .section-body {
+  text-align: left;
+}
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap {
+  padding-top: 0;
+}
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+  color: #28449C;
+  font-size: 2.4em;
+  text-align: left;
+  line-height: 1;
+}
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:visited,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:link,
+.sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap a:active {
+  color: #F16528;
+  font-size: 1.4em;
+  font-weight: 400;
+}
+.sectioned-page-wrapper .section.section-hero {
+  padding-top: 15em;
+  background-position: center bottom;
+}
+.sectioned-page-wrapper .section.section-hero .section-title:before {
+  display: block;
+  content: ' ';
+  background: url(../img/white-logo-mark.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100px;
+}
+.sectioned-page-wrapper .section.section-hero .section-title h3 {
+  color: #FFF;
+  font-size: 1.8em;
+  border-bottom: 1px solid #FFF;
+  border-width: 50%;
+  line-height: 1;
+  text-shadow: 0 0 4px #797A79;
+}
+.sectioned-page-wrapper .section.section-hero .section-body {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7db9e8+0,1e5799+100&0+1,1+100 */
+  background: -moz-linear-gradient(top, rgba(125, 185, 232, 0) 0%, rgba(124, 184, 231, 0) 1%, #1e5799 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(125, 185, 232, 0) 0%, rgba(124, 184, 231, 0) 1%, #1e5799 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(125, 185, 232, 0) 0%, rgba(124, 184, 231, 0) 1%, #1e5799 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#007db9e8', endColorstr='#1e5799', GradientType=0);
+  /* IE6-9 */
+}
+.sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
+  color: #FFF;
+  font-size: 1.6em;
+}
+.sectioned-page-wrapper .section.section-news .section-title h3 {
+  color: #A6BCCA;
+  border-bottom: 1px solid #A6BCCA;
+}
+.sectioned-page-wrapper .section.section-viewpoint .section-title {
+  background-color: #28449C;
+}
+.sectioned-page-wrapper .section.section-viewpoint .section-title h3 {
+  color: #FFF;
+}
+.sectioned-page-wrapper .section.section-viewpoint .section-body .grid-hdr {
+  display: none;
+  visibility: hidden;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-title {
+  background-color: #A6BCCA;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-title h3 {
+  color: #FFF;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body {
+  color: #28449C;
+  font-weight: 600;
+  font-size: 1.4em;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body i.icon {
+  color: #86a4b7;
+  font-size: 4em;
+  line-height: 0;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body h4,
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body h5 {
+  color: #F16528;
+  font-size: 1.8em;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body h4 {
+  font-weight: 700;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body h5 {
+  font-weight: 400;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body .column-3 h4 {
+  font-size: 1.4em;
+}
+.sectioned-page-wrapper .section.section-truepoint-by-the-numbers .section-body .column-3 h5 {
+  font-size: 2.2em;
+}
+@media only screen and (max-width: 960px) {
+  .sectioned-page-wrapper .button {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .button:hover {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .section.section-hero {
+    padding-top: 33vw;
+    background-size: cover;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title:before {
+    background-size: contain;
+    height: 6vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title h3 {
+    font-size: 5.75vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
+    font-size: 3.75vw;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+    font-size: 5.75vw;
+    margin-left: 15px;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+    font-size: 3.75vw;
+  }
+  .sectioned-page-wrapper .section.section-truepoint-by-the-numbers {
+    background-size: cover;
+  }
+}
+@media only screen and (max-width: 479px) {
+  .sectioned-page-wrapper .button {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .button:hover {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sectioned-page-wrapper .section.section-hero {
+    padding-top: 55vw;
+    background-position: center top;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title:before {
+    background-size: contain;
+    height: 7vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-title h3 {
+    font-size: 6vw;
+  }
+  .sectioned-page-wrapper .section.section-hero .section-body .section-subtitle {
+    font-size: 3.5vw;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money {
+    padding-top: 40vw;
+    background-size: cover;
+    background-position: top right;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+    color: #FFF;
+    text-shadow: 2px 2px 4px #2B2C2C;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+    max-width: 100%;
+    margin-bottom: 0;
+    color: #FFF;
+    text-shadow: 2px 2px 4px #2B2C2C;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap p {
+    margin-bottom: 0;
+    text-shadow: 2px 2px 4px #2B2C2C;
+  }
+}
+@media only screen and (min-width: 479px) {
+}
+@media only screen and (min-width: 980px) {
+  .sectioned-page-wrapper .section.section-kids-and-money {
+    padding-top: 2em;
+    padding-bottom: 6em;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-title h3 {
+    padding: 0.25em 0;
+    font-size: 1.2em;
+  }
+  .sectioned-page-wrapper .section.section-kids-and-money .section-body .wrap .section-subtitle {
+    max-width: 40%;
+  }
+}

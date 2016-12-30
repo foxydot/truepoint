@@ -92,7 +92,7 @@ if (!class_exists('MSDNewsCPT')) {
                 'labels' => $labels,
                 'hierarchical' => false,
                 'description' => 'News',
-                'supports' => array( 'title', 'editor', 'author', 'thumbnail' ),
+                'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'genesis-cpt-archives-settings' ),
                 'taxonomies' => array( 'news_category'),
                 'public' => true,
                 'show_ui' => true,
@@ -105,7 +105,7 @@ if (!class_exists('MSDNewsCPT')) {
                 'has_archive' => true,
                 'query_var' => true,
                 'can_export' => true,
-                'rewrite' => array('slug'=>'about-us/news','with_front'=>false),
+                'rewrite' => array('slug'=>'resources/news','with_front'=>false),
                 'capability_type' => 'post'
             );
         
@@ -204,19 +204,17 @@ if (!class_exists('MSDNewsCPT')) {
 
         function custom_query( $query ) {
             if(!is_admin()){
-                $is_news = ($query->query_vars['news_type'] || $query->query_vars['market_sector'])?TRUE:FALSE;
+                $is_this_cpt = ($query->query['post_type'] == $this->cpt)?TRUE:FALSE;
                 if($query->is_main_query() && $query->is_search){
-                    $searchterm = $query->query_vars['s'];
-                    // we have to remove the "s" parameter from the query, because it will prevent the posts from being found
-                    $query->query_vars['s'] = "";
-                    
-                    if ($searchterm != "") {
-                        $query->set('meta_value',$searchterm);
-                        $query->set('meta_compare','LIKE');
-                    };
-                    $query->set( 'post_type', array('post','page',$this->cpt) );
+                    $post_types = $query->query_vars['post_type'];
+                    if(count($post_types)==0){
+                        $post_types[] = 'post';
+                        $post_types[] = 'page';
+                    }
+                    $post_types[] = $this->cpt;
+                    $query->set( 'post_type', $post_types );
                 }
-                elseif( $query->is_main_query() && $query->is_archive && $is_news ) {
+                elseif( $query->is_main_query() && $query->is_archive && $is_this_cpt) {
                     $meta_query = array(
                            array(
                                'key' => '_news_feature',
@@ -225,11 +223,12 @@ if (!class_exists('MSDNewsCPT')) {
                            )
                        );
                     $query->set( 'meta_query', $meta_query);
-                    $query->set( 'post_type', array('post','page',$this->cpt) );
-                    $query->set('posts_per_page', 30);
+                    $query->set( 'post_type', $this->cpt );
+                    $query->set( 'meta_query', array() );
                 }
             }
-        }     
+        } 
+
         function add_custom_metaboxes(){
             global $newsurl_metabox;
             $newsurl_metabox = new WPAlchemy_MetaBox(array

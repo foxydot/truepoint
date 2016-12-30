@@ -1,0 +1,67 @@
+/*
+Sidebars
+---------------------------------------------------------------------------------------------------- */
+
+.sidebar {
+  height: 100%;
+}
+
+.sidebar a:not('.button') {
+  border-bottom: 1px solid #ddd;
+}
+
+.sidebar p:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar li {
+  list-style-type: none;
+  margin-bottom: 6px;
+  margin-bottom: 0.6rem;
+  word-wrap: break-word;
+}
+
+.sidebar ul > li:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar .widget {
+  border-radius: 0px;
+  margin-bottom: 1em;
+  .clearfix();
+  .widget-title{
+    .custombody(1.6);
+    color: @orange;
+    background: @white;
+    padding: 0.5em 1em;
+    text-transform: normal;
+    border-bottom: 1px solid @orange;
+  }
+}
+
+.sidebar .enews-widget {
+  background-color: #333;
+}
+
+.sidebar{
+  /*Text Widget with Click */
+.widget_text{
+  .textwidget{
+      .readmore{
+        .button();
+        float: right;
+      }
+  }
+   a:not('.button') {border: none;}
+}
+
+.widget.gform_widget{
+    background-color: @ltgrey;
+    margin-right: -2rem;
+    margin-left: -50rem;
+    padding: 0.4rem 2rem 0.4rem 50rem;
+}
+span.fa-stack{
+  color: @blue;
+}
+}

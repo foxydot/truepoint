@@ -14,7 +14,7 @@ function get_all_content_info_into_table(){
             echo '<tr>';
             echo '<td>' . get_the_title() . '</td>';
             echo '<td>' . get_the_author() . '</td>';
-            echo '<td>' . get_the_category_list() . '</td>';
+            echo '<td>' . get_the_category_list(", ") . '</td>';
             echo '<td>' . get_the_tag_list() . '</td>';
             echo '</tr>';
         }

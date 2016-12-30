@@ -1,0 +1,184 @@
+.pre-header{
+  max-height: 50px;
+  .wrap{
+    .widget-area{
+      width: 100%;
+      .widget_nav_menu{
+        .menu{
+          li{
+              background-color: @white;
+              border: 1px solid fade(@medgrey,20%);
+              -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+              box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+              padding: 1em 0.5em 0;
+            &:hover{
+              background-color: @offwhite;
+            }
+            a{
+              .customheader(1.8);
+              padding: 1em 0.5em 0;
+              color: @blue;
+              &:hover{
+                text-decoration: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+Site Header
+---------------------------------------------------------------------------------------------------- */
+
+.site-header {
+  background-color: @white;
+  padding: 0 0 0.75em 0;
+  z-index: 300;
+}
+
+.site-header .wrap {
+}
+
+/* Title Area
+--------------------------------------------- */
+
+.title-area {
+  float: left;
+  .customheader();
+  font-weight: 700;
+  padding: 16px 0;
+  padding: 1.6rem 0;
+  width: 25vw;
+}
+
+.header-image .title-area {
+  padding: 0;
+}
+
+.site-title {
+  font-size: 28px;
+  font-size: 2.8rem;
+  line-height: 1;
+  margin: 0 0 8px;
+  margin: 0 0 0.8rem;
+  text-transform: uppercase;
+}
+
+.site-title a,
+.site-title a:hover {
+  color: #333;
+}
+
+.site-description {
+  color: #999;
+  font-size: 16px;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+/* Full width header, no widgets */
+
+.header-full-width .title-area,
+.header-full-width .site-title {
+  /*width: 100%;*/
+}
+
+.header-image .site-description,
+.header-image .site-title a {
+  display: block;
+  text-indent: -9999px;
+}
+
+/* Logo, hide text */
+
+.header-image .site-header .wrap {
+  padding: 0;
+}
+
+.header-image .site-title a {
+  float: left;
+  width: 100%;
+  min-height: 80px;
+  background: url(../img/logo.png) no-repeat center left;
+  background-size: contain;
+  margin: 10px 0;
+  margin: 1rem 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.header-image .is-sticky .site-title a {
+  min-height: 35px;
+}
+
+
+@media only screen and (min-width: 961px) { //screens large than wrap
+  .title-area {
+    width: 240px;
+  }
+}
+
+/* Widget Area
+--------------------------------------------- */
+
+.site-header .widget-area, .pre-header .widget-area {
+  float: right;
+  text-align: right;
+  clear: right;
+  line-height: 1;
+  .widget{
+    display: inline-block;
+  }
+    .search-form{
+      display: inline-block;
+      padding: 0;
+      margin-left: 1rem;
+      position: relative;
+      whitespace: nowrap;
+      input[type="search"] {
+        font-size: 1.4rem;
+        width: 25rem;
+        background: @white;
+        padding: 1rem 2.4rem 1rem 1rem;
+        border: 0;
+        border-right: 1px solid @offwhite;
+        border-radius: 3rem;
+        line-height: 1;
+      }
+      input[type="submit"] {
+        .fontawesome;
+        background: transparent;
+        border: 0 none;
+        clip: auto;
+        color: @ltgrey;
+        display: inline-block;
+        font-size: 1.2rem;
+        height: 18px;
+        line-height: 1;
+        text-align: center;
+        width: 18px;
+        right: 1rem;
+        top: 0.9rem;
+      }
+      &:hover{
+        input[type="search"] {
+      }
+      }
+    }
+}
+
+.header-image .site-header .widget-area {
+  padding: 0;
+}
+
+.site-header .search-form {
+  float: right;
+}
