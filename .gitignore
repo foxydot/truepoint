@@ -72,6 +72,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+*.codekit*
 
 # External tool builders
 .externalToolBuilders/
