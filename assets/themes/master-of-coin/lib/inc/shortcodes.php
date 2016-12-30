@@ -148,7 +148,8 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
     'classes' => '',
     'recent' => false,
     'channel' => false,
-    'link' => false
+    'link' => false,
+    'style' => 'display',
     ), $atts ) );
     if(!$recent){
         $ret = '
@@ -261,8 +262,11 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         <div class="icon-holder">
                             <h3>'.get_the_title().'<a href="'.get_the_permalink().'" class="morelink"> ></a></h3>
                         </div>';
+                        if(wp_is_mobile() || $style == 'display'){
                             $ret .= '
-                            <div class="content-holder excerpt">'.msdlab_get_excerpt($post->ID,30,'').'<a href="'.get_the_permalink().'" class="morelink"> ></a></div>';
+                            <div class="content-holder excerpt">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                            <div class="link-holder excerpt"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>';
+                        }
                         $ret .= '
                         <div class="title-holder">';
                         if($args['post_type']=='post'){
@@ -272,6 +276,16 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                         $ret .= '
                             <div class="date">'.get_the_date().'</div>
                         </div>';
+                        if(!wp_is_mobile() && $style != 'display'){
+                            $ret .= '
+                        <div class="on">
+                            <div class="icon-holder">
+                                <i class="icon icon-'.$icon.'"></i>
+                            </div>
+                            <div class="content-holder">'.msdlab_get_excerpt($post->ID,30,'').'</div>
+                            <div class="link-holder"><a href="'.get_the_permalink().'" class="morelink">more ></a></div>
+                        </div>';
+                        }
                         $ret .= '
                     </div>
                 </div>';
