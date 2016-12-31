@@ -10161,6 +10161,94 @@ Site Footer
     width: 66.66666667%;
   }
 }
+@media only screen and (min-width: 479px) {
+  .tp-grid .tp-square h3 {
+    font-size: 2.66vw;
+  }
+  .tp-grid .tp-square .off .icon-holder i.icon {
+    font-size: 7.75vw;
+  }
+  .tp-grid .tp-square .off .icon-holder h3 {
+    font-size: 2.66vw;
+  }
+  .tp-grid .tp-square .off > .title-holder .author,
+  .tp-grid .tp-square .off > .title-holder .date {
+    font-size: 1.66vw;
+  }
+  .tp-grid .tp-square .off .on .icon-holder i.icon {
+    font-size: 7.75vw;
+  }
+  .tp-grid .tp-square .off .on .content-holder,
+  .tp-grid .tp-square .off .on .link-holder {
+    font-size: 1.33vw;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square {
+    bottom: 5px;
+    top: 5px;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square:before {
+    content: "";
+    display: none;
+    margin-top: 0;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off {
+    background-color: #FFF;
+    border: 1px solid rgba(121, 122, 121, 0.2);
+    -webkit-box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
+    box-shadow: 3px 3px 6px 0 rgba(121, 122, 121, 0.5);
+    margin-bottom: 1em;
+    position: relative;
+    background: #FFF;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 22em;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off a.morelink {
+    color: #F16528;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off a.morelink:hover {
+    text-decoration: none;
+    color: #28449C;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off .icon-holder {
+    padding: 0 1em;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off .icon-holder h3 {
+    font-size: 1em;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off > .content-holder {
+    padding: 0 1em;
+    font-size: 0.8em;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off > .title-holder {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 1em;
+    background: #E3E2E0;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+  .ismobile.home .tp-grid-channel .tp-grid .tp-square .off .title-holder h3 {
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+  }
+  .ismobile .tp-grid .tp-square:before {
+    margin-top: 125%;
+  }
+  .ismobile .tp-grid .tp-square .off .icon-holder {
+    padding-bottom: 0;
+  }
+  .ismobile .tp-grid .tp-square .off .icon-holder i.icon {
+    font-size: 5vw;
+  }
+  .ismobile .tp-grid .tp-square .off h3 {
+    font-size: 2vw;
+  }
+}
 @media only screen and (max-width: 479px) {
   .tp-grid .tp-square h3 {
     font-size: 8vw;

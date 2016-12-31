@@ -632,6 +632,127 @@ padding: 1em 0;
 }
 
 
+@media only screen and (min-width: 479px) {
+.tp-grid{
+  .tp-square{
+    h3{
+      font-size: 2.66vw;
+    }
+    .off{
+      .icon-holder{
+        i.icon{
+          font-size: 7.75vw;
+        }
+        h3{
+          font-size: 2.66vw;
+        }
+      }
+      >.title-holder{
+        .author,.date{
+          font-size: 1.66vw;
+        }
+      }
+    .on{
+      .icon-holder{
+        i.icon{
+          font-size: 7.75vw;
+        }
+      }
+      .content-holder,.link-holder{
+        font-size: 1.33vw;
+      }
+    }
+    }
+  }
+}
+
+.ismobile{
+  &.home{
+  .tp-grid-channel{
+    .tp-grid{
+      .tp-square{
+        bottom: 5px;
+        top: 5px;
+        
+        &:before{
+          content: "";
+          display: none;
+          margin-top:0;
+        }
+        .off{
+          background-color: @white;
+          border: 1px solid fade(@medgrey,20%);
+          -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+          box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
+          margin-bottom: 1em;
+          position: relative;
+          background: @white;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          min-height: 22em;
+          a.morelink{
+            color: @orange;
+            &:hover{
+              text-decoration: none;
+              color: @blue;
+            }
+          }
+          .icon-holder{
+            padding: 0 1em;
+            h3{
+              font-size: 1em;
+            }
+          }
+          >.content-holder{
+            padding: 0 1em;
+            font-size: 0.8em;
+          }
+          >.title-holder{
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin-top: 1em;
+            background: @offwhite;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+          }
+          .title-holder{
+            h3{
+              font-weight: 700;
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  }
+  .tp-grid{
+    .tp-square{
+      &:before{
+        margin-top: 125%;
+      }
+      .off{
+        .icon-holder{
+          padding-bottom: 0;
+           i.icon{
+            font-size: 5vw;
+            }
+        }
+        h3{
+          font-size: 2vw;
+        }
+        .title-holder{
+        }
+      }
+    }
+  }
+}
+}
+
 @media only screen and (max-width: 479px) {
 .tp-grid{
   .tp-square{
