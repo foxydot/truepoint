@@ -10162,24 +10162,24 @@ Site Footer
   }
 }
 @media only screen and (min-width: 479px) {
-  .tp-grid .tp-square h3 {
+  .ismobile .tp-grid .tp-square h3 {
     font-size: 2.66vw;
   }
-  .tp-grid .tp-square .off .icon-holder i.icon {
+  .ismobile .tp-grid .tp-square .off .icon-holder i.icon {
     font-size: 7.75vw;
   }
-  .tp-grid .tp-square .off .icon-holder h3 {
+  .ismobile .tp-grid .tp-square .off .icon-holder h3 {
     font-size: 2.66vw;
   }
-  .tp-grid .tp-square .off > .title-holder .author,
-  .tp-grid .tp-square .off > .title-holder .date {
+  .ismobile .tp-grid .tp-square .off > .title-holder .author,
+  .ismobile .tp-grid .tp-square .off > .title-holder .date {
     font-size: 1.66vw;
   }
-  .tp-grid .tp-square .off .on .icon-holder i.icon {
+  .ismobile .tp-grid .tp-square .off .on .icon-holder i.icon {
     font-size: 7.75vw;
   }
-  .tp-grid .tp-square .off .on .content-holder,
-  .tp-grid .tp-square .off .on .link-holder {
+  .ismobile .tp-grid .tp-square .off .on .content-holder,
+  .ismobile .tp-grid .tp-square .off .on .link-holder {
     font-size: 1.33vw;
   }
   .ismobile.home .tp-grid-channel .tp-grid .tp-square {
