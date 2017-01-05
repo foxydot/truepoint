@@ -299,14 +299,14 @@ function msdlab_jank_the_cpt_breadcrumb($crumb){
    //ts_data($crumb);
     if(is_cpt('post')){
         if(is_single()){
-            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; <a href="'.site_url( '/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="Resources">Resources</a> &gt; <a href="'.site_url( '/resources/truepoint-viewpoint/' ).'" title="View Truepoint Viewpoint">Truepoint Viewpoint</a> &gt; '.$crumb;
         } else {
-            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="Resources">Resources</a> &gt; '.$crumb;
         }
     } elseif(is_cpt('press')){
-            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="Resources">Resources</a> &gt; '.$crumb;
     } elseif(is_cpt('news')){
-            $crumb = '<a href="'.site_url( '/viewpoint/' ).'" title="Viewpoint">Viewpoint</a> &gt; '.$crumb;
+            $crumb = '<a href="'.site_url( '/resources/' ).'" title="Resources">Resources</a> &gt; '.$crumb;
     } else {
         $pattern = array(
             '/Team Members/i',
