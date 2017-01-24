@@ -187,6 +187,15 @@ Site Navigation
         }
       }
     }
+    >.sub-menu{
+      >li.menu-item-has-children{
+          >a{
+            &:after{
+              content: ' >';
+            }
+          }
+        }
+    }
   &:hover, &.current-menu-item, &.current-menu-ancestor{
     a, a:hover{
       text-decoration: none;

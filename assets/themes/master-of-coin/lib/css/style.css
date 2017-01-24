@@ -8393,6 +8393,9 @@ Site Navigation
   text-decoration: none;
   border-color: transparent;
 }
+.nav-primary .menu-primary > li.menu-item > .sub-menu > li.menu-item-has-children > a:after {
+  content: ' >';
+}
 .nav-primary .menu-primary > li.menu-item:hover a,
 .nav-primary .menu-primary > li.menu-item.current-menu-item a,
 .nav-primary .menu-primary > li.menu-item.current-menu-ancestor a,
