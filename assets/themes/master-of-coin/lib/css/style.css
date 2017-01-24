@@ -9682,6 +9682,9 @@ Site Footer
   text-transform: uppercase;
   text-align: center;
 }
+.tp-grid .tp-square h3 a:hover {
+  text-decoration: none;
+}
 .tp-grid .tp-square .off {
   bottom: 15px;
   left: 15px;

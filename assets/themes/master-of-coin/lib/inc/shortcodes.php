@@ -260,7 +260,7 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 <div class="tp-square" id="'.$post->post_name.'">
                     <div class="off">
                         <div class="icon-holder">
-                            <h3>'.get_the_title().'<a href="'.get_the_permalink().'" class="morelink"> ></a></h3>
+                            <h3><a href="'.get_the_permalink().'">'.get_the_title().'</a></h3>
                         </div>';
                         if(wp_is_mobile() || $style == 'display'){
                             $ret .= '
