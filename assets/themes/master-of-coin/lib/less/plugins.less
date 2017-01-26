@@ -69,14 +69,16 @@ div.gform_wrapper .gform_body .gfield{
   .ginput_container{
     .gfield_radio{
       li{
-        display: inline-block;
-        min-width: 16%;
+        display: block;
         input,label{
-          text-align: center;
+          text-align: left;
           display: block;
           margin: 1px auto;
-          float: none;
+          float: left;
           font-weight: 400;
+        }
+        input{
+          margin: 0.25em 1em 0 0;
         }
       }
     }
@@ -87,6 +89,29 @@ div.gform_wrapper .gform_footer input[type="submit"] {
   font-size: 14px;
   font-size: 1.4rem;
   display: table;
+}
+
+div.gform_wrapper{
+  .gform_heading{}
+  .gform_body{
+    ul.gform_fields{
+      &.top_label{
+        .gfield_label{
+          font-weight: 500;
+          color: @blue;
+        }
+      }
+    }
+    .field_sublabel_below{
+      .ginput_complex.ginput_container{
+        label{
+          font-weight: 600;
+          color: @ltgrey;
+        }
+      }
+    }
+  }
+  .gform_footer{}
 }
 /* Jetpack
 --------------------------------------------- */
