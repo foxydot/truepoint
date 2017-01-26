@@ -10106,9 +10106,10 @@ Site Footer
 .single-team_member .site-inner .content-sidebar-wrap main article .entry-content h6 {
   font-family: "Raleway", "Helvetica Neue", "Trebuchet MS", Calibri, sans-serif;
   font-weight: 400;
-  font-size: 18px;
-  font-size: 1.8rem;
+  font-size: 16.75px;
+  font-size: 1.675rem;
   line-height: 1.625;
+  line-height: 1.25;
   color: #28449C;
 }
 .blog article.entry,
