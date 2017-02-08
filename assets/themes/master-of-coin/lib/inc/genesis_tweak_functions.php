@@ -102,7 +102,7 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 }
 
 function msdlab_logo_for_print(){
-    print '<img src="'.get_stylesheet_directory_uri().'/lib/img/logo.png" class="visible-print print-logo" />';
+    print '<img src="'.get_stylesheet_directory_uri().'/lib/img/logo.png" class="visible-print print-logo" alt="'.get_bloginfo('name').'" />';
 }
 /*** NAV ***/
 
