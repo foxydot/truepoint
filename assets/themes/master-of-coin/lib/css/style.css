@@ -7541,6 +7541,9 @@ td {
   max-width: none;
   width: auto;
 }
+a[href]:after {
+  content: "" !important;
+}
 /*
 Structure and Layout
 ---------------------------------------------------------------------------------------------------- */
