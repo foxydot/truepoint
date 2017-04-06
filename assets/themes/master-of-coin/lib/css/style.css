@@ -7541,8 +7541,27 @@ td {
   max-width: none;
   width: auto;
 }
-a[href]:after {
-  content: "" !important;
+@media print {
+  a[href]:after {
+    content: "" !important;
+  }
+  div.pre-header,
+  #sticky-wrapper,
+  header.site-header,
+  aside.sidebar {
+    display: none !important;
+  }
+  div.print-header {
+    margin: 0 auto;
+    max-width: 960px;
+    margin-bottom: 1em;
+  }
+  main.content {
+    width: 100% !important;
+  }
+  main.content p {
+    page-break-inside: avoid;
+  }
 }
 /*
 Structure and Layout

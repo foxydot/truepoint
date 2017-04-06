@@ -25,7 +25,7 @@ add_action('wp_head','msdlab_add_apple_touch_icons',1);
 add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the serach bar placeholder
 add_filter('genesis_search_button_text', 'msdlab_search_button'); //customize the search form to add fontawesome search button.
 add_filter('genesis_do_subnav','msdlab_subnav_right',10,2);
-add_action('genesis_site_title','msdlab_logo_for_print');
+add_action('genesis_before_header','msdlab_logo_for_print');
 /*** NAV ***//**
  * Move nav into header
  */
@@ -78,6 +78,8 @@ add_theme_support( 'genesis-footer-widgets', 1 ); //adds automatic footer widget
 
 remove_action('genesis_footer','genesis_do_footer'); //replace the footer
 add_action('genesis_footer','msdlab_do_social_footer');//with a msdsocial support one
+
+add_action('genesis_footer','msdlab_print_footer');//a friendly print footer
 
 /*** HOMEPAGE (BACKEND SUPPORT) ***/
 add_action('after_setup_theme','msdlab_add_homepage_hero_flex_sidebars'); //creates widget areas for a hero and flexible widget area

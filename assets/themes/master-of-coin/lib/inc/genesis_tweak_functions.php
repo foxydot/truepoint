@@ -102,7 +102,15 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 }
 
 function msdlab_logo_for_print(){
-    print '<img src="'.get_stylesheet_directory_uri().'/lib/img/logo.png" class="visible-print print-logo" alt="'.get_bloginfo('name').'" />';
+    print '<div class="print-header visible-print">
+    <img src="'.get_stylesheet_directory_uri().'/lib/img/logo.png" class="visible-print print-logo" alt="'.get_bloginfo('name').'" />
+    </div>';
+}
+
+function msdlab_print_footer(){
+    print '<div class="print-footer visible-print">
+    <p>Thank you for printing this article. Please visit '.get_bloginfo('url').' regularly for fresh Viewpoints and information.</p>
+    </div>';
 }
 /*** NAV ***/
 
