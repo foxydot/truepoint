@@ -143,6 +143,7 @@ function msdlab_javascript_cheater($attr,$content){
 
 add_shortcode('tp-grid','msdlab_tpgrid_shortcode_handler');
 add_shortcode('tp-square','msdlab_tpsquare_shortcode_handler');
+add_shortcode('tp-col','msdlab_tpcolumn_shortcode_handler');
 function msdlab_tpgrid_shortcode_handler($atts,$content){
     extract( shortcode_atts( array(
     'classes' => '',
@@ -380,6 +381,38 @@ function msdlab_tpsquare_shortcode_handler($atts,$content){
     </div>';
     return $ret;
 }
+
+function msdlab_tpcolumn_shortcode_handler($atts,$content){
+    extract( shortcode_atts( array(
+        'id' => FALSE,
+        'url' => FALSE,
+        'title' => '',
+        'subtitle' => '',
+        'icon' => '',
+        'color' => 'blue'
+    ), $atts ) );
+    if(!$id){$id = sanitize_title_with_dashes($title);}
+    $ret = '
+    <div class="tp-column" id="'.$id.'">
+        <div class="top border-'.$color.'">
+            <div class="inner">
+                <div class="icon-holder">
+                    <i class="icon icon-'.$icon.'"></i>
+                </div>';
+        $ret .= '
+                <div class="title-holder">
+                    <h3>'.$title.'</h3>
+                    <h4>'.$subtitle.'</h4>
+                </div>
+            </div>
+        </div>
+        <div class="bottom border-'.$color.'">
+            <div class="inner">'.do_shortcode(remove_wpautop($content)).'</div>
+        </div>
+    </div>';
+    return $ret;
+}
+
 add_shortcode('icon','msdlab_icon_shortcodes');
 function msdlab_icon_shortcodes($atts){
     $classes[] = 'msd-icon icon';

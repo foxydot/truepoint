@@ -285,6 +285,65 @@ padding: 1em 0;
       }
     }
   }
+  .tp-column {
+    .make-sm-column(4);
+    .make-xs-column(12);
+    .top,.bottom{
+      border-width: 1px;
+      border-style: solid;
+      border-color: @blue;
+      padding: 1em;
+      &.border-orange{
+        border-color: @orange;
+      }
+      &.border-gray,&.border-grey{
+        border-color: @medgrey;
+      }
+    }
+    .top{
+      color: @white;
+      background-color: @blue;
+      text-align: center;
+      .icon-holder {
+        text-align: center;
+        padding: 0;
+        i.icon {
+          color: @white;
+          height: 1.5em;
+          width: 2em;
+          font-size: 6em;
+          display: block;
+          margin: 0 auto;
+        }
+      }
+      h3, h4 {
+        color: @white;
+        text-align: center;
+        margin: 0;
+      }
+      h3{
+        font-size: 1em;
+        font-weight: 500;
+      }
+      h4{
+        font-size: 0.9em;
+        font-weight: 300;
+        font-style: italic;
+      }
+      &.border-orange{
+        background-color: @orange;
+      }
+      &.border-gray,&.border-grey{
+        background-color: @medgrey;
+      }
+    }
+    .bottom{
+      padding-bottom: 2.6em;
+      ul{
+        margin-left: 1em;
+      }
+    }
+  }
 }
 
 .sidebar{

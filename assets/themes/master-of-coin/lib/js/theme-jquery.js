@@ -34,4 +34,6 @@ jQuery(document).ready(function($) {
     $(window).scroll(function() {
             $("#sticky-wrapper").not(".is-sticky").removeAttr("style");
     });
+    $('.tp-column .top .inner').equalHeightColumns({checkHeight: 'innerHeight'});
+    $('.tp-column .bottom .inner').equalHeightColumns({checkHeight: 'innerHeight'});
 });

@@ -7184,6 +7184,12 @@ button.close {
 .icon-login:before {
   content: "\77";
 }
+.icon-compass:before {
+  content: "\78";
+}
+.icon-bridge:before {
+  content: "\79\79";
+}
 /* Import Fonts
 ------------------------------------------------------------ */
 /* Font Stacks */
@@ -8078,6 +8084,30 @@ img#wpstats {
 .tablepress tbody tr.even td.even {
   background-color: transparent;
   line-height: 1.2;
+}
+.tablepress.tablepress-id-8 tbody {
+  border: 1px solid #28449C;
+  width: 100%;
+}
+.tablepress.tablepress-id-8 tbody tr td {
+  border-color: #28449C;
+  width: 33%;
+  padding: 1em;
+}
+.tablepress.tablepress-id-8 tbody tr td.column-1 {
+  color: #FFF;
+  background-color: #28449C;
+  vertical-align: middle;
+}
+.tablepress.tablepress-id-8 tbody tr td.column-1 h5,
+.tablepress.tablepress-id-8 tbody tr td.column-1 p {
+  margin: 0;
+}
+.tablepress.tablepress-id-8 tbody tr td.column-1 h5 {
+  font-weight: 500;
+}
+.tablepress.tablepress-id-8 tbody tr td.column-1 p {
+  font-weight: 200;
 }
 .pre-header {
   max-height: 50px;
@@ -9832,6 +9862,82 @@ Site Footer
 .tp-grid .tp-square:hover .on {
   height: 100%;
   top: 0;
+}
+.tp-grid .tp-column {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .tp-grid .tp-column {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+.tp-grid .tp-column .top,
+.tp-grid .tp-column .bottom {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #28449C;
+  padding: 1em;
+}
+.tp-grid .tp-column .top.border-orange,
+.tp-grid .tp-column .bottom.border-orange {
+  border-color: #F16528;
+}
+.tp-grid .tp-column .top.border-gray,
+.tp-grid .tp-column .bottom.border-gray,
+.tp-grid .tp-column .top.border-grey,
+.tp-grid .tp-column .bottom.border-grey {
+  border-color: #797A79;
+}
+.tp-grid .tp-column .top {
+  color: #FFF;
+  background-color: #28449C;
+  text-align: center;
+}
+.tp-grid .tp-column .top .icon-holder {
+  text-align: center;
+  padding: 0;
+}
+.tp-grid .tp-column .top .icon-holder i.icon {
+  color: #FFF;
+  height: 1.5em;
+  width: 2em;
+  font-size: 6em;
+  display: block;
+  margin: 0 auto;
+}
+.tp-grid .tp-column .top h3,
+.tp-grid .tp-column .top h4 {
+  color: #FFF;
+  text-align: center;
+  margin: 0;
+}
+.tp-grid .tp-column .top h3 {
+  font-size: 1em;
+  font-weight: 500;
+}
+.tp-grid .tp-column .top h4 {
+  font-size: 0.9em;
+  font-weight: 300;
+  font-style: italic;
+}
+.tp-grid .tp-column .top.border-orange {
+  background-color: #F16528;
+}
+.tp-grid .tp-column .top.border-gray,
+.tp-grid .tp-column .top.border-grey {
+  background-color: #797A79;
+}
+.tp-grid .tp-column .bottom {
+  padding-bottom: 2.6em;
+}
+.tp-grid .tp-column .bottom ul {
+  margin-left: 1em;
 }
 .sidebar .tp-grid-channel {
   background-color: #FFF;
