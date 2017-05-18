@@ -8086,17 +8086,18 @@ img#wpstats {
   line-height: 1.2;
 }
 .tablepress.tablepress-id-8 tbody {
-  border: 1px solid #28449C;
+  border: 1px solid #13214b;
   width: 100%;
 }
 .tablepress.tablepress-id-8 tbody tr td {
-  border-color: #28449C;
-  width: 33%;
+  border-color: #13214b;
+  width: 35.5%;
   padding: 1em;
 }
 .tablepress.tablepress-id-8 tbody tr td.column-1 {
+  width: 31.5%;
   color: #FFF;
-  background-color: #28449C;
+  background-color: #13214b;
   vertical-align: middle;
 }
 .tablepress.tablepress-id-8 tbody tr td.column-1 h5,
@@ -9881,7 +9882,7 @@ Site Footer
 .tp-grid .tp-column .bottom {
   border-width: 1px;
   border-style: solid;
-  border-color: #28449C;
+  border-color: #13214b;
   padding: 1em;
 }
 .tp-grid .tp-column .top.border-orange,
@@ -9896,7 +9897,7 @@ Site Footer
 }
 .tp-grid .tp-column .top {
   color: #FFF;
-  background-color: #28449C;
+  background-color: #13214b;
   text-align: center;
 }
 .tp-grid .tp-column .top .icon-holder {
@@ -9938,6 +9939,9 @@ Site Footer
 }
 .tp-grid .tp-column .bottom ul {
   margin-left: 1em;
+}
+.tp-grid .tp-column .bottom ul li {
+  font-size: 0.9em;
 }
 .sidebar .tp-grid-channel {
   background-color: #FFF;
