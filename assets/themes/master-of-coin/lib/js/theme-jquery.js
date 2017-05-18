@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
     });
     
     $('.blog article.entry,.blog article.entry').each(function(){
-        $(this).find('.thumb-wrapper, .entry-header').equalHeightColumns({minheight:115,});
+        $(this).find('.thumb-wrapper, .entry-header').equalHeightColumns({minHeight:115,});
     }); 
 
     $(".site-header").sticky();
