@@ -4,7 +4,7 @@ global $wp_filter;
 require_once('genesis_tweak_functions.php');
 /*** GENERAL ***/
 add_theme_support( 'html5' );//* Add HTML5 markup structure
-add_theme_support( 'genesis-responsive-viewport' );//* Add viewport meta tag for mobile browsers
+add_theme_support( 'genesis-responsive-viewport' );//* Add viewport meta tag for mobile browsers MOVED
 add_theme_support( 'custom-background' );//* Add support for custom background
 add_filter( 'edit_post_link', '__return_false' );
 //* Add support for structural wraps
