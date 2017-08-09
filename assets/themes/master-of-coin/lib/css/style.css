@@ -7190,8 +7190,8 @@ button.close {
 .icon-bridge:before {
   content: "\79\79";
 }
-.icon-dollar:before {
-  content: "\41";
+.icon-dollar-icon:before {
+  content: "\7a";
 }
 /* Import Fonts
 ------------------------------------------------------------ */
