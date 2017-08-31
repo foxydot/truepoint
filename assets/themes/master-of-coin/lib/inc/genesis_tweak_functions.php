@@ -1,5 +1,12 @@
 <?php
 /*** HEADER ***/
+add_action('genesis_before','msdlab_add_gtm');
+function msdlab_add_gtm(){
+    print '<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WNJ64W"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->';
+}
 
 /**
  * Add various size icons for touch devices
