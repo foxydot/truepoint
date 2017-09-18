@@ -108,7 +108,8 @@ class MSDLandingPage{
         $i = 0;
         $meta = $landing_page_metabox->the_meta();
         if($landing_page_metabox->have_fields('features')){
-            while($landing_page_metabox->have_fields('features')){
+            //while($landing_page_metabox->have_fields('features')){
+            while($i < count($meta['features'])){
                 $features[] = self::default_output($meta['features'][$i],$i);
                 $i++;
             }//close while
