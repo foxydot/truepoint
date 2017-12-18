@@ -9564,6 +9564,11 @@ Site Footer
     margin-left: 0px;
   }
 }
+.disclaimer-text {
+  padding: 1em 0 2em;
+  font-size: 0.9em;
+  font-style: italic;
+}
 #rufous-sandbox {
   display: none !important;
 }
