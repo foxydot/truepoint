@@ -146,11 +146,12 @@ add_shortcode('tp-square','msdlab_tpsquare_shortcode_handler');
 add_shortcode('tp-col','msdlab_tpcolumn_shortcode_handler');
 function msdlab_tpgrid_shortcode_handler($atts,$content){
     extract( shortcode_atts( array(
-    'classes' => '',
-    'recent' => false,
-    'channel' => false,
-    'link' => false,
-    'style' => 'display',
+        'classes' => '',
+        'recent' => false,
+        'channel' => false,
+        'link' => false,
+        'style' => 'display',
+        'cat' => false
     ), $atts ) );
     if(!$recent){
         $ret = '
@@ -237,8 +238,10 @@ function msdlab_tpgrid_shortcode_handler($atts,$content){
                 $args = array(
                     'post_type' => 'post',
                     'posts_per_page' => $recent,
-                    'cat' => -42
-                ); 
+                );
+                if($cat){
+                    $args['cat'] = $cat;
+                }
                 $link = !$link?'/resources/truepoint-viewpoint/':$link;
             break;
         }
