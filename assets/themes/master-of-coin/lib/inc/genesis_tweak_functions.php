@@ -32,7 +32,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      if(is_cpt('post') && is_single()){
          global $post, $wpseo;
          remove_action('wpseo_opengraph',array($GLOBALS['wpseo_og'],'image'),30);
-         if(wpseo_get_value( 'opengraph-image' )){ //yoast defined
+         if(function_exists('wpseo_get_value') && wpseo_get_value( 'opengraph-image' )){ //yoast defined
             $attachment_id = get_attachment_id_from_src(wpseo_get_value( 'opengraph-image' ));
          } elseif(has_post_thumbnail($post->ID)){ //featured image
              $attachment_id = get_post_thumbnail_id($post->ID);
