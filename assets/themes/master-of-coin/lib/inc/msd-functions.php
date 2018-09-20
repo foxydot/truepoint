@@ -227,3 +227,27 @@ function msdlab_get_attachment( $attachment_id ) {
     );
 }
 }
+
+add_filter( 'the_content', 'add_bootstrap_allowed_attributes');
+
+function add_bootstrap_allowed_attributes($content){
+    global $allowedposttags;
+    $atts = array(
+        'data-target',
+        'data-toggle',
+        'data-dismiss',
+        'aria-expanded',
+        'aria-controls',
+        'aria-label',
+        'aria-labeledby',
+        'aria-describedby',
+        'aria-haspopup',
+    );
+    foreach($allowedposttags AS $k => $v){
+        foreach($atts AS $a){
+            $allowedposttags[$k][$a]=true;
+        }
+    }
+    $content = wp_kses($content,$allowedposttags);
+    return $content;
+}
