@@ -242,7 +242,13 @@ function add_bootstrap_allowed_attributes($content){
         'aria-labeledby',
         'aria-describedby',
         'aria-haspopup',
-    );
+        'role',
+        'style',
+        'frameBorder',
+        'scrolling',
+        'height',
+        'width',
+        );
     foreach($allowedposttags AS $k => $v){
         foreach($atts AS $a){
             $allowedposttags[$k][$a]=true;
