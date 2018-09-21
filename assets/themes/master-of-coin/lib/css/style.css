@@ -10440,6 +10440,64 @@ Site Footer
     height: auto;
   }
 }
+.button.calendly-button,
+.button.calendly-button:hover {
+  margin-left: 0;
+  margin-right: 0;
+  text-transform: none;
+  color: #ffffff;
+  background-color: #f16528;
+  font-size: 1.4em;
+  cursor: pointer;
+  background-image: url('../img/speech_bubble.svg');
+  background-repeat: no-repeat;
+  padding-left: 3em;
+  background-size: 2em;
+  background-position: 0.5em;
+}
+.button.calendly-button:focus,
+.button.calendly-button:hover:focus {
+  outline: 0;
+}
+.button.calendly-button:hover {
+  background-color: rgba(239, 98, 44, 0.8);
+}
+.modal {
+  background-color: rgba(121, 122, 121, 0.6);
+  padding: 30px;
+}
+.modal .modal-dialog.modal-lg {
+  display: inline;
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+}
+.modal .modal-dialog.modal-lg .modal-content {
+  height: 100%;
+}
+.modal .modal-dialog.modal-lg .modal-content .modal-body {
+  padding: 0px;
+  max-height: 100%;
+  overflow-y: scroll;
+}
+.modal .modal-dialog.modal-lg .modal-content .modal-body iframe {
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+@media (min-width: 992px) {
+  .modal .modal-dialog.modal-lg {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) {
+  .modal .modal-dialog.modal-lg {
+    width: 100%;
+  }
+}
 .nav-responsive ul,
 .nav-responsive li,
 .nav-responsive li a {
