@@ -32,6 +32,7 @@ function msdlab_moc_options_scripts(){
 function msdlab_moc_defaults( $defaults ) {
 
     $defaults['disclaimer_text'] = '';
+    $defaults['quarterly_disclaimer_text'] = '';
     return $defaults;
 }
 add_filter( 'genesis_theme_settings_defaults', 'msdlab_moc_defaults' );
@@ -47,6 +48,7 @@ function msdlab_register_moc_sanitization_filters() {
     genesis_add_option_filter( 'safe_html', GENESIS_SETTINGS_FIELD,
         array(
             'disclaimer_text',
+            'quarterly_disclaimer_text',
         ) );
 }
 add_action( 'genesis_settings_sanitizer_init', 'msdlab_register_moc_sanitization_filters' );
@@ -72,11 +74,16 @@ add_action('genesis_theme_settings_metaboxes', 'msdlab_register_moc_settings_box
 
 function msdlab_moc_settings_box() {
     $disclaimer_text = esc_attr( genesis_get_option('disclaimer_text') );
+    $quarterly_disclaimer_text = esc_attr( genesis_get_option('quarterly_disclaimer_text') );
     ?>
     <div class="row">
         <label class="col-md-2">Disclaimer Text</label>
         <div class="col-md-10">
             <textarea name="<?php echo GENESIS_SETTINGS_FIELD; ?>[disclaimer_text]" class="widefat" rows="5"><?php print $disclaimer_text; ?></textarea>
+        </div>
+        <label class="col-md-2">Quartlerly Insight Disclaimer Text</label>
+        <div class="col-md-10">
+            <textarea name="<?php echo GENESIS_SETTINGS_FIELD; ?>[quarterly_disclaimer_text]" class="widefat" rows="5"><?php print $quarterly_disclaimer_text; ?></textarea>
         </div>
     </div>
 
