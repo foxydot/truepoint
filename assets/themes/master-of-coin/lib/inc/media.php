@@ -9,7 +9,7 @@ add_image_size('headshot-sm', 115, 115, TRUE);
 add_image_size('tab', 170, 170, TRUE);
 add_image_size('mini-thumbnail', 90, 90, TRUE);
 add_image_size('medlg', 500, 500, FALSE);
-add_image_size('facebook', 200, 200, TRUE);
+add_image_size('facebook', 200, 200, FALSE);
 add_image_size('linkedin', 180, 110, TRUE);
 
 //* Display a custom favicon

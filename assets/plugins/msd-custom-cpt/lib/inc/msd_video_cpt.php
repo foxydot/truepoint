@@ -245,9 +245,9 @@ class MSDVideoCPT {
                     $featured_image = $featured_image[0];
                 } elseif(preg_match('/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/i',$video_url,$matches)){
                     $videoid = $matches[2];
-                    $featured_image = 'http://img.youtube.com/vi/'.$videoid.'/0.jpg';
+                    $featured_image = 'https//img.youtube.com/vi/'.$videoid.'/0.jpg';
                 } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
-                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $static_url = 'https://vimeo.com/api/oembed.xml?url='.$video_url;
                     $xml = simplexml_load_file($static_url);
                     $featured_image = $xml->thumbnail_url;
                 }
@@ -274,7 +274,7 @@ class MSDVideoCPT {
                     $content = $video_url.$norelated;
                     if(function_exists('lyte_parse')) { $content = lyte_parse($content); }
                 } elseif(preg_match('/^.*(vimeo.com\/(video\/)?)([\d]*).*/i',$video_url,$matches)){
-                    $static_url = 'http://vimeo.com/api/oembed.xml?url='.$video_url;
+                    $static_url = 'https://vimeo.com/api/oembed.xml?url='.$video_url;
                     $xml = simplexml_load_file($static_url);
                     $content = $xml->html;
                 }

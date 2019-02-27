@@ -20,7 +20,7 @@ add_theme_support( 'genesis-structural-wraps', array(
 add_action('genesis_before_header','msdlab_pre_header');
 //add_action( 'msdlab_pre_header', 'genesis_do_subnav' );
 add_action('msdlab_pre_header','msdlab_pre_header_sidebar');
-add_action('wp_head','msdlab_add_open_graph_meta',1);
+//add_action('wp_head','msdlab_add_open_graph_meta',1); //(let yoast do it)
 add_action('wp_head','msdlab_add_apple_touch_icons',1);
 add_filter( 'genesis_search_text', 'msdlab_search_text' ); //customizes the serach bar placeholder
 add_filter('genesis_search_button_text', 'msdlab_search_button'); //customize the search form to add fontawesome search button.
