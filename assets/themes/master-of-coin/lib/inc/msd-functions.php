@@ -257,3 +257,12 @@ function add_bootstrap_allowed_attributes($content){
     $content = wp_kses($content,$allowedposttags);
     return $content;
 }
+
+function msd_has_body_class($class_needle){
+    $class_haystack = explode(' ',implode(' ',get_body_class()));
+    if(in_array($class_needle,$class_haystack)){
+        return true;
+    } else {
+        return false;
+    }
+}

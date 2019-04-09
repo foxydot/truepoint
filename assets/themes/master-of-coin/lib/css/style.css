@@ -7289,31 +7289,31 @@ button.close {
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 200;
-  src: local('Raleway ExtraLight'), local('Raleway-ExtraLight'), url(https://fonts.gstatic.com/s/raleway/v12/1Ptrg8zYS_SKggPNwOIpWqZPBQ.ttf) format('truetype');
+  src: local('Raleway ExtraLight'), local('Raleway-ExtraLight'), url(http://fonts.gstatic.com/s/raleway/v13/1Ptrg8zYS_SKggPNwOIpWqZPBQ.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
-  src: local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyC0ISg.ttf) format('truetype');
+  src: local('Raleway'), local('Raleway-Regular'), url(http://fonts.gstatic.com/s/raleway/v13/1Ptug8zYS_SKggPNyC0ISg.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 700;
-  src: local('Raleway Bold'), local('Raleway-Bold'), url(https://fonts.gstatic.com/s/raleway/v12/1Ptrg8zYS_SKggPNwJYtWqZPBQ.ttf) format('truetype');
+  src: local('Raleway Bold'), local('Raleway-Bold'), url(http://fonts.gstatic.com/s/raleway/v13/1Ptrg8zYS_SKggPNwJYtWqZPBQ.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto Condensed';
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(https://fonts.gstatic.com/s/robotocondensed/v16/ieVl2ZhZI2eCN5jzbjEETS9weq8-19K7CA.ttf) format('truetype');
+  src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url(http://fonts.gstatic.com/s/robotocondensed/v17/ieVl2ZhZI2eCN5jzbjEETS9weq8-19K7CA.ttf) format('truetype');
 }
 @font-face {
   font-family: 'Roboto Condensed';
   font-style: normal;
   font-weight: 700;
-  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url(https://fonts.gstatic.com/s/robotocondensed/v16/ieVi2ZhZI2eCN5jzbjEETS9weq8-32meGCQYag.ttf) format('truetype');
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url(http://fonts.gstatic.com/s/robotocondensed/v17/ieVi2ZhZI2eCN5jzbjEETS9weq8-32meGCQYag.ttf) format('truetype');
 }
 /* Font Stacks */
 .customsansserif,
@@ -9575,10 +9575,22 @@ Site Footer
 .sectioned-page-wrapper .section.title-bar .section-title h3 {
   padding-bottom: 2rem;
 }
-.sectioned-page-wrapper .section.title-bar.title-bar-blue .section-title {
+.sectioned-page-wrapper .section.title-bar-blue .section-title {
   background-color: #28449C;
 }
-.sectioned-page-wrapper .section.title-bar.title-bar-blue .section-title h3 {
+.sectioned-page-wrapper .section.title-bar-blue .section-title h3 {
+  color: #FFF;
+}
+.sectioned-page-wrapper .section.title-bar-ltblue .section-title {
+  background-color: #A6BCCA;
+}
+.sectioned-page-wrapper .section.title-bar-ltblue .section-title h3 {
+  color: #FFF;
+}
+.sectioned-page-wrapper .section.title-bar-orange .section-title {
+  background-color: #F16528;
+}
+.sectioned-page-wrapper .section.title-bar-orange .section-title h3 {
   color: #FFF;
 }
 .sectioned-page-wrapper .section.title-bar-blue.arrow-down .section-title {
@@ -9720,6 +9732,9 @@ Site Footer
 .page-title-area .entry-title,
 .page-title-area .archive-title {
   margin: 0;
+}
+.no-title .page-title-area {
+  display: none;
 }
 .breadcrumb {
   margin-bottom: 1.5em;

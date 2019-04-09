@@ -19,7 +19,7 @@ function msdlab_add_styles() {
             $queue[] = 'font-awesome-style';
         wp_enqueue_style('msd-style',get_stylesheet_directory_uri().'/lib/css/style.css',$queue);
         $queue[] = 'msd-style';
-        if(is_front_page()){
+        if(is_front_page() || msd_has_body_class('homepage-clone')){
             wp_enqueue_style('msd-homepage-style',get_stylesheet_directory_uri().'/lib/css/homepage.css',$queue);
             $queue[] = 'msd-homepage-style';
         }    
