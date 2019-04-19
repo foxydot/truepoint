@@ -7275,7 +7275,7 @@ button.close {
   content: "\67";
 }
 .icon-bridge:before {
-  content: "\79";
+  content: "\79\79";
 }
 .icon-dollar-icon:before {
   content: "\7a";
