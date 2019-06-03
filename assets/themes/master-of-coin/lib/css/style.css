@@ -7286,6 +7286,9 @@ button.close {
 .icon-house:before {
   content: "\42";
 }
+.icon-icon-logobold:before {
+  content: "\6b";
+}
 /* Import Fonts
 ------------------------------------------------------------ */
 @font-face {
