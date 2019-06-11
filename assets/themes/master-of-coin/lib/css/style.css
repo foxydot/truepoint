@@ -8244,8 +8244,6 @@ img#wpstats {
 }
 .pre-header {
   max-height: 50px;
-  display: inline-block;
-  float: right;
 }
 .pre-header .wrap .widget-area {
   width: 100%;
@@ -8278,6 +8276,12 @@ img#wpstats {
 }
 .pre-header .wrap .widget-area .widget_nav_menu .menu li.calendly:hover {
   background: #13214b;
+}
+@media only screen and (min-width: 768px) {
+  .pre-header {
+    display: inline-block;
+    float: right;
+  }
 }
 /*
 Site Header
