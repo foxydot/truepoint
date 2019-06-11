@@ -1,25 +1,34 @@
 .pre-header{
   max-height: 50px;
+  display: inline-block;
+  float: right;
   .wrap{
     .widget-area{
       width: 100%;
       .widget_nav_menu{
         .menu{
           li{
-              background-color: @white;
-              border: 1px solid fade(@medgrey,20%);
-              -webkit-box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
-              box-shadow: 3px 3px 6px 0 fade(@medgrey,50%);
-              padding: 1em 0.5em 0;
+            display: inline-block;
+            background-color: @dkblue;
+            border-radius: 1.8em;
+            padding: 0.5em;
+            margin: 0.5em;
             &:hover{
-              background-color: @offwhite;
+              background-color: @orange;
             }
             a{
               .customheader(1.8);
-              padding: 1em 0.5em 0;
-              color: @blue;
+              line-height: 1;
+              padding: 0.5em;
+              color: @white;
               &:hover{
                 text-decoration: none;
+              }
+            }
+            &.calendly{
+              background: @orange;
+              &:hover{
+                background: @dkblue;
               }
             }
           }

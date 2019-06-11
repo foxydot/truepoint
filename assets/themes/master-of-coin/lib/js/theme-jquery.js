@@ -4,7 +4,9 @@ jQuery(document).ready(function($) {
     $('body *:nth-child(even)').not('.no-break span').addClass('even');
     $('body *:nth-child(odd)').not('.no-break span').addClass('odd');
     $('body').css('opacity','1');
-	
+
+    $('.menu-item.calendly a').attr('data-toggle','modal').attr('data-target','#calendlyModal');
+
 	var numwidgets = $('#footer-widgets div.widget').length;
 	$('#footer-widgets').addClass('cols-'+numwidgets);
 	
