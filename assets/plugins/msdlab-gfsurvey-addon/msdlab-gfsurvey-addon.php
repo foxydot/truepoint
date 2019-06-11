@@ -50,6 +50,10 @@ class MSDLabGFSurveyAddon
                 }
             }
 
+            $headers = array(
+                'Content-type' => 'application/json',
+            );
+
             $body = array(
                 'first_name' => rgar( $entry, '3.3' ),
                 'last_name' => rgar( $entry, '3.6' ),
@@ -59,10 +63,12 @@ class MSDLabGFSurveyAddon
                 $body[$v['label']] = $v['response'];
             }
 
+            $body = json_encode($body);
+
             //GFCommon::log_debug( 'gform_after_submission: body => ' . print_r( $body, true ) );
 
             $request = new WP_Http();
-            $response = $request->post( $post_url, array( 'body' => $body ) );
+            $response = $request->post( $post_url, array( 'method' => 'POST', 'body' => $body, 'headers' => $headers ) );
             //GFCommon::log_debug( 'gform_after_submission: response => ' . print_r( $response, true ) );
 
             GFAPI::delete_entry( $entry['id'] );
